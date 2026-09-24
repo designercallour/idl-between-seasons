@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDL — Front of the Line (Concept C)</title>
+<style>
+  @font-face{font-family:'Neue Haas Grotesk Display';src:url('assets/fonts/NeueHaasDisplayMedium.woff2') format('woff2');font-weight:500;font-display:swap}
+  @font-face{font-family:'Neue Haas Grotesk Display';src:url('assets/fonts/NeueHaasDisplayBold.woff2') format('woff2');font-weight:700;font-display:swap}
+  @font-face{font-family:'Neue Haas Grotesk Display';src:url('assets/fonts/NeueHaasDisplayBlack.woff2') format('woff2');font-weight:900;font-display:swap}
+  @font-face{font-family:'Carbon Plus';src:url('assets/fonts/carbonplus-regular-bl.otf') format('opentype');font-weight:400;font-display:swap}
+  @font-face{font-family:'Carbon Plus';src:url('assets/fonts/carbonplus-bold-bl.otf') format('opentype');font-weight:700;font-display:swap}
+
+  :root{
+    --bg:#0C0F13;--panel:#121D22;--ink:#FDFEFF;--volt:#C0E700;
+    --muted:rgba(253,254,255,.6);--line:rgba(253,254,255,.12);
+    --display:'Neue Haas Grotesk Display',sans-serif;
+    --ui:'Carbon Plus','Neue Haas Grotesk Display',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ui);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 20px 44px;position:relative;overflow-x:hidden}
+  .bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+  .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:
+    radial-gradient(rgba(12,15,19,.45), rgba(12,15,19,.85) 85%),
+    linear-gradient(rgba(12,15,19,.6) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(12,15,19,.85) 100%);}
+
+  .lock{position:absolute;top:26px;left:0;right:0;margin:0 auto;width:150px;height:auto;z-index:3}
+  .ticket{position:relative;z-index:2;width:min(560px,100%);background:rgba(15,20,25,.82);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+  .ticket .head{padding:34px clamp(24px,5vw,44px) 26px;text-align:center}
+  .badge{display:inline-block;font-family:var(--ui);font-size:11px;letter-spacing:.16em;color:var(--volt);border:1px solid rgba(192,231,0,.4);border-radius:999px;padding:6px 14px;text-transform:uppercase;margin-bottom:22px}
+  h1{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(34px,7vw,58px);line-height:.98;letter-spacing:-.02em;text-wrap:balance}
+  .sub{font-family:var(--ui);color:var(--muted);font-size:15px;line-height:1.5;max-width:40ch;margin:16px auto 0}
+  .perf{position:relative;height:0;border-top:2px dashed var(--line);margin:8px 0}
+  .perf::before,.perf::after{content:"";position:absolute;top:-14px;width:26px;height:26px;border-radius:50%;background:var(--bg)}
+  .perf::before{left:-13px}.perf::after{right:-13px}
+  .body{padding:30px clamp(24px,5vw,44px) 34px}
+  .queue{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;margin-bottom:24px;font-family:var(--ui);font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
+  .queue b{color:#fff;font-size:15px;font-weight:700}
+  @media(max-width:400px){.queue{font-size:12px}.queue b{font-size:13px}}
+  .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:26px}
+  .perk{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:14px 10px;text-align:center}
+  .perk .ic{font-family:var(--display);font-weight:900;font-size:20px;color:var(--volt)}
+  .perk .t{font-family:var(--ui);font-size:11.5px;color:#dfe1e3;margin-top:8px;line-height:1.3}
+  form{max-width:100%;display:flex;flex-direction:column;gap:10px}
+  input[type=email]{width:100%;background:var(--panel);border:1px solid transparent;border-radius:6px;color:#fff;font-family:var(--ui);font-size:16px;padding:18px 18px;outline:none}
+  input[type=email]:focus{border-color:var(--volt)}
+  input::placeholder{color:rgba(253,254,255,.45)}
+  button{background:var(--volt);color:#0C0F13;border:0;font-family:var(--ui);font-weight:700;font-size:16px;letter-spacing:-.01em;padding:18px 20px;border-radius:6px;cursor:pointer;text-transform:uppercase;transition:filter .15s}
+  button:hover{filter:brightness(1.06)}
+  .consent{font-family:var(--ui);margin-top:15px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5}
+  .consent a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .done{display:none;text-align:center;padding:6px 0}
+  .done.show{display:block}
+  .done h3{font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:-.01em}
+  .done .pos{font-family:var(--ui);color:var(--volt);font-size:15px;margin:8px 0 4px}
+  .done p{font-family:var(--ui);color:var(--muted);font-size:13.5px}
+  @media(max-width:520px){.perks{grid-template-columns:1fr;gap:8px}.perk{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px}.perk .t{margin-top:0}}
+</style>
+</head>
+<body>
+  <video class="bgvid" autoplay muted loop playsinline><source src="assets/la-bg.mp4" type="video/mp4"></video>
+  <div class="vignette"></div>
+  <img class="lock" src="assets/idl-la-logo.svg" alt="IDL Los Angeles">
+
+  <div class="ticket">
+    <div class="head">
+      <span class="badge">Waitlist Access · No fee</span>
+      <h1>Get to the front of the line.</h1>
+      <p class="sub">The 2026 season is done. Tickets for 2027 will move fast — the list is how you get first pick before they go public.</p>
+    </div>
+    <div class="perf"></div>
+    <div class="body">
+      <div class="queue">You'd be <b id="pos">#1,204</b> in line · <b id="ahead">7,411</b> fans ahead reserved</div>
+      <div class="perks">
+        <div class="perk"><div class="ic">01</div><div class="t">Presale before public tickets</div></div>
+        <div class="perk"><div class="ic">02</div><div class="t">First look at the 2027 schedule</div></div>
+        <div class="perk"><div class="ic">03</div><div class="t">Early drops &amp; member perks</div></div>
+      </div>
+      <form id="form">
+        <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+        <button type="submit">Claim My Spot</button>
+      </form>
+      <div class="done" id="done">
+        <h3>You're in.</h3>
+        <div class="pos" id="donepos">Position #1,203 secured</div>
+        <p>We'll email you the second 2027 tickets open — before anyone outside the list.</p>
+      </div>
+      <p class="consent">By claiming, I agree to receive updates from IDL and accept the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+  </div>
+
+<script>
+  document.getElementById('form').addEventListener('submit',e=>{
+    e.preventDefault();
+    document.getElementById('form').style.display='none';
+    document.querySelector('.queue').style.display='none';
+    document.querySelector('.perks').style.display='none';
+    document.getElementById('done').classList.add('show');
+  });
+</script>
+</body>
+</html>

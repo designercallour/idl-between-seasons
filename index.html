@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDL Waitlist — 3 Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0a;--ink:#fff;--muted:#8a8a8a;--volt:#c8f000;--line:rgba(255,255,255,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding:56px 24px 80px}
+  .head{text-align:center;max-width:720px;margin:0 auto 48px}
+  .eyebrow{font-size:12px;letter-spacing:.25em;color:var(--volt);text-transform:uppercase;font-weight:700;margin-bottom:16px}
+  h1{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(32px,6vw,58px);line-height:.95}
+  .head p{color:var(--muted);margin-top:16px;line-height:1.6}
+  .grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:#101010;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:.2s}
+  .card:hover{border-color:var(--volt);transform:translateY(-3px)}
+  .card .tag{font-family:'Anton';font-size:13px;color:var(--volt);padding:20px 22px 0}
+  .card h2{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:26px;padding:6px 22px 0;line-height:1}
+  .card p{color:var(--muted);font-size:14px;line-height:1.55;padding:14px 22px 0;flex:1}
+  .card ul{list-style:none;padding:16px 22px 0;display:grid;gap:7px}
+  .card li{font-size:12.5px;color:#c4c4c4;display:flex;gap:8px}
+  .card li::before{content:"›";color:var(--volt)}
+  .card a{margin:20px 22px 22px;background:var(--volt);color:#0a0a0a;text-align:center;padding:13px;border-radius:9px;font-weight:700;text-transform:uppercase;font-size:13px;letter-spacing:.03em;text-decoration:none}
+  .note{max-width:1100px;margin:40px auto 0;color:#6a6a6a;font-size:12.5px;text-align:center;line-height:1.6}
+</style>
+</head>
+<body>
+  <p style="max-width:1100px;margin:0 auto 32px;padding:14px 18px;border:1px solid var(--volt);border-radius:10px;font-size:14px;text-align:center"><b style="color:var(--volt)">Round 2 is live →</b> <a href="v2/index.html" style="color:#fff">v2/index.html</a> — three new directions (In the Books · The Next Round · Your Ticket Is Next). Round 1 below is archived.</p>
+  <div class="head">
+    <div class="eyebrow">app.idl.pro · Off-Season Waitlist</div>
+    <h1>3 Concepts — Pick a Direction</h1>
+    <p>Semua mempertahankan pola capture existing: satu field email + satu CTA + consent line, tanpa navigasi. Yang berbeda: framing pesan dan arah visual. Klik untuk buka versi live.</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="tag">Concept A · 1:1 dengan app.idl.pro</div>
+      <h2>The List Is Open</h2>
+      <p><b>Video checkered flag + font asli</b> (Neue Haas Grotesk + Carbon Plus) diambil langsung dari app.idl.pro. Paling faithful, transisi paling halus dari halaman existing.</p>
+      <ul><li>Background video & logo lockup asli</li><li>Layout & tombol persis existing</li><li>Copy diganti ke mode waitlist</li></ul>
+      <a href="concept-a.html">Open A →</a>
+    </div>
+    <div class="card">
+      <div class="tag">Concept B · font IDL</div>
+      <h2>The Board Resets</h2>
+      <p>Pakai bahasa brand sendiri: "scoreboard". Kiri = rekap final standings 2026, kanan = daftar untuk board 2027 (video checkered halus). Split-screen editorial.</p>
+      <ul><li>Font Neue Haas + Carbon Plus asli</li><li>Nyambung ke headline lama</li><li>Benefit list eksplisit</li></ul>
+      <a href="concept-b.html">Open B →</a>
+    </div>
+    <div class="card">
+      <div class="tag">Concept C · font IDL</div>
+      <h2>Front of the Line</h2>
+      <p>Fokus tiket & eksklusivitas. Video checkered flag + motif tiket stub, <b>posisi antrean</b>, perks presale. Paling agresif soal urgency & konversi.</p>
+      <ul><li>Font Neue Haas + Carbon Plus asli</li><li>Queue position (gaya waitlist app)</li><li>Perks presale/drops</li></ul>
+      <a href="concept-c.html">Open C →</a>
+    </div>
+  </div>
+  <p class="note">Catatan: form submit masih stub (belum tersambung backend) — capture asli akan diwire ke infra voting app saat 1 konsep dipilih. Data standings & counter hanya placeholder.</p>
+</body>
+</html>

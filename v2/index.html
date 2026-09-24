@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IDL Between Seasons — Waitlist Concepts</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23060E12%27/%3E%3Cpath d=%27M13 6h9l-3 20h-9z%27 fill=%27%23C0E700%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="shared/idl.css">
+<style>
+  body{background:var(--bg)}
+  .wrap{max-width:1320px;margin:0 auto;padding:40px clamp(20px,4vw,56px) 80px}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+  .top span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+  .intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px 80px;padding:64px 0 56px;border-bottom:1px solid var(--line)}
+  .intro h1{font-size:clamp(48px,6.6vw,104px);line-height:.84}
+  .intro h1 span{color:var(--volt)}
+  .intro p{font-size:15px;line-height:1.6;color:var(--ink-dim);max-width:52ch}
+  .intro p+p{margin-top:14px}
+  .intro b{color:var(--ink);font-weight:400}
+  .rules{list-style:none;margin-top:22px;border-top:1px solid var(--line)}
+  .rules li{display:grid;grid-template-columns:30px 1fr;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--ink-dim)}
+  .rules li span{color:var(--volt);font-size:11px;padding-top:2px}
+
+  .concept{padding:72px 0;border-bottom:1px solid var(--line)}
+  .c-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+  .c-head .num{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--volt);margin-bottom:12px}
+  .c-head h2{font-size:clamp(40px,5vw,76px);line-height:.86}
+  .open{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 22px;border-radius:4px;background:var(--volt);color:#0C0F13;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+  .open:hover{filter:brightness(1.07)}
+  .previews{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:16px;align-items:start}
+  .frame{position:relative;border-radius:6px;overflow:hidden;background:#000;border:1px solid var(--line)}
+  .frame.desk{aspect-ratio:1440/900}
+  .frame.mob{aspect-ratio:390/844}
+  .frame iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none}
+  .frame .cap{position:absolute;left:10px;bottom:10px;z-index:2;height:22px;padding:0 8px;display:flex;align-items:center;border-radius:2px;background:rgba(6,14,18,.8);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+  .frame a{position:absolute;inset:0;z-index:3}
+  .spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;margin-top:36px}
+  .spec dl{border-top:1px solid var(--line)}
+  .spec dt{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--volt);padding-top:16px}
+  .spec dd{font-size:14px;line-height:1.55;color:var(--ink-dim);padding:6px 0 16px}
+  .spec dd b{color:var(--ink);font-weight:400}
+  .spec dd q{color:var(--ink);quotes:"“" "”"}
+  .spec .wide{grid-column:1/-1}
+
+  .notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 80px;padding:72px 0 0}
+  .notes h3{font-size:clamp(28px,3vw,40px);line-height:.9;margin-bottom:18px}
+  .notes p,.notes li{font-size:14px;line-height:1.6;color:var(--ink-dim)}
+  .notes ul{list-style:none;border-top:1px solid var(--line)}
+  .notes li{padding:10px 0;border-bottom:1px solid var(--line)}
+  .notes li b{color:var(--ink);font-weight:400}
+  .notes code{font-family:var(--ui);color:var(--volt);font-size:13px}
+  .archive{margin-top:40px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .archive a{color:var(--ink-dim)}
+
+  @media (max-width:900px){
+    .intro,.notes{grid-template-columns:1fr}
+    .previews{grid-template-columns:1fr 38%}
+    .spec{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){ .previews{grid-template-columns:1fr} .frame.mob{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <svg class="idl-logo" viewBox="0 0 110 32" fill="currentColor" aria-label="IDL"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+    <span>app.idl.pro · Off-season · Round 2 concepts</span>
+  </header>
+
+  <section class="intro">
+    <h1 class="display">Between<br>seasons.<br><span>Three ways in.</span></h1>
+    <div>
+      <p>The voting page at <b>app.idl.pro</b> becomes the next-season ticket waitlist — same URL, same one-field capture (<b>email → CTA → done</b>). The brief: make it feel like IDL has entered the space between seasons, not like a temporary page.</p>
+      <p>Each concept is a different idea, not a different colourway. All three run on the same form state machine and the real IDL kit.</p>
+      <ul class="rules">
+        <li><span>01</span>Real assets only — fonts & checkered video from app.idl.pro; photography, team marks, flags and skylines from idl.pro’s own CDN.</li>
+        <li><span>02</span>Real facts only — 0.43-point final, Shrine Expo Hall, five sold-out events, Brotherhood’s undefeated regular season. No invented dates, counters or queue positions.</li>
+        <li><span>03</span>Form visible in the first viewport at 390 and 375 wide; 60px thumb-height CTA; every state designed (focus, invalid, loading, success, network error).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== 01 ===================== -->
+  <section class="concept">
+    <div class="c-head">
+      <div><p class="num">Concept 01 · Cinematic</p><h2 class="display">In the books.</h2></div>
+      <a class="open" href="01-in-the-books.html">Open live →</a>
+    </div>
+    <div class="previews">
+      <div class="frame desk" data-w="1440" data-h="900"><iframe src="01-in-the-books.html" loading="lazy" tabindex="-1" title="Concept 01 desktop"></iframe><span class="cap">1440</span><a href="01-in-the-books.html" aria-label="Open concept 01"></a></div>
+      <div class="frame mob" data-w="390" data-h="844"><iframe src="01-in-the-books.html" loading="lazy" tabindex="-1" title="Concept 01 mobile"></iframe><span class="cap">390</span><a href="01-in-the-books.html" aria-label="Open concept 01"></a></div>
+    </div>
+    <div class="spec">
+      <dl><dt>Rationale</dt><dd>The most direct evolution of today’s page. The same checkered flag, now read as a physical surface — the race is over, the flag is down. A post-season broadcast moment: the final result as a lower third, the next season as the only thing left on screen.</dd></dl>
+      <dl><dt>Copy</dt><dd><q>2026 is in the books.</q><br><q>Next season is coming.</q> → on success <q>See you next season.</q><br>Support: <q>Five sold-out events in 2026. Get first word when next-season tickets go live — before they go public.</q><br>CTA: <b>Get on the list</b></dd></dl>
+      <dl><dt>Visual</dt><dd>app.idl.pro’s checkered video on a 3D-tilted plane, raking light, grain, heavy left vignette. Neue Haas Black at 150px with an outlined “2026”. Final podium bars in the idl.pro slanted-bar style with real team colours.</dd></dl>
+      <dl><dt>Interaction</dt><dd>Load: flag fades in → volt finish line draws across → headline rises out of masks → entry panel floats up → scores count to 94.00 / 93.57 / 90.86. Cursor tilts the flag and moves the light; type and panel counter-drift for depth. Loading speeds the flag up; success sweeps the finish line and scrambles the line into “See you next season.”</dd></dl>
+      <dl><dt>Assets</dt><dd>la-bg.mp4 (app.idl.pro), idl.pro checker art as video poster, IDL wordmark SVG, GRV / Brotherhood / Jam Republic marks, Neue Haas Display + Carbon Plus.</dd></dl>
+      <dl><dt>Layout</dt><dd><b>Desktop:</b> headline left on a 2-col grid, entry panel bottom-right, final lower third bottom-left.<br><b>Mobile:</b> stacked — headline, entry card (CTA at ~614px on a 844 screen), podium below; flag drifts by itself instead of following a cursor.</dd></dl>
+    </div>
+  </section>
+
+  <!-- ===================== 02 ===================== -->
+  <section class="concept">
+    <div class="c-head">
+      <div><p class="num">Concept 02 · Kinetic editorial</p><h2 class="display">The next round.</h2></div>
+      <a class="open" href="02-next-round.html">Open live →</a>
+    </div>
+    <div class="previews">
+      <div class="frame desk" data-w="1440" data-h="900"><iframe src="02-next-round.html" loading="lazy" tabindex="-1" title="Concept 02 desktop"></iframe><span class="cap">1440</span><a href="02-next-round.html" aria-label="Open concept 02"></a></div>
+      <div class="frame mob" data-w="390" data-h="844"><iframe src="02-next-round.html" loading="lazy" tabindex="-1" title="Concept 02 mobile"></iframe><span class="cap">390</span><a href="02-next-round.html" aria-label="Open concept 02"></a></div>
+    </div>
+    <div class="spec">
+      <dl><dt>Rationale</dt><dd>Treat the waitlist as the first move of Season 02. “SEASON 02” becomes the hero — cut out of real 2026 photography — and 2026 is told as six chapters that end on a seventh, empty one: the chapter the fan is signing up for.</dd></dl>
+      <dl><dt>Copy</dt><dd><q>The next round starts here.</q><br>Support: <q>2026 went five cities deep and came down to 0.43 points. Season 02 is already in motion — be first when tickets drop.</q><br>Close: <q>See you next season.</q> + tiered-pricing line from idl.pro/tickets FAQ.<br>CTA: <b>Get early access</b></dd></dl>
+      <dl><dt>Visual</dt><dd>Oversized cropped type, the IDL slanted rails, skyline photography per city, the GRV confetti moment, a dashed-outline “Chapter 07 · TBA” card, team wordmark belt in the close.</dd></dl>
+      <dl><dt>Interaction</dt><dd>Photos rotate inside the “02” numerals and pan against the cursor; “SEASON” and “02” sit on different depths. The city ticker speeds up with scroll velocity. Vertical scroll drives a pinned horizontal chapter track with per-card parallax and a progress counter. A dock CTA appears once the hero form leaves the screen. Two forms, one list: success anywhere completes both, fills Chapter 07 with “Spot saved”, and retires the dock.</dd></dl>
+      <dl><dt>Assets</dt><dd>idl.pro results-page skylines (NY, Vancouver, Sydney, Seoul), championship + Brotherhood trophy + stage photos, country flags, six team wordmarks, team icons.</dd></dl>
+      <dl><dt>Layout</dt><dd><b>Desktop:</b> full-bleed “SEASON 02” band, headline + inline form beneath, city ticker as the fold line; pinned horizontal chapters; closing form.<br><b>Mobile:</b> “SEASON / 02” stacked, form at ~720px, chapters become a native swipe carousel (no scroll-jacking), dock pinned to the thumb zone.</dd></dl>
+    </div>
+  </section>
+
+  <!-- ===================== 03 ===================== -->
+  <section class="concept">
+    <div class="c-head">
+      <div><p class="num">Concept 03 · Credential</p><h2 class="display">Your ticket is next.</h2></div>
+      <a class="open" href="03-your-ticket.html">Open live →</a>
+    </div>
+    <div class="previews">
+      <div class="frame desk" data-w="1440" data-h="900"><iframe src="03-your-ticket.html" loading="lazy" tabindex="-1" title="Concept 03 desktop"></iframe><span class="cap">1440</span><a href="03-your-ticket.html" aria-label="Open concept 03"></a></div>
+      <div class="frame mob" data-w="390" data-h="844"><iframe src="03-your-ticket.html" loading="lazy" tabindex="-1" title="Concept 03 mobile"></iframe><span class="cap">390</span><a href="03-your-ticket.html" aria-label="Open concept 03"></a></div>
+    </div>
+    <div class="spec">
+      <dl><dt>Rationale</dt><dd>Make signing up feel like being issued something. The form <i>is</i> a Season 02 credential — broadcast-accreditation more than paper ticket. It starts locked, wakes up when you touch it, and flips to “You’re on the list.” The most tactile of the three, and the clearest reward moment.</dd></dl>
+      <dl><dt>Copy</dt><dd><q>Your ticket is next.</q><br>Support: <q>2026 sold out five events. Pricing is tiered, and earlier buyers get the better tiers — so the list hears first when next-season tickets go live.</q><br>Perks mirror idl.pro’s own newsletter promise: early ticket sales, event updates, merch drops.<br>CTA: <b>Activate my pass</b> → <b>Issuing pass…</b></dd></dl>
+      <dl><dt>Visual</dt><dd>Dark matte pass with a punched slot and lanyard, IDL wordmark, a photo window with an outlined “02”, a dashed status grid, six team chips, and a barcode. Dim stage-light photography behind. No neon, no foil clichés — the sheen is subtle and follows the light.</dd></dl>
+      <dl><dt>Interaction</dt><dd><b>Locked:</b> greyscale window, dim team chips. <b>Focus:</b> a volt light runs the pass edge, the photo colours in, team marks light up in sequence, “is next.” fills volt. <b>Typing:</b> the pass prints its own reference + barcode from the email as it becomes valid; CTA goes solid. <b>Loading:</b> a scan line sweeps the window. <b>Error:</b> the pass shakes, status turns red. <b>Success:</b> 3D flip to the issued side.</dd></dl>
+      <dl><dt>Assets</dt><dd>idl.pro Championship stage photo (front), GRV confetti (back), tickets-page stage beams, six team icons, IDL wordmark. The pass reference is a hash of the email, not a queue claim.</dd></dl>
+      <dl><dt>Layout</dt><dd><b>Desktop:</b> headline + reasons left, pass right with physical cursor tilt.<br><b>Mobile:</b> headline (2 lines), then the pass full-width with the CTA at ~680px on a 812 screen; the reasons move below the pass. Gentle idle float replaces cursor tilt.</dd></dl>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div>
+      <h3 class="display">What the waitlist<br>research says.</h3>
+      <ul>
+        <li><b>Lead with access, not updates.</b> Pro-team priority lists and season-ticket waitlists (NBA, MLB, WNBA, football clubs) sell “first chance to buy”, never a newsletter. All three CTAs say access: list / early access / pass.</li>
+        <li><b>One field, no deposit.</b> Many league waitlists ask for a deposit or account. IDL’s advantage is zero friction — so “Free · Email only” is stated, not implied.</li>
+        <li><b>Say exactly what happens next.</b> Every success state names the email and the promise: first word when tickets go live, ahead of the public on-sale.</li>
+        <li><b>Honest urgency.</b> Demand proof beats countdowns: five sold-out events and tiered pricing (both from IDL’s own pages). No fake timers or “#1,204 in line”.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="display">Production<br>notes.</h3>
+      <ul>
+        <li><b>Submit is a stub.</b> <code>IDLWaitlist.submit(email)</code> in <code>shared/waitlist.js</code> resolves after 1.3s. Wire it to the voting-app capture endpoint once a direction is picked. Add <code>?fail</code> to any URL to see the network-error state.</li>
+        <li><b>Consent</b> keeps the existing Terms & Privacy pattern, linked to idl.pro.</li>
+        <li><b>Accessibility:</b> labelled inputs, <code>aria-live</code> status, <code>aria-invalid</code> on error, focus moved to the success message, <code>prefers-reduced-motion</code> removes tilt/marquee/intro.</li>
+        <li><b>Performance:</b> no libraries; one rAF loop per page; 3D and parallax only on fine pointers.</li>
+        <li><b>Open decision:</b> next-season dates/cities are unannounced, so every page says “next season” / “Season 02 · TBA” rather than a year.</li>
+      </ul>
+    </div>
+  </section>
+  <p class="archive">Round 1 concepts (A / B / C) are archived at <a href="../index.html">../index.html</a>.</p>
+</div>
+<script>
+  // scale each live iframe to its frame
+  const fit = () => document.querySelectorAll('.frame').forEach((f) => {
+    const w = +f.dataset.w, h = +f.dataset.h, i = f.querySelector('iframe'), k = f.clientWidth / w;
+    i.style.width = w + 'px'; i.style.height = h + 'px'; i.style.transform = `scale(${k})`;
+  });
+  fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060E12">
+<title>IDL — Your Ticket Is Next</title>
+<meta name="description" content="Activate your Season 02 pass — get first word when next-season IDL tickets go live.">
+<link rel="preload" href="../assets/fonts/NeueHaasDisplayBlack.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23060E12%27/%3E%3Cpath d=%27M13 6h9l-3 20h-9z%27 fill=%27%23C0E700%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="shared/idl.css">
+<style>
+  /* ============ CONCEPT 03 — YOUR TICKET IS NEXT ============ */
+  @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+  body{min-height:100svh;background:var(--bg)}
+
+  .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .bg .beams{position:absolute;inset:-6% -6% 30%;background:url('assets/img/photo-stage-green.webp') center top/cover;opacity:.32;filter:saturate(.8);
+    -webkit-mask:linear-gradient(180deg,#000 30%,transparent);mask:linear-gradient(180deg,#000 30%,transparent);transition:opacity 1.2s var(--ease),filter 1.2s;will-change:transform}
+  body[data-pass=active] .bg .beams,body[data-pass=issued] .bg .beams{opacity:.55;filter:saturate(1.1)}
+  .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(60vw 60vh at 70% 55%,rgba(6,14,18,0),rgba(6,14,18,.85) 80%)}
+
+  .layout{position:relative;z-index:2;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr auto auto;
+    grid-template-areas:"top top" "copy pass" "more pass" "foot pass";gap:24px clamp(32px,5vw,90px);padding:max(22px,env(safe-area-inset-top)) clamp(20px,4.2vw,64px) 28px}
+  .top{grid-area:top;display:flex;justify-content:space-between;align-items:center;gap:20px}
+  .top a.ext{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);text-decoration:none;white-space:nowrap}
+  .top a.ext:hover{color:var(--ink)}
+  .top .season{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);white-space:nowrap}
+  .top .season b{color:var(--volt);font-weight:400}
+
+  .copy{grid-area:copy;align-self:end;max-width:640px}
+  .more{grid-area:more;align-self:start;max-width:640px}
+  .copy .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .slash{display:inline-block;width:10px;height:22px;background:var(--volt);transform:skewX(calc(var(--slant) * -1))}
+  .h1{font-size:clamp(56px,7.6vw,132px);line-height:.84}
+  .h1 .o{color:transparent;-webkit-text-stroke:2px var(--ink);transition:color .8s var(--ease),-webkit-text-stroke-color .8s}
+  body[data-pass=active] .h1 .o,body[data-pass=issued] .h1 .o{color:var(--volt);-webkit-text-stroke-color:var(--volt)}
+  .support{margin-top:0;font-size:16px;line-height:1.55;color:var(--ink-dim);max-width:40ch}
+  .support b{color:var(--ink);font-weight:400}
+  .perks{list-style:none;margin-top:34px;display:grid;gap:0;max-width:440px;border-top:1px solid var(--line)}
+  .perks li{display:grid;grid-template-columns:44px 1fr;align-items:center;height:48px;border-bottom:1px solid var(--line);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
+  .perks li span{color:var(--volt);font-size:11px}
+  .perks li b{font-weight:400;color:var(--ink)}
+  .copy>*,.more>*{opacity:0;transform:translateY(16px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .is-in .copy>*,.is-in .more>*{opacity:1;transform:none}
+  .is-in .copy>:nth-child(2){transition-delay:.08s}.is-in .more>:nth-child(1){transition-delay:.16s}.is-in .more>:nth-child(2){transition-delay:.24s}
+
+  .foot{grid-area:foot;align-self:end;display:flex;flex-wrap:wrap;gap:10px 22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .foot a{color:var(--ink-dim);text-decoration:none}
+  .foot a:hover{color:var(--volt)}
+
+  /* ================= THE PASS ================= */
+  .pass-wrap{grid-area:pass;align-self:center;justify-self:center;width:min(410px,100%);perspective:1400px;
+    opacity:0;transform:translateY(40px) rotateX(18deg);transition:opacity 1s var(--ease) .25s,transform 1.2s var(--ease) .25s}
+  .is-in .pass-wrap{opacity:1;transform:none}
+  .lanyard{height:48px;width:34px;margin:0 auto -14px;position:relative;z-index:1;
+    background:repeating-linear-gradient(90deg,#1B272D 0 3px,#223038 3px 6px);clip-path:polygon(10% 0,90% 0,100% 100%,0 100%)}
+  .lanyard::after{content:"";position:absolute;left:50%;bottom:-2px;width:22px;height:10px;transform:translateX(-50%);background:#3A474E;border-radius:2px}
+  .tilt{transform-style:preserve-3d;will-change:transform;transform:rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg))}
+  .flip{position:relative;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.7,-.1,.2,1.1)}
+  body[data-pass=issued] .flip{transform:rotateY(180deg)}
+  .face{position:relative;border-radius:14px;background:#0B1418;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    box-shadow:0 50px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(238,247,239,.1) inset}
+  .face.back{position:absolute;inset:0;transform:rotateY(180deg)}
+  /* the punched slot */
+  .face::before{content:"";position:absolute;left:50%;top:12px;width:54px;height:9px;transform:translateX(-50%);border-radius:9px;background:var(--bg);box-shadow:0 1px 0 rgba(238,247,239,.08);z-index:5}
+  /* live edge — a light that runs the perimeter once the pass wakes up */
+  .edge{position:absolute;inset:0;border-radius:14px;padding:1px;pointer-events:none;z-index:6;opacity:0;transition:opacity .6s;
+    background:conic-gradient(from var(--a),transparent 0 70%,rgba(192,231,0,.9) 82%,transparent 94%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 3.2s linear infinite}
+  @keyframes spin{to{--a:360deg}}
+  body[data-pass=active] .front .edge,body[data-pass=loading] .front .edge{opacity:1}
+  body[data-pass=loading] .front .edge{animation-duration:1s}
+  /* specular sheen following the cursor */
+  .sheen{position:absolute;inset:0;pointer-events:none;z-index:4;mix-blend-mode:overlay;opacity:.5;transition:opacity .6s;
+    background:linear-gradient(calc(115deg + var(--sa,0deg)),transparent 30%,rgba(255,255,255,.55) 46%,rgba(192,231,0,.25) 52%,transparent 64%);
+    background-size:220% 220%;background-position:var(--sx,50%) var(--sy,50%)}
+  body[data-pass=locked] .sheen{opacity:.18}
+
+  .p-head{display:flex;justify-content:space-between;align-items:flex-end;padding:34px 22px 14px}
+  .p-head svg{width:74px}
+  .p-head .kind{text-align:right;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);line-height:1.5}
+  .p-head .kind b{display:block;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:-.01em;color:var(--ink)}
+  .window{position:relative;height:190px;margin:0 12px;border-radius:6px;overflow:hidden;background:#0E1A1F}
+  .window img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;transform:scale(1.08) translate(var(--wx,0),var(--wy,0));
+    filter:grayscale(1) brightness(.45) contrast(1.1);transition:filter 1.2s var(--ease)}
+  body[data-pass=active] .window img,body[data-pass=loading] .window img{filter:grayscale(.2) brightness(.8)}
+  .window .big{position:absolute;right:10px;bottom:-.1em;font-size:128px;line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(238,247,239,.7)}
+  .window .lock{position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;border-radius:2px;background:rgba(6,14,18,.72);backdrop-filter:blur(6px);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+  .window .lock svg{width:10px;height:12px}
+  .scan{position:absolute;left:0;right:0;top:0;height:40%;pointer-events:none;z-index:3;opacity:0;
+    background:linear-gradient(180deg,transparent,rgba(192,231,0,.28) 85%,rgba(192,231,0,.9) 100%);transform:translateY(-100%)}
+  body[data-pass=loading] .scan{opacity:1;animation:scan 1.1s var(--ease-io) infinite}
+  @keyframes scan{to{transform:translateY(260%)}}
+
+  .p-body{padding:18px 22px 0}
+  .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+  .holder{margin-top:6px}
+  .face .wl{--h:54px}
+  .face .wl input{background:transparent;border:0;border-bottom:1px solid rgba(238,247,239,.24);border-radius:0;padding:0 2px;font-size:17px;letter-spacing:.04em}
+  .face .wl input:focus{border-bottom-color:var(--volt);background:transparent}
+  .face .wl[data-state=error] input{border-bottom-color:var(--err)}
+  .face .wl .wl-row{flex-direction:column;gap:14px}
+  .face .wl-msg{margin-top:8px;min-height:14px;font-size:10px}
+  .grid3{display:grid;grid-template-columns:1.2fr 1fr 1fr;margin:4px 0 16px;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+  .grid3>div{padding:10px 0 10px 0}
+  .grid3>div+div{padding-left:12px;border-left:1px dashed var(--line)}
+  .grid3 .v{margin-top:4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .st-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);transition:background .3s}
+  body[data-pass=active] .st-dot{background:var(--volt);animation:blink 1.2s infinite}
+  body[data-pass=loading] .st-dot{background:var(--volt);animation:blink .4s infinite}
+  body[data-pass=error] .st-dot{background:var(--err)}
+  @keyframes blink{50%{opacity:.2}}
+  /* the CTA reads as part of the credential; solid once the email is valid */
+  .face .wl-btn{width:100%;background:transparent;color:var(--volt);box-shadow:inset 0 0 0 1px rgba(192,231,0,.45);transition:background .35s,color .35s,box-shadow .35s,transform .35s var(--ease)}
+  .face .wl[data-valid="1"] .wl-btn,.face .wl[data-state=loading] .wl-btn{background:var(--volt);color:#0C0F13;box-shadow:none}
+  .p-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;padding:12px 22px 16px;border-top:1px dashed var(--line)}
+  .code{font-size:11px;letter-spacing:.18em;color:var(--ink-dim);white-space:nowrap}
+  .bars{height:26px;width:128px;flex:none}
+  .bars rect{fill:var(--ink)}
+  body[data-pass=locked] .bars{opacity:.25}
+  .teams{display:flex;gap:4px;overflow:hidden;padding:0 22px;margin-top:2px}
+  .teams span{flex:1;height:28px;display:flex;align-items:center;justify-content:center;background:rgba(238,247,239,.05);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:background .5s}
+  .teams img{width:16px;height:16px;object-fit:contain;filter:grayscale(1) brightness(1.4);opacity:.45;transition:filter .5s,opacity .5s}
+  body[data-pass=active] .teams img,body[data-pass=loading] .teams img,body[data-pass=issued] .teams img{filter:none;opacity:1}
+  body[data-pass=active] .teams span{background:rgba(238,247,239,.09)}
+  .teams span:nth-child(1){transition-delay:0s}.teams span:nth-child(2) img{transition-delay:.06s}.teams span:nth-child(3) img{transition-delay:.12s}.teams span:nth-child(4) img{transition-delay:.18s}.teams span:nth-child(5) img{transition-delay:.24s}.teams span:nth-child(6) img{transition-delay:.3s}
+
+  /* back face — issued */
+  .back{display:flex;flex-direction:column}
+  .back .window{height:210px}
+  .back .window img{filter:none}
+  .back .stamp{position:absolute;right:14px;top:14px;height:26px;padding:0 10px;display:flex;align-items:center;gap:8px;border-radius:2px;background:var(--volt);color:#0C0F13;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+  .back .p-body{flex:1;display:flex;flex-direction:column}
+  .back .t{font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;font-size:46px;line-height:.86;margin:6px 0 14px}
+  .back .who{font-size:13px;color:var(--ink);word-break:break-all;margin-top:4px}
+  .back .note{font-size:13px;line-height:1.5;color:var(--ink-dim);margin:14px 0 0}
+  .back .actions{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:auto;padding-top:16px}
+  .back .actions a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--volt);text-decoration:none}
+
+  .pass-wrap .consent{margin:18px 6px 0;text-align:center;transition:opacity .6s}
+  body[data-pass=issued] .pass-wrap .consent{opacity:0}
+  .shake-pass{animation:wl-shake .45s var(--ease)}
+
+  /* ---------- 1024 ---------- */
+  @media (max-width:1180px){
+    .layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+    .h1{font-size:clamp(52px,7vw,110px)}
+  }
+  @media (max-height:820px) and (min-width:861px){
+    .window{height:136px}.back .window{height:150px}
+    .lanyard{height:30px}
+    .p-head{padding-top:28px;padding-bottom:10px}
+  }
+  /* ---------- mobile: headline, pass, then the why ---------- */
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;grid-template-rows:auto auto auto auto auto;grid-template-areas:"top" "copy" "pass" "more" "foot";gap:22px}
+    .copy{align-self:start;padding-top:2vh}
+    .more{padding-top:6px}
+    .copy .eyebrow{margin-bottom:14px}
+    .h1{font-size:clamp(40px,12.2vw,86px)}
+    .support{font-size:14px}
+    .perks{margin-top:20px}
+    .pass-wrap{width:min(380px,100%)}
+    .lanyard{display:none}
+    .window{height:118px}
+    .p-head{padding-top:28px}
+    .window .big{font-size:104px}
+    .back .window{height:160px}
+    .foot{justify-content:center;padding-top:10px}
+    .top .season{display:none}
+  }
+</style>
+</head>
+<body data-pass="locked">
+  <div class="bg" aria-hidden="true"><div class="beams" id="beams"></div></div>
+
+  <div class="layout">
+    <header class="top">
+      <a href="https://www.idl.pro/" aria-label="International Dance League — idl.pro">
+        <svg class="idl-logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+      </a>
+      <span class="season">2026 season · Ended — <b>Season 02 · Waitlist open</b></span>
+      <a class="ext" href="https://www.idl.pro/" rel="noopener">idl.pro ↗</a>
+    </header>
+
+    <div class="copy">
+      <p class="eyebrow"><span class="slash"></span>Season 02 · Ticket waitlist</p>
+      <h1 class="display h1">Your ticket<br><span class="o">is next.</span></h1>
+    </div>
+
+    <div class="more">
+      <p class="support">2026 sold out five events. Pricing is tiered, and earlier buyers get the better tiers — <b>so the list hears first</b> when next-season tickets go live.</p>
+      <ul class="perks" aria-label="What the list gets you">
+        <li><span>01</span><b>Early ticket sales</b></li>
+        <li><span>02</span>Season 02 event updates</li>
+        <li><span>03</span>Exclusive merch drops</li>
+      </ul>
+    </div>
+
+    <div class="pass-wrap" id="passWrap">
+      <div class="lanyard" aria-hidden="true"></div>
+      <div class="tilt" id="tilt">
+        <div class="flip">
+          <!-- FRONT: the form lives on the pass -->
+          <section class="face front" aria-labelledby="passTitle">
+            <div class="edge" aria-hidden="true"></div>
+            <div class="sheen" aria-hidden="true"></div>
+            <div class="p-head">
+              <svg viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+              <p class="kind" id="passTitle">Season 02<b>Waitlist pass</b></p>
+            </div>
+            <div class="window" aria-hidden="true">
+              <img id="winImg" src="assets/img/news-grv-upset.jpg" alt="">
+              <span class="display big">02</span>
+              <span class="lock" id="lockTag"><svg viewBox="0 0 10 12" fill="currentColor"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1Zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5Z"/></svg><span id="lockTxt">Locked</span></span>
+              <div class="scan"></div>
+            </div>
+            <div class="p-body">
+              <form class="wl" id="wl" novalidate>
+                <label class="lbl" for="email">Pass holder · email</label>
+                <div class="wl-row holder">
+                  <div class="wl-field"><input type="email" id="email" name="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="wlMsg"></div>
+                  <div class="grid3" aria-hidden="true">
+                    <div><p class="lbl">Status</p><p class="v"><span class="st-dot"></span><span id="stTxt">Locked</span></p></div>
+                    <div><p class="lbl">Access</p><p class="v">Presale list</p></div>
+                    <div><p class="lbl">Fee</p><p class="v">Free</p></div>
+                  </div>
+                  <button class="wl-btn" type="submit"><span class="wl-lbl"><span class="wl-lbl-text">Activate my pass</span><svg class="wl-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h11M7.5 2.5 12 7l-4.5 4.5"/></svg></span></button>
+                </div>
+                <p class="wl-msg" id="wlMsg" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+            <div class="teams" aria-hidden="true">
+              <span><img src="assets/img/icon-brotherhood.webp" alt=""></span><span><img src="assets/img/icon-grv.webp" alt=""></span><span><img src="assets/img/icon-1million.webp" alt=""></span>
+              <span><img src="assets/img/icon-royalfamily.webp" alt=""></span><span><img src="assets/img/icon-jamrepublic.webp" alt=""></span><span><img src="assets/img/icon-quickstyle.webp" alt=""></span>
+            </div>
+            <div class="p-foot" aria-hidden="true"><span class="code" id="codeF">IDL · S02 · ——————</span><svg class="bars" id="barsF" viewBox="0 0 128 26" preserveAspectRatio="none"></svg></div>
+          </section>
+
+          <!-- BACK: issued -->
+          <section class="face back" aria-live="polite" id="back" tabindex="-1" aria-label="Pass issued">
+            <div class="sheen" aria-hidden="true"></div>
+            <div class="p-head">
+              <svg viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+              <p class="kind">Season 02<b>Pass issued</b></p>
+            </div>
+            <div class="window"><img src="assets/img/photo-grv-confetti.jpg" alt=""><span class="stamp">● Active</span></div>
+            <div class="p-body">
+              <p class="t">You’re on<br>the list.</p>
+              <p class="lbl">Pass holder</p>
+              <p class="who" id="who"></p>
+              <p class="note">When Season 02 tickets go live, this address hears first — ahead of the public on-sale.</p>
+              <div class="actions">
+                <a href="https://www.idl.pro/results/championship">Relive 2026 ↗</a>
+                <button class="wl-reset" type="button" id="reset">Use another email</button>
+              </div>
+            </div>
+            <div class="p-foot"><span class="code" id="codeB"></span><svg class="bars" id="barsB" viewBox="0 0 128 26" preserveAspectRatio="none"></svg></div>
+          </section>
+        </div>
+      </div>
+      <p class="consent">By activating, I agree to receive emails from IDL about next-season tickets and league news, and accept the <a href="https://www.idl.pro/terms-and-conditions">Terms and Conditions</a> and <a href="https://www.idl.pro/privacy-policy">Privacy Policy</a>. Unsubscribe anytime.</p>
+    </div>
+
+    <footer class="foot">
+      <span>Final 2026 · GRV 94.00 — Brotherhood 93.57</span>
+      <a href="https://www.idl.pro/results/championship">Results ↗</a>
+      <a href="https://www.idl.pro/teams">Teams ↗</a>
+    </footer>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+<script src="shared/waitlist.js"></script>
+<script>
+(() => {
+  const W = IDLWaitlist, $ = (s) => document.querySelector(s), body = document.body;
+  const start = () => requestAnimationFrame(() => body.classList.add('is-in'));
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(start); setTimeout(start, 900);
+
+  /* ---- barcode drawn from the pass code (deterministic, no fake data) ---- */
+  const drawBars = (svg, seed) => {
+    let h = 0; for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    let x = 0, out = '';
+    while (x < 128) { h = (h * 1103515245 + 12345) >>> 0; const w = 1 + (h % 3), gap = 1 + ((h >> 5) % 3); if (x + w > 128) break; out += `<rect x="${x}" y="0" width="${w}" height="26"/>`; x += w + gap; }
+    svg.innerHTML = out;
+  };
+  drawBars($('#barsF'), 'IDL-S02');
+
+  /* ---- pass states: locked → active → loading → issued ---- */
+  const setPass = (s) => { body.dataset.pass = s; };
+  const stTxt = $('#stTxt'), lockTxt = $('#lockTxt'), codeF = $('#codeF');
+  const ctl = W.mount($('#wl'), {
+    copy: { cta: 'Activate my pass', loading: 'Issuing pass…', placeholder: 'YOUR EMAIL', focus: 'ENTER YOUR EMAIL' },
+    onState(s, d) {
+      if (s === 'focus') { setPass('active'); stTxt.textContent = 'Ready'; lockTxt.textContent = 'Activating'; }
+      if (s === 'idle') { setPass('locked'); stTxt.textContent = 'Locked'; lockTxt.textContent = 'Locked'; codeF.textContent = 'IDL · S02 · ——————'; drawBars($('#barsF'), 'IDL-S02'); }
+      if (s === 'typing') {
+        // the pass "prints" its reference as you type
+        if (d.valid) { const c = W.code(d.value.trim()); codeF.textContent = 'IDL · S02 · ' + c; drawBars($('#barsF'), c); stTxt.textContent = 'Valid'; }
+        else { codeF.textContent = 'IDL · S02 · ——————'; stTxt.textContent = 'Ready'; }
+      }
+      if (s === 'loading') { setPass('loading'); stTxt.textContent = 'Issuing'; lockTxt.textContent = 'Issuing'; }
+      if (s === 'error') {
+        setPass('error'); stTxt.textContent = d.reason === 'invalid' ? 'Check email' : 'Retry';
+        const t = $('#tilt'); t.classList.remove('shake-pass'); void t.offsetWidth; t.classList.add('shake-pass');
+        setTimeout(() => { if (body.dataset.pass === 'error') setPass('active'); }, 900);
+      }
+      if (s === 'success') {
+        const c = W.code(d.email);
+        $('#who').textContent = d.email; $('#codeB').textContent = 'IDL · S02 · ' + c; drawBars($('#barsB'), c);
+        setPass('issued');
+        setTimeout(() => $('#back').focus({ preventScroll: true }), 700);
+      }
+    },
+  });
+  $('#reset').addEventListener('click', () => { ctl.reset(); setPass('locked'); setTimeout(() => ctl.input.focus(), 600); });
+
+  /* ---- physical tilt + specular sheen + parallax inside the window ---- */
+  const tilt = $('#tilt'), sheens = document.querySelectorAll('.sheen'), img = $('#winImg'), beams = $('#beams');
+  const p = W.pointer(), fine = matchMedia('(pointer:fine)').matches; let t = 0;
+  const loop = () => {
+    if (!fine) { t += 0.012; p.tx = Math.sin(t) * 0.35; p.ty = Math.cos(t * 0.8) * 0.25; }
+    p.tick(0.08);
+    const k = body.dataset.pass === 'locked' ? 0.55 : 1;
+    tilt.style.setProperty('--ty', (p.x * 11 * k).toFixed(2) + 'deg');
+    tilt.style.setProperty('--tx', (p.y * -9 * k).toFixed(2) + 'deg');
+    sheens.forEach((s) => { s.style.setProperty('--sx', (50 + p.x * 45).toFixed(1) + '%'); s.style.setProperty('--sy', (50 + p.y * 45).toFixed(1) + '%'); s.style.setProperty('--sa', (p.x * 12).toFixed(1) + 'deg'); });
+    img.style.setProperty('--wx', (p.x * -8).toFixed(1) + 'px'); img.style.setProperty('--wy', (p.y * -6).toFixed(1) + 'px');
+    beams.style.transform = `translate3d(${(p.x * -14).toFixed(1)}px,${(p.y * -8).toFixed(1)}px,0)`;
+    requestAnimationFrame(loop);
+  };
+  if (!W.reduced) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

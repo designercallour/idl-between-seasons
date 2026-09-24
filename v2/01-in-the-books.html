@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060E12">
+<title>IDL — Next Season Tickets</title>
+<meta name="description" content="The 2026 IDL season is in the books. Get on the list for next-season tickets.">
+<link rel="preload" href="../assets/fonts/NeueHaasDisplayBlack.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23060E12%27/%3E%3Cpath d=%27M13 6h9l-3 20h-9z%27 fill=%27%23C0E700%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="shared/idl.css">
+<style>
+  /* ============ CONCEPT 01 — IN THE BOOKS ============ */
+  body{min-height:100svh;background:#04090C}
+
+  /* --- the surface: real app.idl.pro checkered video on a tilted plane --- */
+  .stage{position:fixed;inset:0;z-index:0;overflow:hidden;perspective:1100px;perspective-origin:50% 40%;background:#04090C}
+  .surface{position:absolute;inset:-18% -14%;transform-style:preserve-3d;will-change:transform;
+    transform:rotateX(calc(12deg + var(--rx,0deg))) rotateY(var(--ry,0deg)) scale(1.06);opacity:0;transition:opacity 1.6s var(--ease)}
+  .surface video{width:100%;height:100%;object-fit:cover;filter:saturate(.7) contrast(1.12) brightness(.9)}
+  .is-in .surface{opacity:1}
+  /* raking light that follows the cursor — makes the flag read as a physical cloth */
+  .sheen{position:absolute;inset:0;mix-blend-mode:soft-light;pointer-events:none;
+    background:radial-gradient(38vmax 30vmax at var(--lx,62%) var(--ly,38%),rgba(238,247,239,.55),rgba(238,247,239,0) 70%)}
+  .shade{position:absolute;inset:0;pointer-events:none;background:
+    linear-gradient(90deg,rgba(4,9,12,.92) 0%,rgba(4,9,12,.55) 42%,rgba(4,9,12,.25) 70%,rgba(4,9,12,.6) 100%),
+    linear-gradient(180deg,rgba(4,9,12,.7) 0%,rgba(4,9,12,0) 22%,rgba(4,9,12,0) 60%,rgba(4,9,12,.95) 100%)}
+  /* the finish line — draws in on load, sweeps again on success */
+  .finish{position:absolute;left:0;right:0;top:var(--fy,57%);height:2px;background:var(--volt);transform:scaleX(0);transform-origin:left;
+    box-shadow:0 0 18px rgba(192,231,0,.55)}
+  .is-in .finish{animation:finish 1.5s var(--ease-io) .15s forwards}
+  @keyframes finish{0%{transform:scaleX(0);opacity:1}55%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+  .flash .finish{animation:finish-sweep 1.2s var(--ease-io) forwards}
+  @keyframes finish-sweep{0%{transform:scaleX(0);opacity:1;transform-origin:left}50%{transform:scaleX(1);transform-origin:left}51%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right;opacity:1}}
+
+  /* --- layout --- */
+  .layout{position:relative;z-index:2;min-height:100svh;display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(360px,430px);grid-template-rows:auto 1fr auto;
+    grid-template-areas:"top top" "hero entry" "final entry";gap:28px clamp(32px,5vw,88px);
+    padding:max(22px,env(safe-area-inset-top)) clamp(20px,4.2vw,64px) clamp(22px,4vh,44px)}
+
+  .top{grid-area:top;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .top-status{display:flex;align-items:center;gap:18px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+  .chip{display:inline-flex;align-items:center;gap:8px;height:24px;padding:0 10px;background:rgba(238,247,239,.08);border-radius:2px;color:var(--ink)}
+  .chip.next{background:var(--volt-soft);color:var(--volt)}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .chip.next .dot{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.25}}
+  .top a.ext{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+  .top a.ext:hover{color:var(--ink)}
+
+  .hero{grid-area:hero;align-self:center;padding-top:2vh}
+  .hero .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+  .slash{display:inline-block;width:10px;height:22px;background:var(--volt);transform:skewX(calc(var(--slant) * -1))}
+  .h-a{font-size:clamp(56px,8.3vw,150px);will-change:transform;white-space:nowrap}
+  .h-a .yr{color:transparent;-webkit-text-stroke:2px var(--ink);position:relative}
+  .h-b{margin-top:clamp(18px,3vh,30px);font-size:clamp(26px,3.4vw,54px);color:var(--volt);display:flex;align-items:center;gap:.4em;will-change:transform;min-height:1em}
+  .h-b .slash{width:.28em;height:.8em}
+  /* masked line reveal */
+  .ln{display:block;overflow:hidden;padding-bottom:.04em;margin-bottom:-.04em}
+  .ln>span{display:block;transform:translateY(108%);transition:transform 1.05s var(--ease)}
+  .is-in .ln>span{transform:none}
+  .h-a .ln:nth-child(2)>span{transition-delay:.09s}
+  .hero .eyebrow,.h-b{opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .is-in .hero .eyebrow{opacity:1;transform:none;transition-delay:.35s}
+  .is-in .h-b{opacity:1;transform:none;transition-delay:.85s}
+
+  /* --- the ticket-entry panel, floating above the surface --- */
+  .entry{grid-area:entry;align-self:end;position:relative;perspective:900px}
+  .entry-card{position:relative;background:rgba(9,17,21,.78);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+    border:1px solid var(--line);border-radius:6px;padding:26px 26px 22px;will-change:transform;
+    transform:rotateY(var(--ey,0deg)) rotateX(var(--ex,0deg));
+    opacity:0;translate:0 24px;transition:opacity .9s var(--ease) 1.05s,translate .9s var(--ease) 1.05s}
+  .is-in .entry-card{opacity:1;translate:0 0}
+  .entry-card::before{content:"";position:absolute;left:-1px;top:22px;width:3px;height:44px;background:var(--volt)}
+  .entry-head{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);padding-bottom:16px;border-bottom:1px dashed var(--line);margin-bottom:18px}
+  .entry-head b{color:var(--ink);font-weight:700}
+  .entry-copy{font-size:15px;line-height:1.5;color:var(--ink-dim);margin-bottom:20px;max-width:34ch}
+  .entry-copy strong{color:var(--ink);font-weight:400}
+  .entry .wl-row{flex-direction:column}
+  .entry .wl-btn{width:100%}
+  .entry .consent{margin-top:4px}
+  .entry-done{display:none}
+  .entry[data-done] .entry-form{display:none}
+  .entry[data-done] .entry-done{display:block;animation:rise .8s var(--ease) both}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}}
+  .done-title{font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;font-size:44px;line-height:.9;margin:6px 0 16px}
+  .done-copy{font-size:14px;line-height:1.55;color:var(--ink-dim);margin-bottom:18px}
+  .done-copy b{color:var(--ink);font-weight:400;word-break:break-all}
+  .done-links{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;padding-top:16px;border-top:1px dashed var(--line)}
+  .done-links a:not(.wl-reset){font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--volt);text-decoration:none}
+
+  /* --- lower third: the actual 2026 Championship final --- */
+  .final{grid-area:final;align-self:end;max-width:520px;width:100%}
+  .final-head{display:flex;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:10px}
+  .final-head b{color:var(--volt);font-weight:400}
+  .row{display:grid;grid-template-columns:60px 1fr;gap:6px;height:38px;margin-bottom:5px;opacity:0;transform:translateX(-24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .is-in .row{opacity:1;transform:none}
+  .is-in .row:nth-child(2){transition-delay:1.25s}.is-in .row:nth-child(3){transition-delay:1.35s}.is-in .row:nth-child(4){transition-delay:1.45s}
+  .pos,.bar{clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);display:flex;align-items:center}
+  .pos{justify-content:center;font-size:12px;font-weight:700;letter-spacing:.08em;color:#0C0F13;background:#D9D9D9}
+  .row:nth-child(2) .pos{background:linear-gradient(#F5D77A,#C99A2E)}
+  .row:nth-child(3) .pos{background:linear-gradient(#E6ECEE,#9BA5AA)}
+  .row:nth-child(4) .pos{background:linear-gradient(#D9A57A,#9A6236)}
+  .bar{gap:12px;padding:0 20px 0 18px;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.02em;text-transform:uppercase;
+    background:linear-gradient(90deg,color-mix(in srgb,var(--c) 55%,transparent),color-mix(in srgb,var(--c) 18%,transparent))}
+  .bar img{width:20px;height:20px;object-fit:contain}
+  .bar .pts{margin-left:auto;font-family:var(--ui);font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+  .final-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .final-foot a{color:var(--ink-dim);text-decoration:none;white-space:nowrap}
+  .final-foot a:hover{color:var(--volt)}
+  .final-head,.final-foot{opacity:0;transition:opacity .8s var(--ease) 1.2s}
+  .is-in .final-head,.is-in .final-foot{opacity:1}
+
+  /* ---------- 1024 ---------- */
+  @media (max-width:1180px){
+    .layout{grid-template-columns:minmax(0,1fr) 380px}
+    .h-a{font-size:clamp(56px,7.6vw,150px)}
+  }
+  /* ---------- tablet / mobile: recomposed, not squeezed ---------- */
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;grid-template-rows:auto auto auto auto;grid-template-areas:"top" "hero" "entry" "final";gap:22px;padding-bottom:28px}
+    .shade{background:linear-gradient(180deg,rgba(4,9,12,.8) 0%,rgba(4,9,12,.35) 30%,rgba(4,9,12,.75) 55%,rgba(4,9,12,.97) 80%)}
+    .surface{inset:-10% -40% 20% -40%}
+    .hero{padding-top:6vh}
+    .hero .eyebrow{margin-bottom:16px}
+    .h-a{font-size:clamp(46px,15.2vw,110px)}
+    .h-b{font-size:clamp(22px,6.6vw,40px);margin-top:14px}
+    .entry{align-self:start}
+    .entry-card{padding:20px 18px 18px}
+    .entry-head{padding-bottom:12px;margin-bottom:14px}
+    .entry-copy{font-size:14px;margin-bottom:16px}
+    .final{max-width:none}
+    .top-status .chip:first-child{display:none}
+    .stage{--fy:36%}
+  }
+  @media (max-width:420px){
+    .top a.ext span{display:none}
+    .entry-head span:last-child{display:none}
+    .done-title{font-size:38px}
+  }
+  @media (max-height:760px) and (min-width:861px){
+    .h-a{font-size:clamp(56px,7.4vw,130px)}
+    .hero .eyebrow{margin-bottom:16px}
+  }
+</style>
+</head>
+<body>
+  <div class="stage" aria-hidden="true">
+    <div class="surface"><video id="flag" src="../assets/la-bg.mp4" poster="assets/img/checker-card.webp" autoplay muted loop playsinline preload="auto"></video></div>
+    <div class="sheen"></div>
+    <div class="shade"></div>
+    <div class="finish"></div>
+  </div>
+
+  <div class="layout">
+    <header class="top">
+      <a href="https://www.idl.pro/" aria-label="International Dance League — idl.pro">
+        <svg class="idl-logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+      </a>
+      <div class="top-status">
+        <span class="chip">2026 Season · Ended</span>
+        <span class="chip next"><span class="dot"></span>Next season · Loading</span>
+      </div>
+      <a class="ext" href="https://www.idl.pro/" rel="noopener"><span>idl.pro</span> ↗</a>
+    </header>
+
+    <main class="hero" id="hero">
+      <p class="eyebrow"><span class="slash"></span>Season 01 · Five cities · One champion</p>
+      <h1 class="display h-a" id="ha">
+        <span class="ln"><span><span class="yr">2026</span> is in</span></span>
+        <span class="ln"><span>the books.</span></span>
+      </h1>
+      <p class="display h-b" id="hb" aria-live="polite"><span class="slash"></span><span id="hbText">Next season is coming.</span></p>
+    </main>
+
+    <section class="entry" id="entry" aria-labelledby="entryTitle">
+      <div class="entry-card" id="entryCard">
+        <div class="entry-form">
+          <div class="entry-head"><b id="entryTitle">Next-season ticket list</b><span>Free · Email only</span></div>
+          <p class="entry-copy">Five sold-out events in 2026. <strong>Get first word when next-season tickets go live</strong> — before they go public.</p>
+          <form class="wl" id="wl" novalidate>
+            <div class="wl-row">
+              <div class="wl-field">
+                <label class="sr" for="email">Email address</label>
+                <input type="email" id="email" name="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="wlMsg">
+              </div>
+              <button class="wl-btn" type="submit" data-magnetic><span class="wl-lbl"><span class="wl-lbl-text">Get on the list</span><svg class="wl-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h11M7.5 2.5 12 7l-4.5 4.5"/></svg></span></button>
+            </div>
+            <p class="wl-msg" id="wlMsg" role="status" aria-live="polite"></p>
+          </form>
+          <p class="consent">By joining, I agree to receive emails from IDL about next-season tickets and league news, and accept the <a href="https://www.idl.pro/terms-and-conditions">Terms and Conditions</a> and <a href="https://www.idl.pro/privacy-policy">Privacy Policy</a>. Unsubscribe anytime.</p>
+        </div>
+        <div class="entry-done" tabindex="-1" id="done">
+          <p class="eyebrow">Confirmed · Next season</p>
+          <p class="done-title">You’re on<br>the list.</p>
+          <p class="done-copy">We’ll email <b id="doneEmail"></b> the moment next-season tickets go live — ahead of the public on-sale.</p>
+          <div class="done-links">
+            <a href="https://www.idl.pro/results/championship">Relive the Championship ↗</a>
+            <button class="wl-reset" type="button" id="reset">Use another email</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="final" aria-label="2026 Championship final result">
+      <div class="final-head"><span>Final · 2026 Championship</span><b>Decided by 0.43</b></div>
+      <div class="row" style="--c:var(--t-grv)"><span class="pos">1ST</span><span class="bar"><img src="assets/img/icon-grv.webp" alt="">GRV<span class="pts" data-count="94.00">94.00</span></span></div>
+      <div class="row" style="--c:var(--t-brotherhood)"><span class="pos">2ND</span><span class="bar"><img src="assets/img/icon-brotherhood.webp" alt="">Brotherhood<span class="pts" data-count="93.57">93.57</span></span></div>
+      <div class="row" style="--c:var(--t-jam)"><span class="pos">3RD</span><span class="bar"><img src="assets/img/icon-jamrepublic.webp" alt="">Jam Republic<span class="pts" data-count="90.86">90.86</span></span></div>
+      <div class="final-foot"><span>Shrine Expo Hall · LA · Sep 20</span><a href="https://www.idl.pro/results/championship">Full results ↗</a></div>
+    </aside>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+<script src="shared/waitlist.js"></script>
+<script>
+(() => {
+  const W = IDLWaitlist, root = document.documentElement, stage = document.querySelector('.stage');
+  const surface = document.querySelector('.surface'), sheen = document.querySelector('.sheen');
+  const ha = document.getElementById('ha'), hb = document.getElementById('hb'), card = document.getElementById('entryCard');
+  const video = document.getElementById('flag');
+  // resume after tab switches / iOS low-power pauses; poster (idl.pro checker art) covers the gap
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) video.play().catch(() => {}); });
+
+  /* ---- load sequence: surface → finish line → headline → entry → final ---- */
+  const start = () => requestAnimationFrame(() => document.body.classList.add('is-in'));
+  document.fonts ? document.fonts.ready.then(start) : start();
+  setTimeout(start, 900); // never block on fonts
+
+  /* count the final scores up like a broadcast graphic */
+  const countUp = (el) => {
+    const to = parseFloat(el.dataset.count); if (W.reduced) return;
+    const t0 = performance.now() + 1300, d = 1300;
+    const f = (t) => { const k = Math.min(1, Math.max(0, (t - t0) / d)); el.textContent = (to * (1 - Math.pow(1 - k, 3))).toFixed(2); if (k < 1) requestAnimationFrame(f); };
+    el.textContent = '0.00'; requestAnimationFrame(f);
+  };
+  document.querySelectorAll('[data-count]').forEach(countUp);
+
+  /* ---- pointer: tilt the flag, rake the light, float the type ---- */
+  const p = W.pointer(); let auto = 0;
+  const fine = matchMedia('(pointer:fine)').matches;
+  const loop = () => {
+    if (!fine) { auto += 0.004; p.tx = Math.sin(auto) * 0.6; p.ty = Math.cos(auto * 0.7) * 0.4; }
+    p.tick();
+    surface.style.setProperty('--rx', (p.y * -5).toFixed(2) + 'deg');
+    surface.style.setProperty('--ry', (p.x * 7).toFixed(2) + 'deg');
+    sheen.style.setProperty('--lx', (50 + p.x * 32).toFixed(1) + '%');
+    sheen.style.setProperty('--ly', (40 + p.y * 26).toFixed(1) + '%');
+    ha.style.transform = `translate3d(${(p.x * -10).toFixed(1)}px,${(p.y * -6).toFixed(1)}px,0)`;
+    hb.style.translate = `${(p.x * -18).toFixed(1)}px ${(p.y * -9).toFixed(1)}px`;
+    card.style.setProperty('--ey', (p.x * -3).toFixed(2) + 'deg');
+    card.style.setProperty('--ex', (p.y * 2.5).toFixed(2) + 'deg');
+    requestAnimationFrame(loop);
+  };
+  if (!W.reduced) requestAnimationFrame(loop);
+  document.querySelectorAll('[data-magnetic]').forEach((el) => W.magnetic(el, 0.2));
+
+  /* ---- scramble a line of display type into new copy ---- */
+  const scramble = (el, text) => {
+    if (W.reduced) { el.textContent = text; return; }
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let f = 0; const total = 26;
+    const tick = () => {
+      el.textContent = text.split('').map((c, i) => c === ' ' || i < (f / total) * text.length ? c : chars[(Math.random() * chars.length) | 0]).join('');
+      if (++f <= total) requestAnimationFrame(tick); else el.textContent = text;
+    };
+    tick();
+  };
+
+  /* ---- form ---- */
+  const entry = document.getElementById('entry');
+  const ctl = W.mount(document.getElementById('wl'), {
+    copy: { cta: 'Get on the list' },
+    onState(s, d) {
+      if (s === 'loading') video.playbackRate = 1.8;
+      if (s === 'error') video.playbackRate = 1;
+      if (s === 'success') {
+        video.playbackRate = 1;
+        document.getElementById('doneEmail').textContent = d.email;
+        entry.dataset.done = '';
+        document.body.classList.remove('flash'); void document.body.offsetWidth; document.body.classList.add('flash');
+        scramble(document.getElementById('hbText'), 'See you next season.');
+        document.getElementById('done').focus({ preventScroll: true });
+      }
+    },
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    delete entry.dataset.done; ctl.reset();
+    scramble(document.getElementById('hbText'), 'Next season is coming.');
+    ctl.input.focus();
+  });
+})();
+</script>
+</body>
+</html>

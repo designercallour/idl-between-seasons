@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060E12">
+<title>IDL — The Next Round</title>
+<meta name="description" content="Season 01 is done. The next round starts here — get early access to next-season IDL tickets.">
+<link rel="preload" href="../assets/fonts/NeueHaasDisplayBlack.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/img/photo-grv-confetti.jpg" as="image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23060E12%27/%3E%3Cpath d=%27M13 6h9l-3 20h-9z%27 fill=%27%23C0E700%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="shared/idl.css">
+<style>
+  /* ============ CONCEPT 02 — THE NEXT ROUND ============ */
+  :root{--gut:clamp(20px,4vw,60px)}
+  body{background:var(--bg)}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;padding:max(22px,env(safe-area-inset-top)) var(--gut) 0;overflow:hidden;isolation:isolate}
+  /* IDL parallelogram rails, the same device idl.pro uses beside its hero */
+  .rails{position:absolute;inset:0;z-index:-1;pointer-events:none;-webkit-mask:linear-gradient(180deg,#000 10%,transparent 62%);mask:linear-gradient(180deg,#000 10%,transparent 62%)}
+  .rails i{position:absolute;top:-10%;bottom:-10%;width:2px;background:linear-gradient(transparent,rgba(192,231,0,.35) 30%,rgba(192,231,0,.35) 70%,transparent);transform:skewX(calc(var(--slant) * -1))}
+  .rails i:nth-child(1){left:62%}.rails i:nth-child(2){left:64%;width:18px;opacity:.08;background:var(--volt)}.rails i:nth-child(3){left:91%}
+  .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(80vw 50vh at 70% 42%,rgba(153,183,156,.08),transparent 70%)}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;z-index:3}
+  .season-meter{display:flex;align-items:center;gap:14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+  .season-meter .track{position:relative;width:120px;height:2px;background:var(--line)}
+  .season-meter .track::before{content:"";position:absolute;inset:0;background:var(--volt);transform-origin:left;transform:scaleX(0);transition:transform 1.6s var(--ease-io) .4s}
+  .is-in .season-meter .track::before{transform:scaleX(1)}
+  .season-meter b{color:var(--volt);font-weight:400}
+  .top a.ext{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);text-decoration:none;white-space:nowrap}
+  .season-meter{white-space:nowrap}
+  .top a.ext:hover{color:var(--ink)}
+
+  .hero-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:4vh 0 3vh}
+  .hero .eyebrow{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:2vh}
+  .hero .eyebrow span{color:var(--ink-dim)}
+  .hero .eyebrow span:first-child{color:var(--volt)}
+
+  .big{font-size:min(15.2vw,31vh);line-height:.8;white-space:nowrap;display:flex;align-items:flex-end;gap:.08em;margin-left:-.04em;user-select:none}
+  .big .w{display:inline-block;will-change:transform}
+  .big .ch{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
+  .big .clip{display:inline-block;overflow:hidden;padding:.02em .02em .06em;margin:-.02em -.02em -.06em}
+  .is-in .big .ch{transform:none}
+  /* "02" — the new season, cut out of real 2026 photography */
+  .num{position:relative;display:inline-block}
+  .num .ph{display:block;color:transparent;background-size:auto 150%;background-position:calc(50% + var(--mx,0px)) calc(50% + var(--my,0px));
+    -webkit-background-clip:text;background-clip:text;transition:opacity 1.2s var(--ease)}
+  .num .ph+.ph{position:absolute;inset:0;opacity:0}
+  .num .ph.on{opacity:1}
+  .num .edge{position:absolute;inset:0;color:transparent;-webkit-text-stroke:1.5px rgba(238,247,239,.28);pointer-events:none}
+  .num .tag{position:absolute;right:.04em;top:.02em;font-family:var(--ui);font-size:12px;font-weight:400;letter-spacing:.16em;color:var(--volt);text-transform:uppercase;line-height:1;white-space:nowrap;opacity:0;transition:opacity .6s 1.3s}
+  .is-in .num .tag{opacity:1}
+
+  .lower{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,520px);gap:24px clamp(32px,6vw,110px);align-items:end;margin-top:4.5vh;
+    opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease) .75s,transform .9s var(--ease) .75s}
+  .is-in .lower{opacity:1;transform:none}
+  .h1{font-size:clamp(34px,3.6vw,58px);line-height:.9}
+  .h1 em{font-style:normal;color:var(--volt)}
+  .support{margin-top:16px;font-size:15px;line-height:1.55;color:var(--ink-dim);max-width:44ch}
+  .support b{color:var(--ink);font-weight:400}
+  .lower .consent{margin-top:2px;max-width:60ch}
+
+  /* city ticker — the 2026 map, as storytelling not schedule */
+  .ticker{margin:0 calc(var(--gut) * -1);border-top:1px solid var(--line);height:64px;display:flex;align-items:center;overflow:hidden;position:relative}
+  .ticker-in{display:flex;flex:none;will-change:transform}
+  .ticker-set{display:flex;align-items:center;flex:none}
+  .city{display:flex;align-items:center;gap:12px;padding:0 26px;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:-.01em;text-transform:uppercase;white-space:nowrap;color:var(--ink)}
+  .city img{width:22px;height:14px;object-fit:cover;border-radius:1px}
+  .city small{font-family:var(--ui);font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--ink-faint)}
+  .city.next{color:var(--volt)}
+  .sep{width:9px;height:22px;background:var(--line);transform:skewX(calc(var(--slant) * -1));flex:none}
+
+  /* ---------- CHAPTERS: 2026 as horizontal story ---------- */
+  .chapters{position:relative;border-top:1px solid var(--line)}
+  .pin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;padding:28px 0 32px;overflow:hidden}
+  .ch-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding:0 var(--gut) 22px}
+  .ch-head h2{font-size:clamp(30px,3.4vw,52px);line-height:.9}
+  .ch-head h2 span{display:block;color:var(--ink-faint)}
+  .ch-meta{display:flex;align-items:center;gap:16px;white-space:nowrap;flex:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+  .ch-meta .bar{width:160px;height:2px;background:var(--line);position:relative}
+  .ch-meta .bar i{position:absolute;inset:0;background:var(--volt);transform-origin:left;transform:scaleX(var(--p,0))}
+  .rail{flex:1;min-height:0;display:flex;align-items:stretch}
+  .track{display:flex;gap:18px;padding:0 var(--gut);will-change:transform}
+  .card{position:relative;flex:none;width:min(46vw,640px);height:100%;min-height:360px;overflow:hidden;border-radius:4px;background:#0A1519;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;padding:22px}
+  .card .img{position:absolute;inset:0 -8%;z-index:-2;background-size:cover;background-position:center;will-change:transform;transform:translateX(var(--px,0))}
+  .card::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(6,14,18,.55),rgba(6,14,18,.05) 35%,rgba(6,14,18,.2) 55%,rgba(6,14,18,.92))}
+  .card-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .card-top .idx{color:var(--volt)}
+  .card-top .st{display:inline-flex;align-items:center;height:22px;padding:0 9px;background:rgba(238,247,239,.12);backdrop-filter:blur(6px);border-radius:2px}
+  .card h3{font-size:clamp(48px,6.4vw,104px);line-height:.82;margin-bottom:14px}
+  .card .res{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
+  .card .res img{height:26px;width:auto}
+  .card .res b{color:var(--ink);font-weight:400}
+  .card.champ{width:min(60vw,860px)}
+  .card.champ h3{color:var(--volt)}
+  .card .score{font-family:var(--display);font-weight:900;font-size:clamp(28px,2.6vw,40px);letter-spacing:-.01em;margin-bottom:10px}
+  .card .score span{color:var(--ink-faint)}
+  /* chapter 07 — the one that hasn't happened yet */
+  .card.tba{background:transparent;border:1px dashed rgba(192,231,0,.45);align-items:flex-start}
+  .card.tba::before{display:none}
+  .card.tba h3{color:transparent;-webkit-text-stroke:1.5px var(--volt)}
+  .card.tba p{font-size:15px;line-height:1.5;color:var(--ink-dim);max-width:30ch;margin-bottom:22px}
+  .tba-btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 22px;border-radius:4px;background:var(--volt);color:#0C0F13;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;text-decoration:none}
+  .card.tba[data-done] .tba-btn{background:var(--volt-soft);color:var(--volt)}
+
+  /* ---------- CLOSE ---------- */
+  .close{position:relative;padding:14vh var(--gut) 44px;overflow:hidden;isolation:isolate}
+  .close .bgimg{position:absolute;inset:0;z-index:-2;background:url('assets/img/news-grv-upset.jpg') center 30%/cover;opacity:.22;filter:grayscale(.4)}
+  .close::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg) 0%,rgba(6,14,18,.6) 40%,var(--bg) 100%)}
+  .close-h{font-size:clamp(56px,11vw,190px);line-height:.82}
+  .close-h .o{color:transparent;-webkit-text-stroke:2px var(--ink)}
+  .close-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,520px);gap:28px clamp(32px,6vw,110px);align-items:end;margin-top:6vh}
+  .close-grid p.support{margin:0}
+  .teams{margin:12vh calc(var(--gut) * -1) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;height:92px;display:flex;align-items:center}
+  .teams .ticker-in{gap:0}
+  .teams img{height:40px;width:auto;margin:0 44px;opacity:.9;flex:none}
+  .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;padding-top:26px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .foot a{color:var(--ink-dim);text-decoration:none}
+  .foot a:hover{color:var(--volt)}
+  .foot nav{display:flex;gap:22px;flex-wrap:wrap}
+
+  /* success copy shown inside each form slot */
+  .slot-done{display:none}
+  .slot[data-done] .slot-form{display:none}
+  .slot[data-done] .slot-done{display:block;animation:rise .7s var(--ease) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}}
+  .slot-done .t{font-family:var(--display);font-weight:900;font-size:clamp(34px,3.4vw,48px);line-height:.9;text-transform:uppercase;letter-spacing:-.02em;margin:8px 0 12px}
+  .slot-done p{font-size:14px;line-height:1.55;color:var(--ink-dim)}
+  .slot-done p b{color:var(--ink);font-weight:400;word-break:break-all}
+  .slot-done .wl-reset{margin-top:14px;display:inline-block}
+
+  /* ---------- sticky entry bar ---------- */
+  .dock{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,140%);transition:transform .6s var(--ease);
+    display:flex;align-items:center;gap:18px;padding:8px 8px 8px 20px;background:rgba(9,17,21,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:6px;white-space:nowrap}
+  .dock.show{transform:translate(-50%,0)}
+  .dock span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+  .dock a{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:4px;background:var(--volt);color:#0C0F13;font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;text-decoration:none}
+  .dock[data-done]{display:none}
+
+  /* ---------- 1024 ---------- */
+  @media (max-width:1180px){
+    .lower,.close-grid{grid-template-columns:minmax(0,1fr) 400px}
+    .card{width:min(58vw,600px)}
+    .card.champ{width:min(72vw,760px)}
+  }
+  /* ---------- mobile: recomposed ---------- */
+  @media (max-width:860px){
+    .season-meter .track{width:48px}
+    .season-meter .lbl{display:none}
+    .hero-body{justify-content:flex-start;padding-top:6vh}
+    .big{flex-direction:column;align-items:flex-start;gap:0;font-size:22.5vw;line-height:.82}
+    .big .num{font-size:2.05em;line-height:.8;margin-top:.02em}
+    .num .tag{font-size:10px;top:auto;bottom:100%;right:0;margin-bottom:4px}
+    .lower,.close-grid{grid-template-columns:1fr;margin-top:26px;gap:18px}
+    .h1{font-size:clamp(30px,8.4vw,44px)}
+    .support{font-size:14px;margin-top:12px}
+    .ticker{height:54px}
+    .city{font-size:18px;padding:0 18px}
+    .chapters{height:auto!important}
+    .pin{position:relative;height:auto;padding:36px 0 40px}
+    .ch-head{flex-direction:column;align-items:flex-start;gap:14px}
+    .rail{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .rail::-webkit-scrollbar{display:none}
+    .track{transform:none!important;padding-right:var(--gut)}
+    .card,.card.champ{width:82vw;height:62svh;min-height:420px;scroll-snap-align:center}
+    .card .img{transform:none!important;inset:0}
+    .close{padding-top:9vh}
+    .teams{margin-top:8vh;height:72px}
+    .teams img{height:30px;margin:0 28px}
+    .dock{left:12px;right:12px;transform:translateY(140%);justify-content:space-between}
+    .dock.show{transform:none}
+    .dock a{height:48px}
+  }
+  @media (max-width:520px){ .season-meter .track{display:none} .season-meter b{font-size:10px} }
+  @media (max-width:380px){ .dock span{display:none} .dock{justify-content:center;padding:8px} .dock a{flex:1;justify-content:center} }
+</style>
+</head>
+<body>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top" aria-labelledby="h1">
+    <div class="rails" aria-hidden="true"><i></i><i></i><i></i></div>
+    <header class="top">
+      <a href="https://www.idl.pro/" aria-label="International Dance League — idl.pro">
+        <svg class="idl-logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+      </a>
+      <div class="season-meter" aria-label="Season 01 complete, Season 02 next"><span class="lbl">Season 01</span><span class="track"></span><b>Season 02 · Next</b></div>
+      <a class="ext" href="https://www.idl.pro/" rel="noopener">idl.pro ↗</a>
+    </header>
+
+    <div class="hero-body">
+      <p class="eyebrow"><span>2026 · Complete</span><span>5 cities</span><span>6 events</span><span>1 champion</span></p>
+
+      <div class="display big" aria-hidden="true">
+        <span class="w" id="wSeason"><span class="clip"><span class="ch">Season</span></span></span>
+        <span class="w num" id="wNum">
+          <span class="clip"><span class="ch">
+            <span class="ph on" style="background-image:url('assets/img/photo-grv-confetti.jpg')">02</span>
+            <span class="ph" style="background-image:url('assets/img/photo-brotherhood-trophy.webp')">02</span>
+            <span class="ph" style="background-image:url('assets/img/photo-stage-performance.webp')">02</span>
+            <span class="ph" style="background-image:url('assets/img/news-grv-upset.jpg')">02</span>
+            <span class="edge">02</span>
+          </span></span>
+          <span class="tag">In motion</span>
+        </span>
+      </div>
+
+      <div class="lower">
+        <div>
+          <h1 class="display h1" id="h1">The next round<br><em>starts here.</em></h1>
+          <p class="support">2026 went five cities deep and came down to <b>0.43 points</b>. Season 02 is already in motion — be first when tickets drop.</p>
+        </div>
+        <div class="slot" id="slotA">
+          <div class="slot-form">
+            <form class="wl" novalidate>
+              <div class="wl-row">
+                <div class="wl-field">
+                  <label class="sr" for="emailA">Email address</label>
+                  <input type="email" id="emailA" name="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="msgA">
+                </div>
+                <button class="wl-btn" type="submit" data-magnetic><span class="wl-lbl"><span class="wl-lbl-text">Get early access</span><svg class="wl-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h11M7.5 2.5 12 7l-4.5 4.5"/></svg></span></button>
+              </div>
+              <p class="wl-msg" id="msgA" role="status" aria-live="polite"></p>
+            </form>
+            <p class="consent">By joining, I agree to receive emails from IDL about next-season tickets and league news, and accept the <a href="https://www.idl.pro/terms-and-conditions">Terms</a> and <a href="https://www.idl.pro/privacy-policy">Privacy Policy</a>. Unsubscribe anytime.</p>
+          </div>
+          <div class="slot-done" tabindex="-1">
+            <p class="eyebrow">Early access · Confirmed</p>
+            <p class="t">You’re on the list.</p>
+            <p>Next-season ticket news goes to <b class="done-email"></b> first — before the public on-sale.</p>
+            <button class="wl-reset" type="button">Use another email</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticker" aria-label="2026 season cities">
+      <div class="ticker-in" id="cityTicker">
+        <div class="ticker-set">
+          <span class="city"><img src="assets/img/flag-newyork.webp" alt="">New York <small>01</small></span><span class="sep"></span>
+          <span class="city"><img src="assets/img/flag-vancouver.webp" alt="">Vancouver <small>02</small></span><span class="sep"></span>
+          <span class="city"><img src="assets/img/flag-sydney.webp" alt="">Sydney <small>03</small></span><span class="sep"></span>
+          <span class="city"><img src="assets/img/flag-seoul.webp" alt="">Seoul <small>04</small></span><span class="sep"></span>
+          <span class="city"><img src="assets/img/flag-newyork.webp" alt="">Los Angeles <small>05</small></span><span class="sep"></span>
+          <span class="city">Championship <small>06</small></span><span class="sep"></span>
+          <span class="city next">Season 02 <small>TBA</small></span><span class="sep"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTERS ================= -->
+  <section class="chapters" id="chapters" aria-labelledby="chTitle">
+    <div class="pin">
+      <div class="ch-head">
+        <h2 class="display" id="chTitle">2026, in six chapters. <span>The seventh is yours.</span></h2>
+        <div class="ch-meta"><span id="chCount">01 / 07</span><span class="bar"><i id="chBar"></i></span></div>
+      </div>
+      <div class="rail" id="rail">
+        <div class="track" id="track">
+          <article class="card"><div class="img" style="background-image:url('assets/img/sky-newyork.webp')"></div>
+            <div class="card-top"><span class="idx">Series 01</span><span class="st">Ended</span></div>
+            <div><h3 class="display">New<br>York</h3><p class="res"><img src="assets/img/icon-brotherhood.webp" alt="">Winner · <b>Brotherhood</b></p></div></article>
+          <article class="card"><div class="img" style="background-image:url('assets/img/sky-vancouver.webp')"></div>
+            <div class="card-top"><span class="idx">Series 02</span><span class="st">Ended</span></div>
+            <div><h3 class="display">Van&shy;couver</h3><p class="res"><img src="assets/img/icon-brotherhood.webp" alt="">Winner · <b>Brotherhood</b> · at home</p></div></article>
+          <article class="card"><div class="img" style="background-image:url('assets/img/sky-sydney.webp')"></div>
+            <div class="card-top"><span class="idx">Series 03</span><span class="st">Ended</span></div>
+            <div><h3 class="display">Sydney</h3><p class="res"><img src="assets/img/icon-brotherhood.webp" alt="">Winner · <b>Brotherhood</b></p></div></article>
+          <article class="card"><div class="img" style="background-image:url('assets/img/sky-seoul.webp')"></div>
+            <div class="card-top"><span class="idx">Series 04</span><span class="st">Ended</span></div>
+            <div><h3 class="display">Seoul</h3><p class="res"><img src="assets/img/icon-brotherhood.webp" alt="">Winner · <b>Brotherhood</b></p></div></article>
+          <article class="card"><div class="img" style="background-image:url('assets/img/photo-brotherhood-trophy.webp')"></div>
+            <div class="card-top"><span class="idx">Series 05</span><span class="st">Undefeated</span></div>
+            <div><h3 class="display">Los<br>Angeles</h3><p class="res"><img src="assets/img/icon-brotherhood.webp" alt=""><b>Brotherhood</b> · regular season, 5 for 5</p></div></article>
+          <article class="card champ"><div class="img" style="background-image:url('assets/img/photo-grv-confetti.jpg')"></div>
+            <div class="card-top"><span class="idx">Championship · Shrine Expo Hall · Sep 20</span><span class="st">Sold out</span></div>
+            <div><p class="score">GRV 94.00 <span>/ 93.57</span></p><h3 class="display">First<br>champions.</h3><p class="res"><img src="assets/img/icon-grv.webp" alt="">No. 4 seed · <b>hometown upset</b></p></div></article>
+          <article class="card tba" id="tba">
+            <div class="card-top" style="width:100%"><span class="idx">Chapter 07</span><span class="st" style="color:var(--volt)">TBA</span></div>
+            <div><h3 class="display">Season<br>02</h3><p id="tbaCopy">Cities, dates and tickets drop to the list first. Save your spot for the next chapter.</p><a class="tba-btn" href="#final" data-jump>Get early access <span aria-hidden="true">→</span></a></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLOSE ================= -->
+  <section class="close" id="final" aria-labelledby="closeH">
+    <div class="bgimg" aria-hidden="true"></div>
+    <h2 class="display close-h" id="closeH">See you<br><span class="o">next season.</span></h2>
+    <div class="close-grid">
+      <p class="support">Ticket pricing is tiered — buying earlier means better pricing and preferred tiers. <b>The list hears first.</b></p>
+      <div class="slot" id="slotB">
+        <div class="slot-form">
+          <form class="wl" novalidate>
+            <div class="wl-row">
+              <div class="wl-field">
+                <label class="sr" for="emailB">Email address</label>
+                <input type="email" id="emailB" name="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="msgB">
+              </div>
+              <button class="wl-btn" type="submit" data-magnetic><span class="wl-lbl"><span class="wl-lbl-text">Get early access</span><svg class="wl-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h11M7.5 2.5 12 7l-4.5 4.5"/></svg></span></button>
+            </div>
+            <p class="wl-msg" id="msgB" role="status" aria-live="polite"></p>
+          </form>
+          <p class="consent">By joining, I agree to receive emails from IDL about next-season tickets and league news, and accept the <a href="https://www.idl.pro/terms-and-conditions">Terms</a> and <a href="https://www.idl.pro/privacy-policy">Privacy Policy</a>. Unsubscribe anytime.</p>
+        </div>
+        <div class="slot-done" tabindex="-1">
+          <p class="eyebrow">Early access · Confirmed</p>
+          <p class="t">You’re on the list.</p>
+          <p>Next-season ticket news goes to <b class="done-email"></b> first — before the public on-sale.</p>
+          <button class="wl-reset" type="button">Use another email</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="teams" aria-label="The six 2026 pro teams">
+      <div class="ticker-in" id="teamTicker">
+        <div class="ticker-set">
+          <img src="assets/img/wm-brotherhood.png" alt="Brotherhood"><img src="assets/img/wm-grv.png" alt="GRV"><img src="assets/img/wm-1million.png" alt="1MILLION">
+          <img src="assets/img/wm-royalfamily.png" alt="Royal Family"><img src="assets/img/wm-jamrepublic.png" alt="Jam Republic"><img src="assets/img/wm-quickstyle.png" alt="Quick Style">
+        </div>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>© 2026 International Dance League, Inc.</span>
+      <nav><a href="https://www.idl.pro/results/championship">2026 results</a><a href="https://www.idl.pro/teams">Teams</a><a href="https://shop.idl.pro/">Merch</a><a href="https://www.idl.pro/">idl.pro ↗</a></nav>
+    </footer>
+  </section>
+
+  <div class="dock" id="dock" aria-hidden="true"><span id="dockTxt">Next-season tickets</span><a href="#final" data-jump tabindex="-1" id="dockBtn">Get early access</a></div>
+  <div class="grain" aria-hidden="true"></div>
+
+<script src="shared/waitlist.js"></script>
+<script>
+(() => {
+  const W = IDLWaitlist, $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const desktop = matchMedia('(min-width:861px)');
+  const start = () => requestAnimationFrame(() => document.body.classList.add('is-in'));
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(start); setTimeout(start, 900);
+
+  /* ---- 02: rotate real 2026 photos through the numerals ---- */
+  const phs = $$('.num .ph'); let pi = 0;
+  if (!W.reduced) setInterval(() => { phs[pi].classList.remove('on'); pi = (pi + 1) % phs.length; phs[pi].classList.add('on'); }, 3200);
+
+  /* ---- tickers: base drift + scroll-velocity boost ---- */
+  const makeTicker = (el, speed) => {
+    const set = el.firstElementChild; el.appendChild(set.cloneNode(true)); el.lastElementChild.setAttribute('aria-hidden', 'true');
+    let x = 0; return (boost) => { const w = set.offsetWidth; x -= speed + boost; if (-x >= w) x += w; el.style.transform = `translate3d(${x}px,0,0)`; };
+  };
+  const cityT = makeTicker($('#cityTicker'), 0.55), teamT = makeTicker($('#teamTicker'), 0.4);
+
+  /* ---- chapters: vertical scroll → horizontal track (desktop) ---- */
+  const chapters = $('#chapters'), track = $('#track'), cards = $$('.card', track), bar = $('#chBar'), count = $('#chCount'), rail = $('#rail');
+  const gut = () => parseFloat(getComputedStyle(track).paddingLeft) || 0;
+  const travel = () => { const last = cards[cards.length - 1]; return Math.max(0, last.offsetLeft + last.offsetWidth + gut() - innerWidth); };
+  let DIST = 0;
+  const sizeChapters = () => {
+    if (!desktop.matches || W.reduced) { chapters.style.height = ''; return; }
+    DIST = travel();
+    chapters.style.height = (innerHeight + DIST) + 'px';
+  };
+  sizeChapters(); addEventListener('resize', sizeChapters); addEventListener('load', sizeChapters); document.fonts && document.fonts.ready.then(sizeChapters); desktop.addEventListener('change', sizeChapters);
+  const setCount = (p) => { const i = Math.min(cards.length, Math.floor(p * (cards.length - 0.01)) + 1); count.textContent = String(i).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0'); bar.style.setProperty('--p', p.toFixed(3)); };
+  rail.addEventListener('scroll', () => setCount(rail.scrollLeft / Math.max(1, rail.scrollWidth - rail.clientWidth)), { passive: true });
+
+  /* ---- main loop: pointer depth + chapters + tickers ---- */
+  const p = W.pointer(); let lastY = scrollY, vel = 0;
+  const wS = $('#wSeason'), wN = $('#wNum'), dock = $('#dock'), slotA = $('#slotA'), final = $('#final');
+  const loop = () => {
+    p.tick(0.07);
+    const y = scrollY; vel += ((y - lastY) - vel) * 0.1; lastY = y;
+    if (!W.reduced) {
+      wS.style.transform = `translate3d(${(p.x * -14).toFixed(1)}px,${(p.y * -6).toFixed(1)}px,0)`;
+      wN.style.transform = `translate3d(${(p.x * 22).toFixed(1)}px,${(p.y * 10).toFixed(1)}px,0)`;
+      phs.forEach((el) => { el.style.setProperty('--mx', (p.x * -40).toFixed(1) + 'px'); el.style.setProperty('--my', (p.y * -24 + y * 0.12).toFixed(1) + 'px'); });
+      const boost = Math.min(14, Math.abs(vel) * 0.5);
+      cityT(boost); teamT(boost * 0.6);
+      if (desktop.matches) {
+        const r = chapters.getBoundingClientRect(), span = chapters.offsetHeight - innerHeight;
+        const prog = Math.min(1, Math.max(0, -r.top / Math.max(1, span)));
+        track.style.transform = `translate3d(${(-prog * DIST).toFixed(1)}px,0,0)`;
+        cards.forEach((c, i) => { const img = c.firstElementChild; if (img.classList.contains('img')) img.style.setProperty('--px', ((prog * cards.length - i) * -18).toFixed(1) + 'px'); });
+        setCount(prog);
+      }
+    }
+    // dock appears once the hero form is out of view, hides at the final form
+    const a = slotA.getBoundingClientRect(), f = final.getBoundingClientRect();
+    dock.classList.toggle('show', a.bottom < 0 && f.top > innerHeight * 0.55);
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+  $$('[data-magnetic]').forEach((el) => W.magnetic(el, 0.18));
+
+  /* ---- jump links focus the closing form ---- */
+  $$('[data-jump]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    final.scrollIntoView({ behavior: W.reduced ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(() => { const i = $('#emailB'); if (i && !$('#slotB').hasAttribute('data-done')) i.focus({ preventScroll: true }); }, W.reduced ? 0 : 700);
+  }));
+
+  /* ---- two forms, one list: success anywhere completes both ---- */
+  const slots = $$('.slot'), ctls = [];
+  const complete = (email) => {
+    slots.forEach((s) => { s.dataset.done = ''; $('.done-email', s).textContent = email; });
+    $('#tba').dataset.done = ''; $('#tbaCopy').textContent = 'Spot saved for ' + email + '. You’ll hear about Season 02 before anyone else.';
+    $('.tba-btn').innerHTML = 'You’re on the list ✓';
+    dock.dataset.done = ''; $('#dockBtn').textContent = 'On the list ✓'; $('#dockTxt').textContent = 'Season 02';
+    phs.forEach((el) => el.classList.remove('on')); phs[0].classList.add('on'); pi = 0;
+  };
+  const undo = () => {
+    slots.forEach((s) => delete s.dataset.done); ctls.forEach((c) => c.reset());
+    delete $('#tba').dataset.done; $('#tbaCopy').textContent = 'Cities, dates and tickets drop to the list first. Save your spot for the next chapter.';
+    $('.tba-btn').innerHTML = 'Get early access <span aria-hidden="true">→</span>';
+    delete dock.dataset.done; $('#dockBtn').textContent = 'Get early access'; $('#dockTxt').textContent = 'Next-season tickets';
+  };
+  slots.forEach((slot) => {
+    const ctl = W.mount($('form', slot), {
+      copy: { cta: 'Get early access' },
+      onState(s, d) { if (s === 'success') { complete(d.email); $('.slot-done', slot).focus({ preventScroll: true }); } },
+    });
+    ctls.push(ctl);
+    $('.wl-reset', slot).addEventListener('click', () => { undo(); ctl.input.focus(); });
+  });
+})();
+</script>
+</body>
+</html>

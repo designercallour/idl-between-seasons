@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDL — The Board Resets (Concept B)</title>
+<style>
+  @font-face{font-family:'Neue Haas Grotesk Display';src:url('assets/fonts/NeueHaasDisplayMedium.woff2') format('woff2');font-weight:500;font-display:swap}
+  @font-face{font-family:'Neue Haas Grotesk Display';src:url('assets/fonts/NeueHaasDisplayBold.woff2') format('woff2');font-weight:700;font-display:swap}
+  @font-face{font-family:'Neue Haas Grotesk Display';src:url('assets/fonts/NeueHaasDisplayBlack.woff2') format('woff2');font-weight:900;font-display:swap}
+  @font-face{font-family:'Carbon Plus';src:url('assets/fonts/carbonplus-regular-bl.otf') format('opentype');font-weight:400;font-display:swap}
+  @font-face{font-family:'Carbon Plus';src:url('assets/fonts/carbonplus-bold-bl.otf') format('opentype');font-weight:700;font-display:swap}
+
+  :root{
+    --bg:#0C0F13;--panel:#121D22;--ink:#FDFEFF;--volt:#C0E700;
+    --muted:rgba(253,254,255,.6);--line:rgba(253,254,255,.12);
+    --display:'Neue Haas Grotesk Display',sans-serif;
+    --ui:'Carbon Plus','Neue Haas Grotesk Display',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ui);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:1px solid var(--line);position:relative;z-index:3}
+  .topbar .lock{height:16px;width:auto}
+  .topbar .status{font-family:var(--ui);font-size:11px;letter-spacing:.16em;color:var(--volt);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+  .status .dot{width:7px;height:7px;border-radius:50%;background:var(--volt);animation:blink 1.5s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  .grid{flex:1;display:grid;grid-template-columns:1.05fr .95fr}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+  /* left: scoreboard recap */
+  .board{padding:56px clamp(24px,5vw,64px);border-right:1px solid var(--line)}
+  .board .cap{font-family:var(--ui);font-size:12px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:26px}
+  .board h2{font-family:var(--display);font-weight:900;font-size:clamp(30px,4vw,48px);text-transform:uppercase;line-height:.98;letter-spacing:-.02em;margin-bottom:30px}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)}
+  .row .rank{font-family:var(--display);font-weight:900;font-size:22px;color:var(--muted);width:44px}
+  .row.first .rank{color:var(--volt)}
+  .row .team{flex:1;font-family:var(--ui);font-weight:700;font-size:17px}
+  .row .team small{display:block;color:var(--muted);font-weight:400;font-size:12px;margin-top:3px}
+  .row .pts{font-family:var(--ui);font-weight:700;font-size:18px}
+  .reset{margin-top:34px;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px;font-family:var(--ui);letter-spacing:.12em;text-transform:uppercase}
+  .reset .bar{flex:1;height:2px;background:linear-gradient(90deg,var(--volt),transparent)}
+
+  /* right: capture with real checkered video */
+  .capture{position:relative;overflow:hidden;padding:56px clamp(24px,5vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .capture .bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.5}
+  .capture .veil{position:absolute;inset:0;z-index:1;background:
+    linear-gradient(90deg, var(--bg) 0%, rgba(12,15,19,.72) 40%, rgba(12,15,19,.86) 100%);}
+  .capture .inner{position:relative;z-index:2}
+  .capture .eyebrow{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.24em;color:var(--volt);text-transform:uppercase;margin-bottom:18px}
+  .capture h1{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(34px,5vw,62px);line-height:.98;letter-spacing:-.02em;text-wrap:balance}
+  .capture p{font-family:var(--ui);color:var(--muted);font-size:15px;line-height:1.55;margin:20px 0 6px;max-width:42ch}
+  .bullets{list-style:none;margin:22px 0 8px;display:grid;gap:12px}
+  .bullets li{display:flex;gap:12px;align-items:flex-start;font-family:var(--ui);font-size:14px;color:#e2e4e6}
+  .bullets li::before{content:"›";color:var(--volt);font-weight:700}
+  form{margin-top:26px;max-width:460px;display:flex;flex-direction:column;gap:10px}
+  input[type=email]{width:100%;background:var(--panel);border:1px solid transparent;border-radius:6px;color:#fff;font-family:var(--ui);font-size:16px;padding:18px 18px;outline:none}
+  input[type=email]:focus{border-color:var(--volt)}
+  input::placeholder{color:rgba(253,254,255,.45)}
+  button{background:var(--volt);color:#0C0F13;border:0;font-family:var(--ui);font-weight:700;font-size:16px;letter-spacing:-.01em;padding:18px 20px;border-radius:6px;cursor:pointer;text-transform:uppercase;transition:filter .15s}
+  button:hover{filter:brightness(1.06)}
+  .consent{font-family:var(--ui);margin-top:16px;font-size:12px;color:var(--muted);max-width:42ch;line-height:1.5}
+  .consent a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .done{margin-top:24px;padding:18px 22px;border:1px solid var(--volt);border-radius:10px;background:rgba(192,231,0,.06);display:none;max-width:460px}
+  .done.show{display:block}
+  .done h3{font-family:var(--display);font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:5px}
+  .done p{font-family:var(--ui);color:var(--muted);font-size:13.5px;margin:0}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <img class="lock" src="assets/idl-la-logo.svg" alt="IDL Los Angeles">
+    <div class="status"><span class="dot"></span> Season 2026 — Final</div>
+  </div>
+  <div class="grid">
+    <section class="board">
+      <div class="cap">Final Scoreboard — 2026</div>
+      <h2>The board is<br>locked.</h2>
+      <div class="row first"><div class="rank">01</div><div class="team">Volt Kings <small>Los Angeles</small></div><div class="pts">2,940</div></div>
+      <div class="row"><div class="rank">02</div><div class="team">Nightshift Crew <small>Oakland</small></div><div class="pts">2,715</div></div>
+      <div class="row"><div class="rank">03</div><div class="team">Static Riot <small>Las Vegas</small></div><div class="pts">2,488</div></div>
+      <div class="row"><div class="rank">04</div><div class="team">Phantom Line <small>Phoenix</small></div><div class="pts">2,301</div></div>
+      <div class="row"><div class="rank">05</div><div class="team">Apex Motion <small>San Diego</small></div><div class="pts">2,140</div></div>
+      <div class="reset"><span>Next Season</span><span class="bar"></span><span>Reset 00:00</span></div>
+    </section>
+
+    <section class="capture">
+      <video class="bgvid" autoplay muted loop playsinline><source src="assets/la-bg.mp4" type="video/mp4"></video>
+      <div class="veil"></div>
+      <div class="inner">
+        <div class="eyebrow">Season 2027 — Waitlist Open</div>
+        <h1>When the board resets, be on it first.</h1>
+        <p>2026 is in the books. The 2027 season brings new crews, new cities, and a new scoreboard — and the list decides who gets in before everyone else.</p>
+        <ul class="bullets">
+          <li>Priority window for 2027 season tickets</li>
+          <li>First access to the schedule &amp; city drops</li>
+          <li>Your vote back on the scoreboard, day one</li>
+        </ul>
+        <form id="form">
+          <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+          <button type="submit">Reserve My Spot</button>
+        </form>
+        <div class="done" id="done"><h3>Locked in.</h3><p>You'll be first to know the moment the 2027 board goes live.</p></div>
+        <p class="consent">By reserving, I agree to receive updates from IDL and accept the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.</p>
+      </div>
+    </section>
+  </div>
+<script>
+  document.getElementById('form').addEventListener('submit',e=>{
+    e.preventDefault();
+    document.getElementById('form').style.display='none';
+    document.getElementById('done').classList.add('show');
+  });
+</script>
+</body>
+</html>
