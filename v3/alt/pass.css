@@ -1,0 +1,228 @@
+/* =====================================================================
+   IDL · SEASON 02 WAITLIST PASS — shared system for the layout alternatives
+   (v3/alt-0X.html). The baseline v3/index.html does NOT use this file.
+
+   Brand rules taken from idl.pro:
+   Neue Haas Grotesk Display (display + body) · Carbon Plus (UI labels)
+   normal tracking · square corners · chips rgba(255,255,255,.12) · grey #90999F
+   slanted bars at the hero-stripe angle · volt #C0E700 used sparingly.
+
+   State lives on <body>:
+     data-pass  = locked | ready | loading | activated | active | error
+     data-awake = 0 | 1   (anything after first focus)
+     data-done  = 0 | 1   (activated + active)
+   ===================================================================== */
+@font-face{font-family:NHD;src:url(../assets/fonts/NHD-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:NHD;src:url(../assets/fonts/NHD-Medium.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:NHD;src:url(../assets/fonts/NHD-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:NHD;src:url(../assets/fonts/NHD-Black.woff2) format('woff2');font-weight:900;font-display:swap}
+@font-face{font-family:Carbon;src:url(../assets/fonts/Carbon-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Carbon;src:url(../assets/fonts/Carbon-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+
+:root{
+  --bg:#060E12; --surface:#0B1419; --surface-2:#0F1A20;
+  --ink:#FFFFFF; --grey:#90999F;
+  --chip:rgba(255,255,255,.12); --line:rgba(255,255,255,.1);
+  --volt:#C0E700; --volt-16:rgba(189,229,11,.16); --dark:#0C0F13; --err:#FF5A4F;
+  --nhd:NHD,'Helvetica Neue',Arial,sans-serif; --carbon:Carbon,NHD,Arial,sans-serif;
+  --k:.34;               /* idl.pro hero stripe: 17px across per 50px down */
+  --ease:cubic-bezier(.2,.75,.1,1); --ease-io:cubic-bezier(.75,0,.2,1);
+  --gut:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--nhd);font-size:14px;letter-spacing:.5px;line-height:1.3;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;letter-spacing:inherit}
+.sr{position:absolute!important;top:0;left:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--volt);outline-offset:3px}
+[tabindex="-1"]:focus{outline:none}
+
+/* ---------- type ---------- */
+.display{font-family:var(--nhd);font-weight:900;text-transform:uppercase;letter-spacing:0;line-height:1}
+.label{font-family:var(--carbon);font-weight:700;font-size:12px;letter-spacing:0;line-height:14px;text-transform:uppercase;color:var(--grey)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;background:var(--chip);font-family:var(--carbon);font-size:12px;letter-spacing:0;text-transform:uppercase;white-space:nowrap}
+.chip.open{color:var(--volt);background:var(--volt-16)}
+.chip.open .dot{animation:pulse 1.8s ease-in-out infinite}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+@keyframes pulse{50%{opacity:.25}}
+.sl{--o:calc(var(--h,36px) * var(--k));clip-path:polygon(var(--o) 0,100% 0,calc(100% - var(--o)) 100%,0 100%)}
+.sl-r{--o:calc(var(--h,24px) * var(--k));clip-path:polygon(0 0,100% 0,calc(100% - var(--o)) 100%,0 100%)}
+.logo{width:72px;height:auto;color:var(--ink)}
+.btn2{--h:34px;display:inline-flex;align-items:center;height:34px;padding:0 16px 0 12px;background:var(--volt-16);color:var(--volt);
+  font-family:var(--carbon);font-weight:700;font-size:14px;letter-spacing:-.2px;text-transform:uppercase;white-space:nowrap}
+.btn2:hover{background:rgba(189,229,11,.26)}
+.muted{color:var(--grey)}
+.support b{color:var(--ink);font-weight:400}
+
+/* ---------- stage photography ---------- */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+.bg-img{position:absolute;inset:-4%;background:url(../assets/img/bg-arena-m.jpg) 50% 30%/cover no-repeat;
+  filter:grayscale(1) brightness(.3) contrast(1.1);opacity:0;transform:scale(1.12) translate3d(var(--bx,0),var(--by,0),0);
+  transition:opacity 1.2s var(--ease),transform 2s var(--ease),filter 1.2s var(--ease)}
+@media (min-width:760px){.bg-img{background-image:url(../assets/img/bg-arena.jpg)}}
+.is-in .bg-img{opacity:1;transform:scale(1.05) translate3d(var(--bx,0),var(--by,0),0)}
+[data-awake="1"] .bg-img{filter:grayscale(.55) brightness(.36) contrast(1.1)}
+[data-done="1"] .bg-img{filter:grayscale(.2) brightness(.42) contrast(1.1)}
+.bg-shade{position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(6,14,18,.8) 0%,rgba(6,14,18,.25) 32%,rgba(6,14,18,.4) 64%,rgba(6,14,18,.95) 100%),
+  radial-gradient(120% 70% at 50% 55%,transparent 40%,rgba(6,14,18,.7) 100%)}
+/* the real idl.pro hero stripe */
+.floor{position:absolute;left:0;right:0;bottom:0;width:100%;height:auto;color:var(--volt);transform:scaleX(0);transform-origin:left;transition:transform 1.2s var(--ease-io) .1s}
+.is-in .floor{transform:none}
+
+/* ======================= PASS ATOMS ======================= */
+/* square credential, one corner cut on the IDL slant */
+.pass-shape{clip-path:polygon(0 0,calc(100% - var(--cut-x,26px)) 0,100% var(--cut-y,76px),100% 100%,0 100%)}
+.pass-surface{position:relative;background:var(--surface);overflow:hidden;cursor:text}
+[data-done="1"] .pass-surface{cursor:default}
+.tilt{transform:rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg));transform-style:preserve-3d;will-change:transform}
+.lit::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:8;
+  background:radial-gradient(60% 40% at var(--lx,30%) var(--ly,20%),rgba(255,255,255,.06),transparent 70%)}
+
+.season-chip{--h:24px;height:24px;display:inline-flex;align-items:center;padding:0 16px 0 9px;background:#EEF0F1;color:var(--dark);
+  font-family:var(--carbon);font-weight:700;font-size:13px;letter-spacing:0;text-transform:uppercase;white-space:nowrap}
+.pass-no{font-family:var(--carbon);font-weight:700;font-size:12px;letter-spacing:0;color:var(--grey);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pass-no b{color:var(--ink);font-weight:700}
+
+/* photo window — real 2026 Championship photography, colour arrives on the slant */
+.photo{position:relative;overflow:hidden;background:#0E181D}
+.photo>img{position:absolute;inset:-5%;width:110%;height:110%;object-fit:cover;object-position:var(--pos,50% 28%);transform:translate3d(var(--px,0),var(--py,0),0)}
+.ph-mono{filter:grayscale(1) brightness(.6) contrast(1.05);transition:filter .6s}
+.pass-surface:hover .ph-mono{filter:grayscale(1) brightness(.72) contrast(1.05)}
+.ph-color{clip-path:polygon(0 0,var(--r,0%) 0,calc(var(--r,0%) - 30%) 100%,0 100%);transition:clip-path 1.05s var(--ease-io)}
+[data-awake="1"] .ph-color{--r:130%}
+.ph-win{opacity:0;transition:opacity .6s}
+[data-done="1"] .ph-win{opacity:1}
+.photo .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(11,20,25,.15) 35%,rgba(11,20,25,.9) 100%)}
+[data-pass=loading] .photo>img{transform:translate3d(var(--px,0),var(--py,0),0) scale(1.03);transition:transform 1.4s var(--ease)}
+
+.status{position:absolute;z-index:3;height:26px;padding:0 10px;display:inline-flex;align-items:center;gap:8px;background:rgba(6,14,18,.82);
+  font-family:var(--carbon);font-weight:700;font-size:12px;letter-spacing:0;text-transform:uppercase;white-space:nowrap;transition:background .3s,color .3s}
+.status.inline{position:relative}
+.status svg{width:9px;height:11px}
+.status .dot{display:none}
+[data-awake="1"] .status{color:var(--volt)}
+[data-awake="1"] .status svg{display:none}
+[data-awake="1"] .status .dot{display:block;animation:pulse 1.2s infinite}
+[data-pass=loading] .status .dot{animation-duration:.35s}
+[data-done="1"] .status{background:var(--volt);color:var(--dark)}
+[data-done="1"] .status .dot{animation:none}
+[data-pass=error] .status{background:var(--err);color:var(--dark)}
+
+/* benefits — the idl.pro podium bar, reused as pass metadata */
+.perks{list-style:none;display:grid;gap:4px}
+.perks li{--h:31px;display:grid;grid-template-columns:var(--kw,84px) 1fr;gap:4px;height:var(--h);opacity:0;transform:translateX(-16px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.is-in .perks li{opacity:1;transform:none}
+.is-in .perks li:nth-child(1){transition-delay:var(--d1,.55s)}.is-in .perks li:nth-child(2){transition-delay:calc(var(--d1,.55s) + .07s)}.is-in .perks li:nth-child(3){transition-delay:calc(var(--d1,.55s) + .14s)}
+.perks .k,.perks .v{display:flex;align-items:center}
+.perks .k{justify-content:center;background:var(--chip);font-family:var(--carbon);font-weight:700;font-size:12px;letter-spacing:0;text-transform:uppercase;color:var(--grey);transition:background .4s var(--ease),color .4s}
+.perks .v{gap:8px;padding:0 18px 0 16px;background:linear-gradient(90deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+  font-family:var(--nhd);font-weight:900;font-size:var(--vf,15px);letter-spacing:0;text-transform:uppercase;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;transition:color .4s}
+.perks .v i{display:none;width:16px;height:16px;flex:none;background:var(--volt);-webkit-mask:url(../assets/img/icon-check.svg) center/contain no-repeat;mask:url(../assets/img/icon-check.svg) center/contain no-repeat}
+[data-awake="1"] .perks .k{background:var(--volt);color:var(--dark)}
+[data-awake="1"] .perks .v{color:var(--ink)}
+[data-awake="1"] .perks li:nth-child(2) .k{transition-delay:.08s}
+[data-awake="1"] .perks li:nth-child(3) .k{transition-delay:.16s}
+[data-done="1"] .perks .v i{display:block}
+
+/* tear line — the idl.pro stripe at pass scale; doubles as the activation progress bar */
+.tear{position:relative;height:20px;color:rgba(255,255,255,.16);transition:color .5s}
+.tear::before,.tear .fill::before{content:"";position:absolute;left:0;right:0;top:13px;height:2.2px;background:currentColor}
+.tear svg{position:absolute;right:-6px;top:0;height:20px;width:auto}
+.tear .fill{position:absolute;inset:0;color:var(--volt);clip-path:inset(0 100% 0 0)}
+[data-awake="1"] .tear{color:rgba(192,231,0,.35)}
+[data-pass=loading] .tear .fill{animation:load 1.2s var(--ease-io) infinite}
+[data-done="1"] .tear .fill{clip-path:inset(0 0 0 0);transition:clip-path .45s var(--ease)}
+@keyframes load{0%{clip-path:inset(0 100% 0 0)}60%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 100%)}}
+
+/* stub: email + activate */
+.stub{position:relative;background:var(--surface-2);transition:background .45s var(--ease)}
+.field input{width:100%;height:50px;background:rgba(255,255,255,.06);border:0;border-radius:0;color:var(--ink);outline:none;
+  font-family:var(--nhd);font-size:16px;letter-spacing:.5px;padding:0 14px;box-shadow:inset 0 -2px 0 rgba(255,255,255,.14);transition:box-shadow .25s,background .25s}
+.field input::placeholder{color:var(--grey);opacity:1}
+.field input:focus{background:rgba(255,255,255,.09);box-shadow:inset 0 -2px 0 var(--volt)}
+[data-pass=error] .field input{box-shadow:inset 0 -2px 0 var(--err)}
+.msg{font-family:var(--carbon);font-size:12px;letter-spacing:0;text-transform:uppercase;color:var(--err);padding-top:6px}
+.msg:empty{display:none}
+.cta{position:relative;display:flex;width:100%;height:50px;margin-top:6px;background:var(--volt);color:var(--dark);overflow:hidden;
+  font-family:var(--carbon);font-weight:700;font-size:16px;letter-spacing:-.32px;text-transform:uppercase;transition:transform .35s var(--ease)}
+.cta-lbl{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;white-space:nowrap}
+.cta-arr{width:50px;flex:none;display:flex;align-items:center;justify-content:center;border-left:2px solid var(--dark);position:relative;z-index:1}
+.cta-arr svg{width:18px;height:18px;transition:transform .35s var(--ease)}
+.cta:hover .cta-arr svg,.cta:focus-visible .cta-arr svg{transform:translateX(4px)}
+.cta:active{transform:scale(.985)}
+.cta[disabled]{cursor:progress}
+[data-pass=loading] .cta::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);animation:sweep 1s var(--ease-io) infinite}
+@keyframes sweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.consent{margin-top:8px;font-size:12px;line-height:15px;letter-spacing:.3px;color:var(--grey)}
+.consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+
+/* activation beats: stamp (activated) → done panel (active) */
+[data-done="1"] .stub{background:var(--volt);color:var(--dark)}
+[data-done="1"] .stub form{display:none}
+.stamp{display:none;align-items:center;gap:12px;font-size:30px;line-height:1}
+.stamp i{width:26px;height:26px;background:var(--dark);-webkit-mask:url(../assets/img/icon-check.svg) center/contain no-repeat;mask:url(../assets/img/icon-check.svg) center/contain no-repeat}
+[data-pass=activated] .stamp{display:flex;animation:stamp .5s var(--ease) both}
+@keyframes stamp{from{opacity:0;transform:translateX(-24px) skewX(-8deg)}}
+.done{display:none}
+[data-pass=active] .done{display:block;animation:rise .6s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.done .label{color:rgba(12,15,19,.6)}
+.holder{margin-top:2px;font-family:var(--nhd);font-weight:900;font-size:18px;letter-spacing:0;word-break:break-all;line-height:1.15}
+.done-copy{margin-top:8px;font-size:14px;line-height:18px;max-width:34ch}
+.done-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.done-links a{--h:40px;display:inline-flex;align-items:center;height:40px;padding:0 20px 0 14px;background:var(--dark);color:var(--volt);
+  font-family:var(--carbon);font-weight:700;font-size:14px;letter-spacing:-.2px;text-transform:uppercase;white-space:nowrap}
+.done-links a:hover{filter:brightness(1.3)}
+.reset{margin-top:10px;font-family:var(--carbon);font-size:12px;letter-spacing:0;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;color:rgba(12,15,19,.7)}
+.win{opacity:0;transform:translateY(12px);transition:opacity .5s .1s,transform .7s var(--ease) .1s}
+[data-pass=active] .win{opacity:1;transform:none}
+[data-pass=active] .cap{opacity:0}
+.cap{transition:opacity .3s}
+
+/* the activation wipe — a volt parallelogram crossing the object, like an idl.pro broadcast transition */
+.wipe{position:absolute;top:-10%;bottom:-10%;left:0;width:70%;z-index:9;background:var(--volt);pointer-events:none;transform:translateX(-160%) skewX(-19deg)}
+.go .wipe{animation:wipe .85s var(--ease-io) forwards}
+@keyframes wipe{to{transform:translateX(220%) skewX(-19deg)}}
+.go.pass-surface{animation:settle .6s var(--ease) .3s}
+@keyframes settle{0%{scale:1}35%{scale:.985}100%{scale:1}}
+.shake{animation:shake .42s var(--ease)}
+@keyframes shake{20%{translate:-7px 0}40%{translate:6px 0}60%{translate:-4px 0}80%{translate:2px 0}}
+
+/* ---------- entrance: masked type ---------- */
+.ln{display:block;overflow:hidden;padding-bottom:.03em;margin-bottom:-.03em}
+.ln>span{display:block;transform:translateY(106%);transition:transform .95s var(--ease)}
+.is-in .ln>span{transform:none}
+.stop{transition:color .5s}
+[data-awake="1"] .stop{color:var(--volt)}
+.fade{opacity:0;transition:opacity .8s var(--ease) var(--fd,.3s)}
+.is-in .fade{opacity:1}
+
+/* ======================= INTRO ======================= */
+/* 2026 ENDED → SEASON 02 OPEN → reveal. ~1.3s, once per session, skippable. */
+.idl-intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;
+  /* leaves as a curtain with a slanted edge */
+  clip-path:polygon(0 0,100% 0,100% 100%,0 calc(100% + 24vh));transition:clip-path .6s var(--ease-io)}
+.idl-intro.out{clip-path:polygon(0 0,100% 0,100% -24vh,0 0);pointer-events:none}
+.idl-intro-in{display:grid;justify-items:start;gap:14px;padding:0 24px}
+.idl-intro .logo{width:84px}
+.idl-intro-rows{display:grid;overflow:hidden}
+.idl-intro-row{grid-area:1/1;display:flex;align-items:center;gap:12px;padding:2px 0;transition:transform .45s var(--ease-io)}
+.idl-intro-row .display{font-size:40px}
+.idl-intro-row.b{transform:translateY(110%)}
+.idl-intro.s2 .idl-intro-row.a{transform:translateY(-110%)}
+.idl-intro.s2 .idl-intro-row.b{transform:none}
+.idl-intro .chip.ended{background:var(--chip)}
+
+/* ======================= DEV COMPARISON BAR (?dev) ======================= */
+.devbar{position:fixed;left:12px;bottom:12px;z-index:200;display:flex;gap:2px;padding:3px;background:rgba(6,14,18,.92);border:1px solid var(--line);font-family:var(--carbon);font-size:11px;letter-spacing:0;text-transform:uppercase}
+.devbar a{padding:6px 8px;color:var(--grey)}
+.devbar a:hover{color:var(--ink)}
+.devbar a[aria-current]{background:var(--volt);color:var(--dark)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
+}

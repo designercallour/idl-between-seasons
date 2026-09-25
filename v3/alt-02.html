@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060E12">
+<title>IDL — Your Ticket Is Next</title>
+<meta name="description" content="The 2026 IDL season is in the books. Activate your Season 02 waitlist pass and hear first when next-season tickets go live.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%23060E12%27/%3E%3Cpath d=%27M13 6h9l-3 20h-9z%27 fill=%27%23C0E700%27/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/NHD-Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Carbon-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/img/pass-crowd.jpg" as="image">
+<link rel="stylesheet" href="alt/pass.css">
+<style>
+/* ============ ALT 02 — EDITORIAL / TYPOGRAPHY-FIRST ============
+   The headline is the poster. "TICKET" is not a word on the page — it is the pass:
+   the letters are cut from real Championship photography and the email lives at the
+   end of the ticket. Everything else is caption. */
+:root{--F:19.5vw}
+.app{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;
+  padding:max(12px,env(safe-area-inset-top)) var(--gut) max(14px,env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:36px;flex:none}
+.top .btn2,.top-mid{display:none}
+.bg-img{filter:grayscale(1) brightness(.2) contrast(1.1)}
+[data-awake="1"] .bg-img{filter:grayscale(.7) brightness(.24) contrast(1.1)}
+
+.poster{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:10px 0 0}
+.big{font-size:var(--F);line-height:.8;white-space:nowrap}
+.r1,.r3{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.r3{justify-content:flex-end}
+.r1 aside,.r3 aside{display:none}
+.caption{margin-top:6px;color:var(--grey);max-width:40ch}
+
+/* ---------- the ticket ---------- */
+.pass{position:relative;flex:none;display:flex;flex-direction:column;perspective:1600px;
+  filter:drop-shadow(0 26px 40px rgba(0,0,0,.6));opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease) .25s,transform 1s var(--ease) .25s}
+.is-in .pass{opacity:1;transform:none}
+.pass-3d{flex:1 0 auto;display:flex;flex-direction:column}
+.pass-surface{flex:1 0 auto;display:flex;flex-direction:column;--cut-x:22px;--cut-y:64px}
+
+.meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 0}
+.meta .logo{width:56px}
+.meta .grp{display:flex;align-items:center;gap:10px}
+.meta .title{display:none}
+.meta .status{position:relative}
+
+.wordbox{position:relative;flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-end;padding:18px 14px 10px;min-height:120px}
+.word{position:relative;display:block;font-family:var(--nhd);font-weight:900;text-transform:uppercase;letter-spacing:0;line-height:.8;white-space:nowrap;align-self:flex-start;margin-left:-.03em}
+.word span{display:block;color:transparent;-webkit-background-clip:text;background-clip:text;background-size:cover;
+  background-position:calc(50% + var(--px,0px)) calc(38% + var(--py,0px));padding:.04em 0 .02em}
+.word .w-mono{background-image:url(assets/img/pass-crowd.jpg);filter:grayscale(1) brightness(1.05) contrast(1.15);-webkit-text-stroke:1px rgba(255,255,255,.14)}
+.word .w-color,.word .w-win{position:absolute;inset:0}
+.word .w-color{background-image:url(assets/img/pass-crowd.jpg);clip-path:polygon(0 0,var(--r,0%) 0,calc(var(--r,0%) - 30%) 100%,0 100%);transition:clip-path 1.05s var(--ease-io)}
+[data-awake="1"] .word .w-color{--r:130%}
+.word .w-win{background-image:url(assets/img/pass-confetti.jpg);opacity:0;transition:opacity .6s}
+[data-done="1"] .word .w-win{opacity:1}
+.done-t{font-size:28px;line-height:.92;margin-bottom:10px}
+.wordbox .perks{margin-top:10px}
+
+.tear{margin:6px 0 0}
+.vtear{display:none}
+.stub{padding:10px 14px 14px}
+
+@media (max-width:380px){ .meta .pass-no{display:none} }
+@media (max-height:740px) and (max-width:1023px){
+  .caption{display:none}.perks li{--h:28px}.consent{font-size:11px;line-height:14px}
+}
+@media (min-width:600px) and (max-width:1023px){
+  :root{--F:min(19.5vw,120px)}
+  .app{align-items:center}.top,.poster{width:100%;max-width:520px}
+}
+
+/* ======================= DESKTOP: YOUR / [TICKET] / IS NEXT. ======================= */
+@media (min-width:1024px) and (min-height:640px){
+  :root{--gut:clamp(32px,4.4vw,64px);--F:min(15.2vw,21vh)}
+  .app{height:100svh;min-height:620px;padding-top:20px;padding-bottom:0}
+  .top{height:44px}.top .logo{width:88px}
+  .top .btn2{display:inline-flex}
+  .top-mid{display:flex;gap:8px;position:absolute;left:50%;translate:-50% 0}
+  .top>.chip.open{display:none}
+  .poster{gap:clamp(8px,1.4vh,16px);padding:0 0 5vh}
+  .r1 aside,.r3 aside{display:block}
+  .r1 aside{max-width:34ch;padding-bottom:.6vh;font-size:16px;line-height:21px;color:var(--grey)}
+  .r3{justify-content:space-between;align-items:flex-start}
+  .r3 aside{padding-top:1vh;display:grid;gap:6px}
+  .r3 aside a{color:var(--volt)}
+  .caption{display:none}
+
+  .pass{flex:none;height:calc(var(--F) * 1.22)}
+  .pass-surface{flex-direction:row;--cut-x:30px;--cut-y:88px}
+  .meta{flex:none;width:clamp(150px,13vw,190px);flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:12px;padding:18px 18px}
+  .meta .grp{flex-direction:column;align-items:flex-start;gap:10px}
+  .meta .title{display:block;font-size:20px;line-height:.95;margin-top:auto}
+  .meta .pass-no{order:2}
+  .meta .status{margin-top:auto}
+  .wordbox{flex:1 1 0;min-width:0;justify-content:center;padding:16px 22px 16px;border-left:1px solid var(--line)}
+  .wordbox .perks{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:14px;--kw:58px;--vf:12px}
+  .wordbox .perks li{--h:28px;flex:none;grid-template-columns:var(--kw) auto}
+  .wordbox .perks .v{padding:0 14px 0 11px}
+  .done-t{font-size:clamp(24px,2.2vw,32px);margin-bottom:8px}
+  .stub .done-copy{display:none}
+  .tear{display:none}
+  .vtear{display:block;position:relative;width:2px;flex:none;background:rgba(255,255,255,.14);transition:background .5s}
+  .vtear::before{content:"";position:absolute;left:-4px;top:0;width:10px;height:36px;background:currentColor;color:rgba(255,255,255,.2);transform:skewY(-19deg);transform-origin:top;transition:color .5s}
+  .vtear::after{content:"";position:absolute;inset:0;background:var(--volt);clip-path:inset(0 0 100% 0)}
+  [data-awake="1"] .vtear{background:rgba(192,231,0,.35)}
+  [data-awake="1"] .vtear::before{color:var(--volt)}
+  [data-pass=loading] .vtear::after{animation:vload 1.2s var(--ease-io) infinite}
+  [data-done="1"] .vtear::after{clip-path:inset(0 0 0 0);transition:clip-path .45s var(--ease)}
+  .stub{flex:none;width:clamp(320px,27vw,400px);display:flex;flex-direction:column;justify-content:center;padding:16px 22px}
+  .field input,.cta{height:clamp(46px,5.6vh,54px)}.cta-arr{width:52px}
+}
+@keyframes vload{0%{clip-path:inset(0 0 100% 0)}60%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(100% 0 0 0)}}
+@media (min-width:1024px) and (max-width:1240px) and (min-height:640px){
+  .stub{width:300px}
+  .consent{font-size:11px;line-height:14px}
+}
+</style>
+</head>
+<body data-pass="locked">
+  <div class="bg" aria-hidden="true">
+    <div class="bg-img" data-bg></div><div class="bg-shade"></div>
+    <svg class="floor" viewBox="0 0 1440 77" fill="currentColor"><path d="M1181.52 0h137.8l-16.99 50.026h-137.8zm205.78 23h84.7l-9.3 27H1378zm-85.08 27.026h75.62l-9.32 27.373h-75.63zM0 50.026h1164.53l-3.03 8.495H0z"/></svg>
+  </div>
+
+  <div class="app">
+    <header class="top">
+      <a href="https://www.idl.pro/" aria-label="International Dance League — idl.pro"><svg class="logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg></a>
+      <div class="top-mid"><span class="chip">2026 Season · Ended</span><span class="chip open"><span class="dot"></span>Season 02 · Waitlist open</span></div>
+      <span class="chip open"><span class="dot"></span>Season 02 · Waitlist open</span>
+      <a class="btn2 sl" href="https://www.idl.pro/">Back to idl.pro</a>
+    </header>
+
+    <main class="poster">
+      <h1 class="sr">Your ticket is next.</h1>
+      <div class="r1">
+        <p class="display big" aria-hidden="true"><span class="ln"><span data-shift="-6">Your</span></span></p>
+        <aside class="support fade" style="--fd:.9s" data-support data-success="Pass active. <b>When next-season tickets go live, you hear first.</b>">2026 is in the books. <b>Join the waitlist to hear first when next-season tickets go live.</b></aside>
+      </div>
+
+      <!-- ===================== THE TICKET ===================== -->
+      <section class="pass" aria-labelledby="passTitle">
+        <div class="pass-3d tilt" data-tilt="2.5">
+          <div class="pass-surface pass-shape lit" data-surface data-lit>
+            <div class="meta">
+              <svg class="logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+              <div class="grp">
+                <span class="season-chip sl-r" aria-hidden="true">Season 02</span>
+                <span class="pass-no" aria-hidden="true">No. <b data-passno>S02-——————</b></span>
+              </div>
+              <h2 class="display title" id="passTitle">Waitlist<br>pass</h2>
+              <p class="status" aria-hidden="true"><svg viewBox="0 0 10 12" fill="currentColor"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1Zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5Z"/></svg><span class="dot"></span><span data-status>Pass locked</span></p>
+            </div>
+
+            <div class="wordbox" id="wordbox">
+              <p class="word" aria-hidden="true" data-fit data-fit-to="#wordbox .fitline" data-fit-max="400" data-par="16"><span class="w-mono">Ticket</span><span class="w-color">Ticket</span><span class="w-win">Ticket</span></p>
+              <span class="fitline" aria-hidden="true" style="display:block;height:0"></span>
+              <ul class="perks" aria-label="What the waitlist pass gets you">
+                <li><span class="k sl">Access</span><span class="v sl"><i></i>Early ticket sales</span></li>
+                <li><span class="k sl">Updates</span><span class="v sl"><i></i>Next-season events</span></li>
+                <li><span class="k sl">Drops</span><span class="v sl"><i></i>Exclusive merch offers</span></li>
+              </ul>
+            </div>
+
+            <div class="tear" aria-hidden="true"><svg viewBox="1100 0 372 77" fill="currentColor"><path d="M1181.52 0h137.8l-16.99 50.026h-137.8zm205.78 23h84.7l-9.3 27H1378zm-85.08 27.026h75.62l-9.32 27.373h-75.63z"/></svg><span class="fill"><svg viewBox="1100 0 372 77" fill="currentColor"><path d="M1181.52 0h137.8l-16.99 50.026h-137.8zm205.78 23h84.7l-9.3 27H1378zm-85.08 27.026h75.62l-9.32 27.373h-75.63z"/></svg></span></div>
+            <span class="vtear" aria-hidden="true"></span>
+
+            <div class="stub">
+              <form data-wl novalidate>
+                <label class="sr" for="email">Email address</label>
+                <div class="field"><input type="email" id="email" name="email" placeholder="Enter Your Email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="msg"></div>
+                <p class="msg" id="msg" role="alert" data-msg></p>
+                <button class="cta" type="submit"><span class="cta-lbl" data-cta>Activate my pass</span><span class="cta-arr" aria-hidden="true"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 9h13M9.5 3.5 15 9l-5.5 5.5"/></svg></span></button>
+                <p class="consent">By activating, you agree to receive IDL marketing emails and accept the <a href="https://www.idl.pro/terms-and-conditions">Terms</a> and <a href="https://www.idl.pro/privacy-policy">Privacy Policy</a>. Unsubscribe anytime.</p>
+              </form>
+              <p class="stamp display" aria-hidden="true"><i></i>Pass activated</p>
+              <div class="done" tabindex="-1" data-donefocus aria-live="polite">
+                <p class="display done-t">You’re on the list.</p>
+                <p class="label">Pass active · Holder</p>
+                <p class="holder" data-holder></p>
+                <p class="done-copy">When next-season tickets go live, this address hears first.</p>
+                <div class="done-links"><a class="sl-r" href="https://www.idl.pro/results/championship">Relive 2026 ↗</a><a class="sl-r" href="https://www.idl.pro/">Back to IDL ↗</a></div>
+                <button class="reset" type="button" data-reset>Use a different email</button>
+              </div>
+            </div>
+            <span class="wipe" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="r3">
+        <aside class="fade" style="--fd:1s"><span class="label">2026 Final · GRV 94.00 — 93.57 Brotherhood</span><span class="label">Five cities · One champion · <a href="https://www.idl.pro/results/championship">Results ↗</a></span></aside>
+        <p class="display big" aria-hidden="true"><span class="ln"><span data-shift="6">Is next<span class="stop">.</span></span></span></p>
+      </div>
+      <p class="caption support" data-support data-success="Pass active. <b>See you next season.</b>">2026 is in the books. <b>Join the waitlist to hear first when next-season tickets go live.</b></p>
+    </main>
+  </div>
+  <p class="sr" role="status" data-status></p>
+<script src="alt/pass.js"></script>
+</body>
+</html>

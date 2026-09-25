@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>IDL Waitlist Pass — Layout Compare (dev)</title>
+<link rel="stylesheet" href="alt/pass.css">
+<style>
+/* DEV ONLY — not part of the production page. Loads each version in a real-size
+   iframe (scaled to fit) so hierarchy can be judged at 390 / 375 / 1440 / 1280 / 1024. */
+body{height:100svh;display:flex;flex-direction:column;overflow:hidden;background:#03080B}
+.bar{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.bar .logo{width:56px}
+.bar h1{font-family:var(--carbon);font-weight:700;font-size:12px;letter-spacing:0;text-transform:uppercase;color:var(--grey);margin-right:auto}
+.grp{display:flex;gap:2px;flex-wrap:wrap}
+.grp button{height:30px;padding:0 10px;background:rgba(255,255,255,.06);color:var(--grey);font-family:var(--carbon);font-weight:700;font-size:12px;letter-spacing:0;text-transform:uppercase}
+.grp button:hover{color:var(--ink)}
+.grp button[aria-pressed=true]{background:var(--volt);color:var(--dark)}
+.grp .k{align-self:center;margin-right:6px;font-family:var(--carbon);font-size:11px;color:var(--grey);text-transform:uppercase}
+.stage{flex:1;min-height:0;display:flex;gap:20px;align-items:center;justify-content:center;padding:18px}
+.slot{height:100%;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
+.slot .cap{flex:none;display:flex;gap:10px;align-items:center;font-family:var(--carbon);font-size:12px;letter-spacing:0;text-transform:uppercase;color:var(--grey);white-space:nowrap}
+.slot .cap b{color:var(--ink)}
+.slot .cap a{color:var(--volt)}
+.view{position:relative;flex:1;min-height:0;width:100%;display:flex;align-items:flex-start;justify-content:center}
+.frame{position:relative;overflow:hidden;background:#000;box-shadow:0 0 0 1px var(--line)}
+.frame iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:var(--bg)}
+.note{flex:none;padding:8px 16px 12px;font-size:12px;color:var(--grey);border-top:1px solid var(--line)}
+.note b{color:var(--ink);font-weight:400}
+</style>
+</head>
+<body>
+  <header class="bar">
+    <svg class="logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+    <h1>Waitlist pass · layout compare · dev only</h1>
+    <div class="grp" id="ver" role="group" aria-label="Version"><span class="k">Version</span></div>
+    <div class="grp" id="vp" role="group" aria-label="Viewport"><span class="k">Viewport</span></div>
+    <div class="grp" id="opt" role="group" aria-label="Options"><span class="k">View</span>
+      <button type="button" data-opt="ab" aria-pressed="false">Current | Alt</button>
+      <button type="button" data-opt="fail" aria-pressed="false">?fail</button>
+      <button type="button" data-opt="intro" aria-pressed="false">Intro</button>
+    </div>
+  </header>
+  <main class="stage" id="stage"></main>
+  <p class="note" id="note"></p>
+
+<script>
+(() => {
+  const V = [
+    { id: 'current', file: 'index.html', label: 'Current', char: 'Baseline · v3 as approved', note: 'The approved reference. Loaded with <b>?fail</b> exactly as specified; never modified.' },
+    { id: 'alt-01', file: 'alt-01.html', label: 'Alt 01', char: 'Pass-first · product-centric', note: 'One object on a stage. Headline locked to the pass width; landscape credential on desktop that straightens up when it wakes.' },
+    { id: 'alt-02', file: 'alt-02.html', label: 'Alt 02', char: 'Editorial · typography-first', note: 'YOUR / [TICKET] / IS NEXT. — the word TICKET is the pass, cut from Championship photography.' },
+    { id: 'alt-03', file: 'alt-03.html', label: 'Alt 03', char: 'Immersive · digital credential', note: 'The viewport is the credential: cut corner, lanyard slot, full-bleed photo, stub in the thumb zone.' },
+    { id: 'alt-04', file: 'alt-04.html', label: 'Alt 04', char: 'Broadcast · sports data', note: 'idl.pro’s own event strip goes final; Season 02 is the seventh cell, loading. Recap as a quiet lower third.' },
+  ];
+  const VP = [
+    { id: 'm390', label: '390×844', w: 390, h: 844 }, { id: 'm375', label: '375×812', w: 375, h: 812 },
+    { id: 'd1440', label: '1440×900', w: 1440, h: 900 }, { id: 'd1280', label: '1280×800', w: 1280, h: 800 }, { id: 'd1024', label: '1024×768', w: 1024, h: 768 },
+  ];
+  const st = Object.assign({ v: 'alt-01', vp: 'm390', ab: false, fail: false, intro: false },
+    Object.fromEntries(new URLSearchParams(location.hash.slice(1))));
+  st.ab = st.ab === true || st.ab === '1'; st.fail = st.fail === true || st.fail === '1'; st.intro = st.intro === true || st.intro === '1';
+
+  const ver = document.getElementById('ver'), vp = document.getElementById('vp'), stage = document.getElementById('stage'), note = document.getElementById('note');
+  V.forEach((v, i) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.v = v.id; b.textContent = v.label; b.title = `${v.char} (key ${i})`; ver.appendChild(b); });
+  VP.forEach((p) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.vp = p.id; b.textContent = p.label; vp.appendChild(b); });
+
+  const src = (v) => {
+    if (v.id === 'current') return 'index.html?fail';           // baseline, exactly as referenced
+    const q = ['dev']; if (st.fail) q.push('fail'); q.push(st.intro ? 'intro' : 'nointro');
+    return `${v.file}?${q.join('&')}`;
+  };
+  const slot = (v, p) => {
+    const el = document.createElement('section'); el.className = 'slot';
+    el.innerHTML = `<p class="cap"><b>${v.label}</b><span>${v.char}</span><a href="${src(v)}" target="_blank" rel="noopener">Open ↗</a></p>
+      <div class="view"><div class="frame"><iframe title="${v.label} at ${p.label}" src="${src(v)}"></iframe></div></div>`;
+    return el;
+  };
+  const fit = () => stage.querySelectorAll('.slot').forEach((s) => {
+    const p = VP.find((x) => x.id === st.vp), view = s.querySelector('.view'), fr = s.querySelector('.frame'), ifr = s.querySelector('iframe');
+    const k = Math.min(view.clientWidth / p.w, view.clientHeight / p.h, 1);
+    ifr.style.width = p.w + 'px'; ifr.style.height = p.h + 'px'; ifr.style.transform = `scale(${k})`;
+    fr.style.width = p.w * k + 'px'; fr.style.height = p.h * k + 'px';
+  });
+  const render = () => {
+    const v = V.find((x) => x.id === st.v) || V[1], p = VP.find((x) => x.id === st.vp) || VP[0];
+    ver.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.v === v.id));
+    vp.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.vp === p.id));
+    document.querySelectorAll('[data-opt]').forEach((b) => b.setAttribute('aria-pressed', !!st[b.dataset.opt]));
+    stage.innerHTML = '';
+    if (st.ab && v.id !== 'current') stage.appendChild(slot(V[0], p));
+    stage.appendChild(slot(v, p));
+    stage.querySelectorAll('.slot').forEach((s) => (s.style.flex = '1 1 0'));
+    note.innerHTML = `<b>${v.char}.</b> ${v.note} · Keys 0–4 switch version · state is kept in the URL hash.`;
+    history.replaceState(null, '', '#' + new URLSearchParams({ v: v.id, vp: p.id, ab: st.ab ? 1 : 0, fail: st.fail ? 1 : 0, intro: st.intro ? 1 : 0 }));
+    requestAnimationFrame(fit);
+  };
+  ver.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { st.v = b.dataset.v; render(); } });
+  vp.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { st.vp = b.dataset.vp; render(); } });
+  document.getElementById('opt').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-opt]'); if (!b) return;
+    const k = b.dataset.opt; st[k] = !st[k];
+    if (k === 'intro' && st.intro) { try { sessionStorage.removeItem('idl-s02-intro'); } catch (_) {} }
+    render();
+  });
+  addEventListener('keydown', (e) => { if (/^[0-4]$/.test(e.key) && !e.target.closest('input')) { st.v = V[+e.key].id; render(); } });
+  addEventListener('resize', fit);
+  render();
+})();
+</script>
+</body>
+</html>

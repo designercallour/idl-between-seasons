@@ -11,6 +11,23 @@ Grotesk Display + Carbon Plus at normal tracking, square corners, podium-style s
 idl.pro hero stripe). States: locked → ready → activating → pass active, plus invalid / network
 error (`?fail`). Self-contained: fonts and images live in `v3/assets/`.
 
+### v3 layout alternatives (hierarchy exploration)
+
+Same brand system, same pass, same interaction — only the composition changes.
+The baseline `v3/index.html` is untouched and stays the reference.
+
+| Route | Character |
+|---|---|
+| [`v3/index.html?fail`](v3/index.html?fail) | **Current** — approved baseline |
+| [`v3/alt-01.html`](v3/alt-01.html) | **Pass-first / product-centric** — headline locked to the pass width; landscape credential on desktop |
+| [`v3/alt-02.html`](v3/alt-02.html) | **Editorial / typography-first** — YOUR / [TICKET] / IS NEXT., the word TICKET is the pass |
+| [`v3/alt-03.html`](v3/alt-03.html) | **Immersive / digital credential** — the viewport is the pass |
+| [`v3/alt-04.html`](v3/alt-04.html) | **Broadcast / sports data** — idl.pro event strip goes final, Season 02 loading |
+
+Compare them in [`v3/compare.html`](v3/compare.html) (dev only: version, viewport, Current | Alt side-by-side).
+Shared system: `v3/alt/pass.css` + `v3/alt/pass.js`. Flags: `?dev` comparison bar · `?fail` network error ·
+`?intro` replay the 1.3s intro · `?nointro` skip it.
+
 ## Round 2 — concepts
 
 **→ [`v2/index.html`](v2/index.html)** — overview: rationale, copy, visual / interaction /
