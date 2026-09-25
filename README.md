@@ -3,7 +3,15 @@
 Off-season redesign of the **app.idl.pro** page: the 2026 voting page becomes a
 next-season **ticket waitlist**, same URL, same one-field capture (email → CTA → done).
 
-## Round 2 — current
+## v3 — selected direction (current)
+
+**→ [`v3/index.html`](v3/index.html)** — Concept 03 "Your Ticket Is Next", refined after client feedback:
+the waitlist pass is the hero, one screen, mobile-first, built on idl.pro's own system (Neue Haas
+Grotesk Display + Carbon Plus at normal tracking, square corners, podium-style slanted bars, the
+idl.pro hero stripe). States: locked → ready → activating → pass active, plus invalid / network
+error (`?fail`). Self-contained: fonts and images live in `v3/assets/`.
+
+## Round 2 — concepts
 
 **→ [`v2/index.html`](v2/index.html)** — overview: rationale, copy, visual / interaction /
 asset direction, and live previews of all three concepts.
