@@ -3,7 +3,21 @@
 Off-season redesign of the **app.idl.pro** page: the 2026 voting page becomes a
 next-season **ticket waitlist**, same URL, same one-field capture (email → CTA → done).
 
-## v3 — selected direction (current)
+## v5 — idl.pro alignment pass (current)
+
+**→ [`v5/03-your-ticket.html`](v5/03-your-ticket.html)** — v4 reworked against the live idl.pro design system,
+plus [`v5/03-your-ticket-alt-dense.html`](v5/03-your-ticket-alt-dense.html) and [`v5/03-your-ticket-split.html`](v5/03-your-ticket-split.html).
+
+- **Grid and tokens:** idl.pro's page grid is 16 / 40 / 82px gutters with a 1368 max width. Card fill, borders, dividers and the type scale all match idl.pro's measured tokens.
+- **Hero:** a crowd photo of a full arena (ScorePlay EVT03 Sydney), colour-graded to IDL green/teal. On wide desktops the main page splits into a checker-flag plane and the photo, with a "/" cut between them.
+- **Form:** idl.pro's newsletter pattern, a white field over a lime button with a bell.
+- **Pass card:**
+  - A full-bleed GRV team-header photo, with the idl.pro hero divider on the photo seam.
+  - Matches-style rows for access, status and teams.
+  - A woven lanyard. The gloss is off.
+- **Mobile:** mobile-first, one screen at 390×844.
+
+## v3 — selected direction
 
 **→ [`v3/index.html`](v3/index.html)** — Concept 03 "Your Ticket Is Next", refined after client feedback:
 the waitlist pass is the hero, one screen, mobile-first, built on idl.pro's own system (Neue Haas

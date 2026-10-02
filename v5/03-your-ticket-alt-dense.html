@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060E12">
+<title>IDL — Your Ticket Is Next</title>
+<meta name="description" content="Activate your Season 02 pass — get first word when next-season IDL tickets go live.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23060E12%27/%3E%3Cpath d=%27M13 6h9l-3 20h-9z%27 fill=%27%23C0E700%27/%3E%3C/svg%3E">
+<!-- hero font + card image first: no layout shift -->
+<link rel="preload" href="../v3/assets/fonts/NHD-Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../v3/assets/fonts/Carbon-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../v2/assets/img/news-grv-upset.jpg" as="image">
+<link rel="preload" href="../v3/assets/img/bg-arena.jpg" as="image" media="(min-width:760px)">
+<link rel="preload" href="../v3/assets/img/bg-arena-m.jpg" as="image" media="(max-width:759px)">
+<style>
+/* =====================================================================
+   v4 · Concept 03 "Your Ticket Is Next" — style migration to idl.pro.
+   Content and pass anatomy are the approved v2/03-your-ticket.html, 1:1.
+   Only surface styling changes. Tokens below were read from idl.pro's
+   computed styles; values not found on idl.pro are marked (source) —
+   kept from v2/03 — or (v4) when a new value had to be chosen.
+   ===================================================================== */
+
+/* idl.pro serves these exact woff2 files (framerusercontent assets) */
+@font-face{font-family:NHD;src:url(../v3/assets/fonts/NHD-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:NHD;src:url(../v3/assets/fonts/NHD-Medium.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:NHD;src:url(../v3/assets/fonts/NHD-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:NHD;src:url(../v3/assets/fonts/NHD-Black.woff2) format('woff2');font-weight:900;font-display:swap}
+@font-face{font-family:Carbon;src:url(../v3/assets/fonts/Carbon-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Carbon;src:url(../v3/assets/fonts/Carbon-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+
+:root{
+  --bg:#060E12;                 /* idl.pro body / footer rgb(6,14,18) */
+  --ink:#FFFFFF;                /* idl.pro headings + nav */
+  --ink-2:#FBFBFB;              /* idl.pro body copy rgb(251,251,251) */
+  --grey:#90999F;               /* idl.pro "Winner:", "SEE RESULTS" rgb(144,153,159) — 6.8:1 on --bg */
+  --chip:rgba(255,255,255,.12); /* idl.pro "ENDED" chip */
+  --volt:#C0E700;               /* idl.pro GET TICKETS / SUBSCRIBE */
+  --volt-16:rgba(189,229,11,.16);/* idl.pro secondary button fill */
+  --dark:#0C0F13;               /* idl.pro text on volt rgb(12,15,19) */
+  --card:#091921;               /* idl.pro feature card fill (ESPN 2 card) rgb(9,25,33) */
+  --line:#232A35;               /* idl.pro card border (::after 1px solid) rgb(35,42,53) */
+  --volt-line:#BDE50B;          /* idl.pro primary button border rgb(189,229,11) */
+  --volt-dim:#435100;           /* idl.pro highlighted-card border (1.5px) rgb(67,81,0) */
+  --card-2:#0D2631;             /* idl.pro schedule number cell rgb(13,38,49) */
+  --ink-3:#D5D7D9;              /* idl.pro newsletter consent copy rgb(213,215,217) */
+  --err:#FF6A5C;                /* (source) */
+  --nhd:NHD,'Helvetica Neue',Arial,sans-serif;
+  --carbon:Carbon,NHD,Arial,sans-serif;
+  --gut:16px;                   /* idl.pro page gutter: 16 below 1024 · 40 from 1024 · 82 from 1440 (see below) */
+  --fast:.15s;                  /* idl.pro link colour transition */
+  --fade:.4s ease-out;          /* idl.pro opacity transition */
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --ease-io:cubic-bezier(.7,0,.2,1);
+}
+@media (min-width:1024px){:root{--gut:40px}}
+@media (min-width:1440px){:root{--gut:82px}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--nhd);font-size:16px;line-height:20px;letter-spacing:.5px;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;letter-spacing:inherit}
+.sr{position:absolute!important;top:0;left:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--volt);outline-offset:3px}
+[tabindex="-1"]:focus{outline:none}
+.display{font-family:var(--nhd);font-weight:900;text-transform:uppercase;letter-spacing:0;line-height:1}
+.idl-logo{width:88px;height:auto;color:var(--ink)}
+
+/* ---------- stage photography ----------
+   brief: a stage with a big crowd — "lots of people are there, I want to go". IDL's own event photography (ScorePlay, EVT03 Sydney,
+   IDLSydney-ProDivision-43: a full arena with the stage beyond, colour-graded from the venue's purple
+   to IDL's dark green/teal — hue −134°, saturation ×.85, brightness ×.95), always in full colour; legibility comes from idl.pro-style shade gradients (#061015), not from desaturating the photo. */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+.bg-img{position:absolute;inset:-4%;background:url(assets/img/crowd-arena-m.jpg) 60% 50%/cover no-repeat;
+  opacity:0;transform:scale(1.12) translate3d(var(--bx,0),var(--by,0),0);
+  transition:opacity 1.2s cubic-bezier(.2,.75,.1,1),transform 2s cubic-bezier(.2,.75,.1,1)}
+@media (min-width:861px){.bg-img{background-image:url(assets/img/crowd-arena.jpg);background-position:50% 50%}}
+.is-in .bg-img{opacity:1;transform:scale(1.05) translate3d(var(--bx,0),var(--by,0),0)}
+/* desktop: idl.pro photo-edge shade (90deg, #061015 → clear), held dark across the whole copy column (the arena crowd is bright
+   and busy right behind the body copy), clearing only past the centre where the pass sits; plus top/bottom fades for the bar and footer */
+.bg-shade{position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(6,16,21,.7) 0%,rgba(6,16,21,0) 18%,rgba(6,16,21,0) 55%,rgba(6,16,21,.92) 100%),
+  linear-gradient(90deg,rgba(6,16,21,.94) 0%,rgba(6,16,21,.88) 30%,rgba(6,16,21,.78) 45%,rgba(6,16,21,.5) 56%,rgba(6,16,21,.18) 68%,rgba(6,16,21,0) 80%)}
+
+/* ---------- layout (source grid, source order) ---------- */
+/* desktop: the copy block sits between two equal air rows, so it is centred on the same band the pass is centred in */
+.layout{position:relative;z-index:2;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto minmax(0,1fr);
+  grid-template-areas:"top top" ". pass" "copy pass" "more pass" ". pass";gap:24px clamp(32px,5vw,90px);
+  padding:max(24px,env(safe-area-inset-top)) max(var(--gut),env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(var(--gut),env(safe-area-inset-left))}
+/* idl.pro content column: max 1368 wide, centred (1920 → 276 | 1368 | 276) */
+.layout{max-width:calc(1368px + 2 * var(--gut));margin-inline:auto}
+
+/* top bar — idl.pro nav: Carbon Plus Regular, normal tracking */
+.top{grid-area:top;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:44px}
+.top a{display:inline-flex;align-items:center;min-height:44px}
+/* "idl.pro" link = idl.pro secondary button ("LEARN ABOUT THE TEAMS", a.framer-TDS06):
+   44px tall, padding 4 24 2, bg rgba(189,229,11,.16), 1px solid rgb(189,229,11) border (::after, inset 0),
+   Carbon Plus Bold 18/20 volt, radius 0. Hover: a rgba(0,0,0,.1) layer sweeps in from the left
+   (Framer layout animation .framer-yz36fc — its duration couldn't be measured, .35s ease-out chosen). */
+.top a.ext{position:relative;display:inline-flex;align-items:center;justify-content:center;height:44px;min-height:44px;padding:4px 24px 2px;
+  background:rgba(189,229,11,.16);color:var(--volt);font-family:var(--carbon);font-weight:700;font-size:18px;line-height:20px;letter-spacing:normal;
+  text-transform:uppercase;white-space:nowrap;isolation:isolate}
+.top a.ext::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.1);transform:scaleX(0);transform-origin:left;transition:transform .35s ease-out}
+.top a.ext::after{content:"";position:absolute;inset:0;border:1px solid rgb(189,229,11);pointer-events:none}
+.top a.ext:hover::before,.top a.ext:focus-visible::before{transform:scaleX(1)}
+
+/* copy */
+.copy{grid-area:copy;align-self:end;max-width:640px}
+.more{grid-area:more;align-self:start;max-width:640px}
+/* eyebrow = idl.pro hero date chip ("Sep 20, 2026", Match title + its tail) — the chip idl.pro sets ON a photo:
+   Carbon Plus Bold 16/18, #0C0F13 on #FFFFFF, 26px tall, padding 4 6, radius 0, white slanted tail (see ::after).
+   (The volt tag is idl.pro's on-dark section tag, not the on-photo one.) */
+.eyebrow{position:relative;display:flex;align-items:center;width:max-content;max-width:calc(100% - 16px);height:26px;padding:4px 6px;margin-bottom:24px;
+  background:var(--ink);color:var(--dark);font-family:var(--carbon);font-weight:700;font-size:16px;line-height:18px;letter-spacing:normal;text-transform:uppercase;white-space:nowrap}
+.eyebrow::after{content:"";position:absolute;left:100%;top:0;width:15.84px;height:26px;background:var(--ink);
+  /* idl.pro date-chip tail (.framer-12kjvlz, 15.84×26): slanted wedge + detached thin stripe, same SVG mask (viewBox 39×64) */
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 39 64'%3E%3Cpath d='M0 64 32 0H0Z'/%3E%3Cpath transform='translate(3 0)' d='M31.941 0H36L3.5 64H0Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 39 64'%3E%3Cpath d='M0 64 32 0H0Z'/%3E%3Cpath transform='translate(3 0)' d='M31.941 0H36L3.5 64H0Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+.slash{display:none} /* the source's slash mark stays in the DOM; idl.pro's tag has no such mark */
+/* flag slot = idl.pro hero date chip's country flag (41×26, 4px gap). Season 02 has no city yet, so the slot carries
+   IDL's racing-checker flag (the ESPN-section motif) — "a new season is about to start". */
+.eyebrow{margin-left:45px;max-width:calc(100% - 61px)}
+.eyebrow::before{content:"";position:absolute;right:calc(100% + 4px);top:0;width:41px;height:26px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 41 26'%3E%3Crect width='41' height='26' fill='%23fff'/%3E%3Crect x='0.0' y='0.0000' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='8.2' y='0.0000' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='16.4' y='0.0000' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='24.6' y='0.0000' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='32.8' y='0.0000' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='4.1' y='4.3333' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='12.3' y='4.3333' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='20.5' y='4.3333' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='28.7' y='4.3333' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='36.9' y='4.3333' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='0.0' y='8.6666' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='8.2' y='8.6666' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='16.4' y='8.6666' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='24.6' y='8.6666' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='32.8' y='8.6666' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='4.1' y='12.9999' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='12.3' y='12.9999' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='20.5' y='12.9999' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='28.7' y='12.9999' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='36.9' y='12.9999' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='0.0' y='17.3332' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='8.2' y='17.3332' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='16.4' y='17.3332' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='24.6' y='17.3332' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='32.8' y='17.3332' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='4.1' y='21.6665' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='12.3' y='21.6665' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='20.5' y='21.6665' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='28.7' y='21.6665' width='4.1' height='4.3334' fill='%23060E12'/%3E%3Crect x='36.9' y='21.6665' width='4.1' height='4.3334' fill='%23060E12'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+@media (max-width:360px){.eyebrow{font-size:14px}}
+/* headline = idl.pro "CHAMPIONSHIP" h1: NHD Black 900, 64/64 (≥810px) · 36/36 (<810px), letter-spacing normal.
+   idl.pro renders every word gap as a double space (Framer "double-spaces": NBSP+space = .149em extra);
+   copy is locked, so the same gap is reproduced with word-spacing instead of extra characters. */
+.h1{font-size:64px;line-height:64px;font-weight:900;letter-spacing:normal;word-spacing:.149em;text-wrap:balance}
+@media (max-width:809px){.h1{font-size:36px;line-height:36px}}
+.h1 .ln{display:block}
+/* both lines solid white, like idl.pro headings (idl.pro uses no outlined text) */
+.h1 .o{color:var(--ink)}
+.support{font-size:16px;line-height:20px;letter-spacing:.5px;color:var(--ink-2);max-width:40ch;text-wrap:pretty}  /* one colour: idl.pro body copy #FBFBFB */
+
+/* benefits — rows with idl.pro hover (colour, .15s) */
+/* benefits = idl.pro newsletter bullets ("Description Item"): rows 8px apart, no dividers, NHD Medium 14/16 sentence case, white on dark.
+   The icon is idl.pro's "How it works" hex badge (36×41 desktop · 26×30 phone, glyph #3F6681) in place of the check. */
+.perks{list-style:none;margin-top:34px;display:grid;gap:8px;max-width:440px}
+.perks li{display:flex;align-items:center;gap:10px;font-family:var(--nhd);font-weight:500;font-size:14px;line-height:16px;letter-spacing:normal;color:var(--ink)}
+.perks .hx{width:36px;height:41px;flex:none;display:block}
+.perks li b{font-weight:500}
+
+/* footer strip */
+.foot{grid-area:foot;align-self:end;display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;font-family:var(--carbon);font-size:14px;line-height:16px;letter-spacing:0;text-transform:uppercase;color:var(--grey)}
+.foot a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);transition:color var(--fast)}
+.foot a:hover{color:var(--volt)}
+
+/* ================= THE PASS (anatomy unchanged) ================= */
+.pass-wrap{grid-area:pass;align-self:center;justify-self:center;width:min(410px,100%);perspective:1400px;transform-origin:50% 0}
+.lanyard{height:48px;width:64px;margin:0 auto -16px;position:relative;z-index:1;
+  /* woven strap: rounded-fabric shading, fine weave, a woven lime stripe; stitched edges in ::before */
+  background:linear-gradient(90deg,rgba(0,0,0,.55) 0,rgba(0,0,0,0) 24%,rgba(255,255,255,.07) 50%,rgba(0,0,0,0) 76%,rgba(0,0,0,.55) 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.14) 1px 2px),linear-gradient(90deg,#16212A 36%,#AFCF00 36% 64%,#16212A 64%)}
+.lanyard::before{content:"";position:absolute;inset:0 5px;border-left:1px dashed rgba(255,255,255,.16);border-right:1px dashed rgba(255,255,255,.16);pointer-events:none}
+/* metal crimp + ring, the ring dropping into the punched slot */
+.lanyard::after{content:"";position:absolute;left:50%;bottom:-10px;width:52px;height:38px;transform:translateX(-50%);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 22'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%235B656C'/%3E%3Cstop offset='.32' stop-color='%23E4E9EB'/%3E%3Cstop offset='.55' stop-color='%239DA7AD'/%3E%3Cstop offset='.8' stop-color='%23C9D0D3'/%3E%3Cstop offset='1' stop-color='%234E575E'/%3E%3C/linearGradient%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.35'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10.5 9v6.2a4.5 4.5 0 0 0 9 0V9' fill='none' stroke='url%28%23m%29' stroke-width='2.4' stroke-linecap='round'/%3E%3Crect x='4' y='0' width='22' height='10' rx='1.6' fill='url%28%23m%29'/%3E%3Crect x='4' y='0' width='22' height='10' rx='1.6' fill='url%28%23s%29'/%3E%3Cpath d='M6.5 3h17M6.5 5.5h17M6.5 8h17' stroke='%23000' stroke-opacity='.22' stroke-width='.6'/%3E%3Cpath d='M5 1.2h20' stroke='%23fff' stroke-opacity='.7' stroke-width='.7'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+.tilt{transform-style:preserve-3d;will-change:transform;transform:rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg))}
+.flip{position:relative;transform-style:preserve-3d;transition:transform 1.05s cubic-bezier(.7,-.1,.2,1.1)}
+body[data-pass=issued] .flip{transform:rotateY(180deg)}
+.face{position:relative;background:var(--card);overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}  /* idl.pro uses no shadows */
+/* card border = idl.pro card border, drawn the same way (::after, 1px solid #232A35); lit states use idl.pro's lime border tokens */
+.face::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;border:1px solid var(--line);transition:border-color .5s var(--ease),border-width .5s var(--ease)}
+body[data-pass=active] .face.front::after{border:1.5px solid var(--volt-dim)}
+body[data-pass=loading] .face.front::after,.face.back::after{border-color:var(--volt-line)}
+.face.back{position:absolute;inset:0;transform:rotateY(180deg)}
+/* the punched slot */
+.face::before{content:"";position:absolute;left:50%;top:14px;width:76px;height:12px;transform:translateX(-50%);border-radius:6px;background:#020405;z-index:5;
+  box-shadow:inset 0 2px 2px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.06),0 1px 0 rgba(255,255,255,.1)}  /* punched slot with depth */
+
+.p-head{display:flex;justify-content:space-between;align-items:flex-end;padding:34px 22px 14px}
+.p-head svg{width:74px}
+.p-head .kind{text-align:right;font-family:var(--carbon);font-size:12px;line-height:14px;letter-spacing:0;text-transform:uppercase;color:var(--grey)}
+/* pass title = idl.pro card title: NHD Bold 20/22 uppercase */
+.p-head .kind b{display:block;margin-top:4px;font-family:var(--nhd);font-weight:700;font-size:20px;line-height:22px;letter-spacing:0;color:var(--ink)}
+
+/* photo panel — full colour, with stage light that follows the pointer */
+.window{position:relative;height:190px;margin:0 12px;overflow:hidden;background:var(--card-2)}
+.window img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;transform:scale(1.08) translate(var(--wx,0),var(--wy,0));
+}
+/* hover motion = v2/03 source: specular sheen following the cursor across the whole face (intensity reduced) */
+.sheen{position:absolute;inset:0;pointer-events:none;z-index:4;mix-blend-mode:overlay;opacity:.36;transition:opacity .6s;
+  background:linear-gradient(calc(115deg + var(--sa,0deg)),transparent 31%,rgba(255,255,255,.45) 47%,transparent 63%);
+  background-size:220% 220%;background-position:var(--sx,50%) var(--sy,50%)}
+body[data-pass=locked] .sheen{opacity:.14}  /* ≈60% of the source strength (.5 / .18, white .55 + volt band), neutral white */
+.sheen{display:none}  /* off: idl.pro surfaces are flat — no gloss. The tilt stays; the markup/JS are kept so it can return */
+.window .lock{position:absolute;left:14px;bottom:14px;z-index:3;display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;
+  background:rgba(6,16,21,.8);font-family:var(--carbon);font-weight:700;font-size:12px;line-height:14px;letter-spacing:0;text-transform:uppercase;color:var(--ink)}
+.window .lock svg{width:10px;height:12px}
+.scan{position:absolute;left:0;right:0;top:0;height:40%;pointer-events:none;z-index:3;opacity:0;
+  background:linear-gradient(180deg,transparent,rgba(192,231,0,.22) 88%,var(--volt) 100%);transform:translateY(-100%)}
+body[data-pass=loading] .scan{opacity:1;animation:scan 1.1s var(--ease-io) infinite}
+@keyframes scan{to{transform:translateY(260%)}}
+
+/* holder field + meta + CTA */
+.p-body{padding:18px 22px 0}
+.lbl{font-family:var(--carbon);font-size:12px;line-height:14px;letter-spacing:0;text-transform:uppercase;color:var(--grey)}
+.wl{position:relative}
+.wl-row{display:flex;flex-direction:column;gap:14px}
+.holder{margin-top:6px}
+.wl-field{position:relative}
+/* email field = idl.pro newsletter field: solid white, 44px, padding 10 14, radius 0, 16/24 #0C0F13, placeholder #90999F.
+   focus/error outline: see the form block below. */
+.wl input{width:100%;height:44px;background:var(--ink);border:0;border-radius:0;color:var(--dark);outline:none;
+  font-family:var(--nhd);font-size:16px;line-height:24px;letter-spacing:.5px;padding:10px 14px}
+.wl input::placeholder{font-family:var(--nhd);font-size:16px;letter-spacing:.5px;color:var(--grey);opacity:1;transition:color var(--fast)}
+.wl input:focus::placeholder{color:rgba(12,15,19,.6)}
+
+/* meta + teams = idl.pro "Matches" rows (Figma 959:76862 / the live schedule): 42px rows 10px apart, #0C202B fill with a gradient
+   to #113140, 1px #143343 border (::after); a #0D2631 label cell with the 13px #143444 chevron (Carbon Plus Regular 14/16);
+   values NHD Bold 16/18 uppercase white; the lime accent sits where the match row puts "VS". */
+.mrow{position:relative;display:flex;align-items:center;height:42px;min-width:0;
+  background:linear-gradient(90deg,rgba(17,48,63,0),rgb(17,49,64)) 94px 0/calc(100% - 94px) 100% no-repeat,#0C202B}
+.mrow::after{content:"";position:absolute;inset:0;border:1px solid #143343;pointer-events:none}
+/* label cell = one filled arrow (Figma "Rectangle 240655342"), the chevron stroke on its point */
+.mrow .ml{position:relative;flex:none;display:flex;align-items:center;width:99px;height:100%;padding-left:14px;background:var(--card-2);
+  clip-path:polygon(0 0,calc(100% - 13px) 0,100% 50%,calc(100% - 13px) 100%,0 100%);
+  font-family:var(--carbon);font-size:12px;line-height:14px;letter-spacing:normal;text-transform:uppercase;color:var(--grey)}
+.mrow .ml::after{content:"";position:absolute;right:0;top:0;width:13px;height:42px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 42'%3E%3Cpath d='M.2 0 12.2 21 .2 42' fill='none' stroke='%23143444'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+.mrow .mv{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:0 14px 0 14px;white-space:nowrap;
+  font-family:var(--nhd);font-weight:500;font-size:14px;line-height:16px;letter-spacing:normal;color:var(--ink)}
+.mrow .mv i{font-style:normal;color:var(--grey)}
+/* status = the schedule row's right-hand status cell ("7:00 PM ET"): #1C2E36, NHD Bold 12/14 #90999F; lime 12% + volt while live */
+.mst{position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:92px;height:100%;background:#1C2E36;
+  font-family:var(--nhd);font-weight:700;font-size:12px;line-height:14px;letter-spacing:normal;text-transform:uppercase;color:var(--grey);transition:background-color .3s,color .3s}
+body[data-pass=active] .mst,body[data-pass=loading] .mst{background:rgba(192,231,0,.12);color:var(--volt)}
+body[data-pass=error] .mst{background:rgba(255,106,92,.12);color:var(--err)}
+/* hierarchy: the form leads; the pass details sit one level down, 16px under the form, rows 10px apart */
+.pinfo{margin:16px 22px 0}
+/* email + CTA = idl.pro newsletter form ("SUBSCRIBE", form.framer-*): white field stacked over a full-width solid volt button, 10px gap.
+   Button: 44px, padding-left 28, Carbon Plus Bold 16/16 -0.32px #0C0F13 centred, 44×44 icon cell (4px pad) → 36×36 rgb(6,16,21) box → 21×24.5 volt bell.
+   Hover: rgba(0,0,0,.1) layer sweeps in from the left (idl.pro). idl.pro shows no focus state; a volt outline goes around the field. */
+.wl-bar{display:flex;flex-direction:column;gap:10px}
+.wl input:focus{outline:2px solid var(--volt);outline-offset:2px}
+.wl[data-state=error] input{outline:2px solid var(--err);outline-offset:2px}
+.wl-btn{position:relative;width:100%;display:flex;align-items:center;gap:12px;height:44px;padding:0 0 0 28px;overflow:clip;
+  background:var(--volt);color:var(--dark);border:0;border-radius:0;white-space:nowrap;transition:transform .12s var(--ease)}
+.wl-btn::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.1);transform:scaleX(0);transform-origin:left;transition:transform .35s ease-out}
+.wl-btn:hover::before,.wl-btn:focus-visible::before{transform:scaleX(1)}
+.wl-btn:active{transform:translateY(1px) scale(.98)}
+.wl-btn[disabled]{cursor:progress}
+.wl-lbl-text{position:relative;z-index:1;flex:1;text-align:center;
+  font-family:var(--carbon);font-weight:700;font-size:16px;line-height:16px;letter-spacing:-.32px;text-transform:uppercase}
+.wl-ico{position:relative;z-index:1;flex:none;width:44px;height:44px;padding:4px}
+.wl-ico span{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:rgb(6,16,21)}
+.wl-ico svg{width:21px;height:24.5px}
+/* issuing: the same dark layer runs across the button instead of a white shimmer */
+.wl[data-state=loading] .wl-btn::before{animation:wl-fill 1s var(--ease-io) infinite}
+@keyframes wl-fill{0%{transform:scaleX(0);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}50.1%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+.wl-msg{margin-top:8px;min-height:14px;font-family:var(--carbon);font-size:12px;line-height:14px;letter-spacing:0;text-transform:uppercase;color:var(--grey)}
+.wl[data-state=error] .wl-msg{color:var(--err)}
+.wl.shake{animation:wl-shake .42s var(--ease)}
+.shake-pass{animation:wl-shake .45s var(--ease)}
+@keyframes wl-shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+
+/* six team crests on a Matches row (Figma "Logo-Primary" 24px) */
+.teams{margin:10px 22px 0}
+.teams .mv{justify-content:space-between;padding-right:16px}
+.teams .mv span{display:flex}
+.teams img{width:24px;height:24px;object-fit:contain;transition:transform .3s var(--ease)}
+.teams .mv span:hover img{transform:scale(1.12)}
+.teams span:nth-child(2) img{transition-delay:.06s}.teams span:nth-child(3) img{transition-delay:.12s}.teams span:nth-child(4) img{transition-delay:.18s}.teams span:nth-child(5) img{transition-delay:.24s}.teams span:nth-child(6) img{transition-delay:.3s}
+
+/* perforated divider + reference + barcode */
+.p-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;padding:12px 22px 16px;border-top:1px dashed var(--chip)}
+.code{font-family:var(--carbon);font-size:12px;line-height:14px;letter-spacing:0;color:var(--grey);white-space:nowrap}
+.bars{height:26px;width:128px;flex:none}
+.bars rect{fill:var(--ink)}
+body[data-pass=locked] .bars{opacity:.25}
+
+/* back face — issued */
+.back{display:flex;flex-direction:column}
+.back .window{height:210px}
+.back .stamp{position:absolute;right:14px;top:14px;z-index:3;height:26px;padding:0 10px;display:flex;align-items:center;gap:8px;background:var(--volt);color:var(--dark);
+  font-family:var(--carbon);font-weight:700;font-size:12px;line-height:14px;letter-spacing:0;text-transform:uppercase;transform:scale(.6);opacity:0}
+body[data-pass=issued] .back .stamp{animation:stamp .5s cubic-bezier(.3,1.6,.5,1) .85s forwards}
+@keyframes stamp{to{transform:none;opacity:1}}
+.back .p-body{flex:1;display:flex;flex-direction:column}
+/* = idl.pro section heading: NHD Black 36/36 */
+.back .t{font-family:var(--nhd);font-weight:900;text-transform:uppercase;letter-spacing:0;font-size:36px;line-height:36px;margin:6px 0 14px}
+.back .who{font-family:var(--nhd);font-size:14px;line-height:18px;color:var(--ink);word-break:break-all;margin-top:4px}
+.back .note{font-size:14px;line-height:18px;letter-spacing:.5px;color:var(--grey);margin:12px 0 0}
+.back .actions{display:flex;flex-wrap:wrap;gap:4px 20px;align-items:center;margin-top:auto;padding-top:10px}
+.back .actions a,.wl-reset{display:inline-flex;align-items:center;min-height:44px;font-family:var(--carbon);font-weight:700;font-size:14px;line-height:16px;letter-spacing:0;text-transform:uppercase;transition:color var(--fast)}
+.back .actions a{color:var(--volt)}
+.back .actions a:hover{color:var(--ink)}
+.wl-reset{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
+.wl-reset:hover{color:var(--ink)}
+
+/* = idl.pro newsletter consent: NHD Regular 14/18, .5px, #D5D7D9, left-aligned */
+.consent{margin:18px 0 0;font-size:14px;line-height:18px;letter-spacing:.5px;color:var(--ink-3);transition:opacity .6s}
+.consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px;transition:color var(--fast)}
+.consent a:hover{color:var(--volt)}
+body[data-pass=issued] .consent{opacity:0}
+.after-note{display:none;margin-top:10px;font-size:14px;line-height:18px;letter-spacing:.5px;color:var(--ink-3)}
+
+/* ================= ENTRANCE (≈1.15s) ================= */
+.js .eyebrow,.js .h1 .ln,.js .support,.js .perks li,.js .foot,.js .top{opacity:0}
+.js .pass-wrap{opacity:0}
+.is-in .top{animation:fade .5s ease-out both}
+.is-in .eyebrow{animation:rise .6s var(--ease) .05s both}
+.is-in .h1 .ln{animation:rise .7s var(--ease) both}
+.is-in .h1 .ln:nth-child(1){animation-delay:.12s}.is-in .h1 .ln:nth-child(2){animation-delay:.2s}
+.is-in .support{animation:rise .6s var(--ease) .3s both}
+.is-in .perks li{animation:rise .5s var(--ease) both}
+.is-in .perks li:nth-child(1){animation-delay:.38s}.is-in .perks li:nth-child(2){animation-delay:.44s}.is-in .perks li:nth-child(3){animation-delay:.5s}
+.is-in .foot{animation:fade .5s ease-out .55s both}
+/* the card drops and swings on its lanyard */
+.is-in .pass-wrap{animation:drop .9s cubic-bezier(.3,.9,.3,1) .25s both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes drop{
+  0%{opacity:0;transform:translateY(-70px) rotate(0)}
+  35%{opacity:1;transform:translateY(0) rotate(2.6deg)}
+  58%{transform:rotate(-1.5deg)}
+  78%{transform:rotate(.6deg)}
+  100%{opacity:1;transform:none}}
+
+/* ---------- 1024 ---------- */
+@media (max-width:1180px){
+  .layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+}
+@media (max-height:820px) and (min-width:861px){
+  .window{height:136px}.back .window{height:150px}
+  .lanyard{height:30px}
+  .p-head{padding-top:28px;padding-bottom:10px}
+}
+/* desktop: full-bleed photo header — the photo runs edge to edge from the top of the pass, and the IDL mark + "Waitlist pass"
+   sit on it over a top scrim (#061015). Height = the old header (≈94) + the old panel, so the card keeps its size.
+   Phones keep the plain header: the panel is hidden there (one-screen layout). */
+@media (min-width:861px){
+  .p-head{position:absolute;left:0;right:0;top:0;z-index:5;align-items:flex-start;padding:38px 22px 0}  /* logo top = "Season 02" top */
+  .p-head .kind{color:var(--ink-3)}
+  .window{height:284px;margin:0}
+  .window::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(6,16,21,.9) 0%,rgba(6,16,21,.6) 26%,rgba(6,16,21,0) 50%,rgba(6,16,21,0) 74%,rgba(6,16,21,.5) 100%)}
+  #winImg{object-position:50% 50%}
+  .back .window{height:304px}
+  .back .stamp{top:auto;bottom:30px}  /* clear of the stepped bars on the seam */
+  /* seam = idl.pro hero divider (FmMoz9gGagFBa0gOuiMoeqpOfR4.svg): its hairline (y 50/77) sits exactly on the photo/body seam,
+     the lime stepped bars ride up over the bottom of the photo, as they do over idl.pro's hero */
+  .p-body{position:relative}
+  .p-body::before{content:"";position:absolute;left:0;right:0;top:0;aspect-ratio:1440/77;z-index:6;pointer-events:none;
+    transform:translateY(-64.97%);  /* = -50.026/77: the hairline's top edge on the seam */
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 77'%3E%3Cpath fill='%23C0E700' d='M1181.52 0h137.8l-16.99 50.026h-137.8zm205.78 23h84.7l-9.3 27H1378zm-85.08 27.026h75.62l-9.32 27.373h-75.63zM0 50.026h1164.53l-3.03 8.495H0z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+  .front .window .lock{bottom:24px}
+}
+@media (min-width:861px) and (max-height:820px){
+  .window{height:220px}.back .window{height:236px}
+  .p-head{padding-top:28px}
+}
+/* ---------- mobile first, one screen at 390×844 (≈660px visible in Safari) ----------
+   photo band on top with the headline over the crowd → why-now copy → compact pass → consent → benefits.
+   The band ends just under the headline (--photo-h, measured in JS). Footer links drop out: idl.pro stays in the top bar. */
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;grid-template-rows:none;grid-template-areas:"top" "copy" "sup" "pass" "perks";gap:12px;
+    padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(16px,env(safe-area-inset-bottom))}
+  .bg{position:absolute;inset:0 0 auto;height:var(--photo-h,56svh)}
+  /* the dark roof sits behind the top bar, the stage and the crowd fill the band; the crowd's dark silhouettes carry the headline */
+  .bg-img,.is-in .bg-img{inset:0;transform:none;background-position:62% 60%}
+  .bg-shade{background:linear-gradient(180deg,rgba(6,16,21,.72) 0%,rgba(6,16,21,0) 22%,rgba(6,16,21,0) 55%,rgba(6,16,21,.45) 80%,var(--bg) 100%)}
+  .more{display:contents}
+  .copy{align-self:start;padding-top:clamp(40px,6.6svh,112px)}
+  .eyebrow{margin-bottom:12px}
+  .support{grid-area:sup;margin-top:2px;font-size:14px;line-height:18px}
+  /* benefits flow as one wrapped line of bullets (8px rows, 16px between items) */
+  .perks{grid-area:perks;margin-top:0;max-width:none;display:flex;flex-wrap:wrap;gap:8px 16px}
+  .perks li{gap:8px}
+  .perks .hx{width:26px;height:30px}
+  .foot{display:none}
+  .pass-wrap{width:100%;max-width:420px}
+  .lanyard{display:none}
+  /* compact pass: the crowd photo is the page itself now, so the card keeps only what the form needs */
+  .front .window,.teams,.pinfo,.p-foot,.back .window{display:none}
+  .face::before{display:none}  /* no lanyard on mobile, so no punched slot */
+  .p-head{align-items:center;padding:16px 16px 6px}
+  .p-head svg{width:60px}
+  .p-head .kind{font-size:0;line-height:0}  /* "Season 02" is already in the eyebrow */
+  .p-head .kind b{margin-top:0}
+  .p-body{padding:6px 16px 10px}
+  /* the placeholder carries the prompt on mobile (as on idl.pro); the label stays for screen readers */
+  .wl>.lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .wl-msg{margin-top:6px}
+  /* = idl.pro NHD Black 32/32 */
+  .back .t{font-size:32px;line-height:32px;margin:4px 0 8px}
+  /* the back must fit the front's height: the headline is the confirmation, so the back drops its header row */
+  .back .p-head,.back .p-body>.lbl,.back .note{display:none}
+  .back .p-body{padding-top:16px}
+  .back .actions{padding-top:2px}
+  .consent{margin-top:6px}
+  /* issued: the confirmation note takes the consent's place under the card */
+  body[data-pass=issued] .consent{display:none}
+  body[data-pass=issued] .after-note{display:block}
+}
+@media (max-width:370px){ .code{font-size:11px}.bars{width:110px} }
+
+/* touch: no tilt, no pointer light (brief) — handled in JS; reduced motion: fades only */
+@media (prefers-reduced-motion:reduce){
+  .is-in .pass-wrap{animation:fade .4s ease-out both}
+  .is-in .eyebrow,.is-in .h1 .ln,.is-in .support,.is-in .perks li{animation-name:fade;animation-duration:.4s}
+  .flip{transition:none}
+  .scan,.back .stamp{animation:none!important}
+  .back .stamp{transform:none;opacity:1}
+  .wl[data-state=loading] .wl-btn::before{animation:none;transform:scaleX(1)}
+}
+</style>
+<style>
+/* =====================================================================
+   ALT · DENSE — layout-density pass on the approved v4/03-your-ticket.html.
+   The stylesheet above is the approved one, verbatim. This block only
+   recomposes: one 12-column grid, viewport-fitted scale, and stage layers
+   built from what the page already is (the IDL
+   mark, a spotlight on the pass). No new copy, no new colours.
+   ===================================================================== */
+:root{
+  --cg:24px;                                   /* column gutter = the approved row gap */
+  --pt:max(24px,env(safe-area-inset-top));
+  --pb:max(24px,env(safe-area-inset-bottom));
+  --pl:max(var(--gut),env(safe-area-inset-left));
+  --pr:max(var(--gut),env(safe-area-inset-right));
+}
+
+/* ---------- stage layers (behind content, no words) ---------- */
+.fx{position:fixed;inset:0;z-index:1;pointer-events:none}
+/* film grain over the arena photo (inline SVG noise, ~0 KB) */
+.grain{position:absolute;inset:0;opacity:.06;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.3 0 0 0 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/180px 180px}
+
+/* the pass's stage: a spotlight from above */
+.layout>*:not(.halo){position:relative;z-index:1}
+.halo{position:relative;z-index:0;pointer-events:none;overflow:hidden}
+.halo .beam{position:absolute;inset:0;
+  background:
+    conic-gradient(from 180deg at 50% -8%,transparent 163deg,rgba(214,230,236,.075) 172deg,rgba(214,230,236,.1) 180deg,rgba(214,230,236,.075) 188deg,transparent 197deg),
+    radial-gradient(40% 34% at 50% 58%,rgba(192,231,0,.07),transparent 100%);
+  -webkit-mask:linear-gradient(180deg,#000 40%,transparent 96%);mask:linear-gradient(180deg,#000 40%,transparent 96%);
+  transition:opacity .8s}
+body[data-pass=locked] .halo .beam{opacity:.7}
+/* the IDL mark as the wall behind the whole sheet — oversized, cropped by the frame, like an arena LED wall */
+.fx .mark{position:absolute;left:50%;bottom:-7vh;width:124vw;transform:translate3d(calc(-50% + var(--gx,0px)),var(--gy,0px),0)}
+.fx .mark svg{width:100%;height:auto;color:rgba(255,255,255,.035)}
+
+/* ---------- desktop: one 12-column grid ---------- */
+@media (min-width:861px){
+  .layout{grid-template-columns:repeat(12,minmax(0,1fr));grid-template-areas:none;column-gap:var(--cg);row-gap:0;
+    /* top · air · headline · body · air · band — the two air rows split what's left evenly */
+    grid-template-rows:auto minmax(24px,1fr) auto auto minmax(32px,1fr) auto}
+  .top{grid-column:1/-1;grid-row:1}
+  .more{display:contents}
+  .copy{grid-column:1/8;grid-row:3;align-self:end;max-width:none}
+  .eyebrow{margin-bottom:clamp(24px,3svh,36px)}
+  /* headline fitted to width AND height (approved 64px is the floor) */
+  .h1{font-size:clamp(64px,min(7.4vw,14svh),150px);line-height:1}
+  .support{grid-column:1/6;grid-row:4;margin-top:clamp(24px,3svh,36px);font-size:clamp(16px,1.25vw,22px);line-height:1.3}
+  /* benefits + footer links become one framed band on the grid: four cells, each on its own columns */
+  .perks{grid-column:1/7;grid-row:6;margin-top:0;max-width:none;border-top:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--cg)}
+  .perks li{display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-height:0;padding:22px 12px 24px 0;
+    border-top:1px solid var(--chip);border-bottom:1px solid var(--chip);text-wrap:balance}
+  .foot{grid-column:7/8;grid-row:6;align-self:stretch;flex-direction:column;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:0;
+    padding:8px 0;border-top:1px solid var(--chip);border-bottom:1px solid var(--chip)}
+  /* the pass: columns 8–12, bottom-aligned with the band, scaled up to the viewport by JS (zoom keeps it crisp) */
+  .pass-wrap{grid-column:8/13;grid-row:2/7;align-self:end;justify-self:center;margin-top:clamp(12px,2.6svh,24px)}
+  /* lanyard strap runs up out of frame — the pass hangs from the top of the sheet */
+  .pass-wrap::before{content:"";position:absolute;left:50%;bottom:100%;width:64px;height:100vh;transform:translateX(-50%);
+    background:linear-gradient(90deg,rgba(0,0,0,.55) 0,rgba(0,0,0,0) 24%,rgba(255,255,255,.07) 50%,rgba(0,0,0,0) 76%,rgba(0,0,0,.55) 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.14) 1px 2px),linear-gradient(90deg,#16212A 32%,#AFCF00 32% 68%,#16212A 68%)}
+  .halo{grid-column:8/13;grid-row:1/-1;margin:calc(-1 * var(--pt)) calc(-1 * var(--pr)) calc(-1 * var(--pb)) calc(-1 * var(--pr));
+    -webkit-mask:linear-gradient(90deg,transparent,#000 22%);mask:linear-gradient(90deg,transparent,#000 22%)}
+}
+/* 861–1180: six columns each side, headline at the approved 64px, footer links under the band */
+@media (min-width:861px) and (max-width:1180px){
+  .layout{grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto minmax(24px,1fr) auto auto minmax(32px,1fr) auto auto}
+  .copy{grid-column:1/7}
+  .h1{font-size:64px}
+  .perks{grid-column:1/7}
+  .foot{grid-column:1/7;grid-row:7;flex-direction:row;align-items:center;gap:22px;padding:0;border:0}
+  .pass-wrap{grid-column:7/13;grid-row:2/8}
+  .halo{grid-column:7/13}
+}
+/* 861–1000: the six-column text side is narrower than "Your ticket" at 64px — size it to the column so it never breaks to three lines */
+@media (min-width:861px) and (max-width:1000px){
+  .h1{font-size:clamp(52px,6.3vw,64px)}
+}
+
+/* ---------- mobile + tablet ---------- */
+@media (max-width:860px){
+  /* one-screen phone layout comes from the approved sheet (photo band, compact pass); the headline only scales up from tablet width */
+  .h1{font-size:clamp(36px,9.2vw,64px);line-height:1}
+  /* the full-bleed halo can overrun the narrowest phones by a few px — clip it to the sheet */
+  .layout{overflow-x:clip}
+  /* stage behind the pass and the benefits below it, full bleed (rows 4–5: no extra implicit rows) */
+  .halo{grid-row:4/6;grid-column:1;margin:-10px calc(-1 * var(--pr)) calc(-1 * max(16px,env(safe-area-inset-bottom))) calc(-1 * var(--pl))}  /* = the phone layout's bottom padding */
+  .halo .beam{-webkit-mask:linear-gradient(180deg,#000 30%,transparent 70%);mask:linear-gradient(180deg,#000 30%,transparent 70%)}
+  .fx .mark{bottom:-2svh;width:150vw}
+  .foot{justify-content:flex-start;padding-top:0}
+}
+/* tablet / large phone landscape: the benefits sit in one row of three framed cells */
+@media (min-width:600px) and (max-width:860px){
+  .perks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:16px;border-top:0}
+  .perks li{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:16px 8px 18px 0;border-top:1px solid var(--chip);text-wrap:balance}
+}
+
+/* ---------- entrance additions: stage settles first, then the approved choreography ---------- */
+.js .fx,.js .halo{opacity:0}
+.is-in .fx{animation:fade .7s ease-out both}
+.is-in .halo{animation:fade .9s ease-out .05s both}
+.is-in .fx .mark svg{animation:settle 1.1s var(--ease) .05s both}
+@keyframes settle{from{transform:scale(1.07)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .is-in .fx .mark svg{animation:none}
+}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-pass="locked">
+  <!-- benefit icons = idl.pro "How it works" hex badges (#10202A hex, #3F6681 Material Symbols glyph at ≈60% of the hex width, as on idl.pro), redrawn as SVG -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="hx-ticket" viewBox="0 0 28 32"><path d="M14 .5 27.5 8.25v15.5L14 31.5.5 23.75V8.25Z" fill="#10202A" stroke="#1C3340"/><svg x="4" y="6" width="20" height="20" viewBox="0 -960 960 960"><path fill="#3F6681" d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm0-160q17 0 28.5-11.5T520-480q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480q0 17 11.5 28.5T480-440Zm0-160q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600ZM80-160v-240q33 0 56.5-23.5T160-480q0-33-23.5-56.5T80-560v-240h800v240q-33 0-56.5 23.5T800-480q0 33 23.5 56.5T880-400v240H80Z"/></svg></symbol>
+      <symbol id="hx-news" viewBox="0 0 28 32"><path d="M14 .5 27.5 8.25v15.5L14 31.5.5 23.75V8.25Z" fill="#10202A" stroke="#1C3340"/><svg x="4" y="6" width="20" height="20" viewBox="0 -960 960 960"><path fill="#3F6681" d="M720-440v-80h160v80H720Zm48 280-128-96 48-64 128 96-48 64Zm-80-480-48-64 128-96 48 64-128 96ZM200-200v-160H80v-240h240l200-120v480L320-360h-40v160h-80Zm360-146v-268q27 24 43.5 58.5T620-480q0 41-16.5 75.5T560-346Z"/></svg></symbol>
+      <symbol id="hx-merch" viewBox="0 0 28 32"><path d="M14 .5 27.5 8.25v15.5L14 31.5.5 23.75V8.25Z" fill="#10202A" stroke="#1C3340"/><svg x="4" y="6" width="20" height="20" viewBox="0 -960 960 960"><path fill="#3F6681" d="m240-522-75 41L46-689l264-151h90v40q0 33 23.5 56.5T480-720q33 0 56.5-23.5T560-800v-40h90l264 151-118 206-76-38v401H240v-402Z"/></svg></symbol>
+    </defs>
+  </svg>
+  <div class="bg" aria-hidden="true"><div class="bg-img" id="bgImg"></div><div class="bg-shade"></div></div>
+  <!-- alt-dense: stage layers (decorative only) -->
+  <div class="fx" aria-hidden="true">
+    <div class="grain"></div>
+    <div class="mark" id="mark"><svg viewBox="0 0 110 32" fill="currentColor"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg></div>
+  </div>
+
+  <div class="layout">
+    <div class="halo" aria-hidden="true">
+      <div class="beam"></div>
+    </div>
+    <header class="top">
+      <a href="https://www.idl.pro/" aria-label="International Dance League — idl.pro">
+        <svg class="idl-logo" viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+      </a>
+      <a class="ext" href="https://www.idl.pro/" rel="noopener">idl.pro</a>
+    </header>
+
+    <div class="copy">
+      <p class="eyebrow"><span class="slash" aria-hidden="true"></span>Season 02 · Ticket waitlist</p>
+      <h1 class="display h1"><span class="ln">Your ticket</span><span class="ln o">is next</span></h1>
+    </div>
+
+    <div class="more">
+      <p class="support">2026 sold out five events. Pricing is tiered, and earlier buyers get the better tiers, so the list hears first when next-season tickets go live.</p>
+      <ul class="perks" aria-label="What the list gets you">
+        <li><svg class="hx" viewBox="0 0 28 32" aria-hidden="true"><use href="#hx-ticket"/></svg><b>Early ticket sales</b></li>
+        <li><svg class="hx" viewBox="0 0 28 32" aria-hidden="true"><use href="#hx-news"/></svg>Season 02 event updates</li>
+        <li><svg class="hx" viewBox="0 0 28 32" aria-hidden="true"><use href="#hx-merch"/></svg>Exclusive merch drops</li>
+      </ul>
+    </div>
+
+    <div class="pass-wrap" id="passWrap">
+      <div class="lanyard" aria-hidden="true"></div>
+      <div class="tilt" id="tilt">
+        <div class="flip">
+          <!-- FRONT: the form lives on the pass -->
+          <section class="face front" id="front" aria-labelledby="passTitle">
+            <div class="sheen" aria-hidden="true"></div>
+            <div class="p-head">
+              <svg viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+              <p class="kind" id="passTitle">Season 02<b>Waitlist pass</b></p>
+            </div>
+            <div class="window" id="winF" aria-hidden="true">
+              <img id="winImg" src="assets/img/pass-grv.jpg" alt="" width="1276" height="890" fetchpriority="high">
+              <span class="lock" id="lockTag"><svg viewBox="0 0 10 12" fill="currentColor"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1Zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5Z"/></svg><span id="lockTxt">Locked</span></span>
+              <div class="scan"></div>
+            </div>
+            <div class="p-body">
+              <form class="wl" id="wl" novalidate>
+                <label class="lbl" for="email">Pass holder · email</label>
+                <div class="wl-row holder">
+                  <div class="wl-bar">
+                    <div class="wl-field"><input type="email" id="email" name="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="wlMsg"></div>
+                    <button class="wl-btn" type="submit"><span class="wl-lbl-text">Notify me</span><span class="wl-ico" aria-hidden="true"><span><svg viewBox="0 0 21 24.5"><path d="M8.167 22.167h4.666c0 1.283-1.05 2.333-2.333 2.333s-2.333-1.05-2.333-2.333ZM21 19.833V21H0v-1.167L2.333 17.5v-7c0-3.617 2.334-6.767 5.834-7.817v-.35C8.167 1.05 9.217 0 10.5 0s2.333 1.05 2.333 2.333v.35c3.5 1.05 5.834 4.2 5.834 7.817v7ZM16.333 10.5c0-3.267-2.566-5.833-5.833-5.833S4.667 7.233 4.667 10.5v8.167h11.666Z" fill="#C0E700"/></svg></span></span></button>
+                  </div>
+                </div>
+                <p class="wl-msg" id="wlMsg" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+            <div class="pinfo mrow" aria-hidden="true"><span class="ml">Access</span><span class="mv">Presale list<i>·</i>Free</span><span class="mst" id="stTxt">Locked</span></div>
+            <div class="teams mrow" aria-hidden="true"><span class="ml">Teams</span><span class="mv">
+              <span><img src="../v2/assets/img/icon-brotherhood.webp" alt="" width="24" height="24"></span><span><img src="../v2/assets/img/icon-grv.webp" alt="" width="24" height="24"></span><span><img src="../v2/assets/img/icon-1million.webp" alt="" width="24" height="24"></span>
+              <span><img src="../v2/assets/img/icon-royalfamily.webp" alt="" width="24" height="24"></span><span><img src="../v2/assets/img/icon-jamrepublic.webp" alt="" width="24" height="24"></span><span><img src="../v2/assets/img/icon-quickstyle.webp" alt="" width="24" height="24"></span>
+            </span></div>
+            <div class="p-foot" aria-hidden="true"><span class="code" id="codeF">IDL · S02 · ——————</span><svg class="bars" id="barsF" viewBox="0 0 128 26" preserveAspectRatio="none"></svg></div>
+          </section>
+
+          <!-- BACK: issued -->
+          <section class="face back" aria-live="polite" id="back" tabindex="-1" aria-label="Pass issued" inert>
+            <div class="sheen" aria-hidden="true"></div>
+            <div class="p-head">
+              <svg viewBox="0 0 110 32" fill="currentColor" aria-hidden="true"><path d="M.2 9V.2h30.15V9H.2Z"/><path d="M30.35 13.77H.2v18.11h24.08l6.07-18.11Z"/><path d="M37.3 9 40.33.2c3.15 0 11.6-.26 21.15 0 9.55.55 11.93 9.44 11.93 13.46H54.43l-1.63 4.66h19.96c-2.69 11.54-13.34 13.85-18.33 13.56H29.7l6.07-18.22h18.66L56.17 9H37.3Z"/><path d="M103.78.2H83.28l-4.45 13.46h20.39L103.78.2Z"/><path d="m72.76 31.88 4.45-13.56h31.67l.33 13.56H72.76Z"/></svg>
+              <p class="kind">Season 02<b>Pass issued</b></p>
+            </div>
+            <div class="window"><img id="winImgB" src="../v2/assets/img/photo-grv-confetti.jpg" alt="" width="2000" height="1310" loading="lazy"><span class="stamp">● Active</span></div>
+            <div class="p-body">
+              <p class="t">You’re on<br>the list.</p>
+              <p class="lbl">Pass holder</p>
+              <p class="who" id="who"></p>
+              <p class="note">When Season 02 tickets go live, this address hears first — ahead of the public on-sale.</p>
+              <div class="actions">
+                <a href="https://www.idl.pro/results/championship">Relive 2026 ↗</a>
+                <button class="wl-reset" type="button" id="reset">Use another email</button>
+              </div>
+            </div>
+            <div class="p-foot"><span class="code" id="codeB"></span><svg class="bars" id="barsB" viewBox="0 0 128 26" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+          </section>
+        </div>
+      </div>
+      <p class="consent">By activating, you agree to IDL emails about tickets and league news, plus our <a href="https://www.idl.pro/terms-and-conditions">Terms</a> and <a href="https://www.idl.pro/privacy-policy">Privacy Policy</a>. Unsubscribe anytime.</p>
+      <p class="after-note">When Season 02 tickets go live, this address hears first — ahead of the public on-sale.</p>
+    </div>
+
+    <footer class="foot">
+      <a href="https://www.idl.pro/results/championship">Results</a>
+      <a href="https://www.idl.pro/teams">Teams</a>
+    </footer>
+  </div>
+
+<!-- same form engine as the source (validation, stub submit, ?fail) — loaded unchanged -->
+<script src="../v2/shared/waitlist.js"></script>
+<script>
+(() => {
+  const W = IDLWaitlist, $ = (s) => document.querySelector(s), body = document.body;
+  const reduced = W.reduced;
+  // setTimeout, not rAF: the entrance must also resolve in background tabs
+  let started = false;
+  const start = () => { if (started) return; started = true; fit(); body.classList.add('is-in'); };
+
+  /* ---- alt-dense: scale the pass to the viewport (desktop). zoom, not transform: the whole card
+     re-lays out at the new size, so text stays crisp and proportions are exact. Computed before the
+     pass is revealed, so there is no visible layout shift. ---- */
+  const wrap = $('#passWrap'), layout = $('.layout'), topBar = $('.top');
+  const wide = matchMedia('(min-width:861px)'), xl = matchMedia('(min-width:1181px)');
+  function fit() {
+    if (!wide.matches) { wrap.style.zoom = ''; return; }
+    wrap.style.zoom = '1';
+    const cs = getComputedStyle(layout), cols = cs.gridTemplateColumns.split(' ').map(parseFloat), gap = parseFloat(cs.columnGap);
+    const [a, z] = xl.matches ? [7, 12] : [6, 12];                     // pass columns (0-based start, end)
+    const colW = cols.slice(a, z).reduce((s, c) => s + c, 0) + (z - a - 1) * gap;
+    const need = wrap.offsetHeight + parseFloat(getComputedStyle(wrap).marginTop);   // measured at zoom 1
+    const room = innerHeight - topBar.getBoundingClientRect().bottom - parseFloat(cs.paddingBottom);
+    const k = Math.max(1, Math.min(room / need, colW / 410, 1.4));
+    wrap.style.zoom = k.toFixed(3);
+  }
+  fit(); addEventListener('resize', fit);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(start, 20)); setTimeout(start, 700);
+
+  /* ---- barcode drawn from the pass code (deterministic, no fake data) — source ---- */
+  const drawBars = (svg, seed) => {
+    let h = 0; for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    let x = 0, out = '';
+    while (x < 128) { h = (h * 1103515245 + 12345) >>> 0; const w = 1 + (h % 3), gap = 1 + ((h >> 5) % 3); if (x + w > 128) break; out += `<rect x="${x}" y="0" width="${w}" height="26"/>`; x += w + gap; }
+    svg.innerHTML = out;
+  };
+  drawBars($('#barsF'), 'IDL-S02');
+
+  /* ---- pass states: locked → active → loading → issued — source logic, unchanged ---- */
+  const front = $('#front'), back = $('#back');
+  const setPass = (s) => {
+    body.dataset.pass = s;
+    // only the visible face is reachable by keyboard / screen reader
+    const issued = s === 'issued'; front.inert = issued; back.inert = !issued;
+  };
+  const stTxt = $('#stTxt'), lockTxt = $('#lockTxt'), codeF = $('#codeF');
+  const ctl = W.mount($('#wl'), {
+    copy: { cta: 'Notify me', loading: 'Sending…', placeholder: 'Enter your Email', focus: 'Enter your Email' },
+    onState(s, d) {
+      if (s === 'focus') { setPass('active'); stTxt.textContent = 'Ready'; lockTxt.textContent = 'Activating'; $('#winImgB').loading = 'eager'; }
+      if (s === 'idle') { setPass('locked'); stTxt.textContent = 'Locked'; lockTxt.textContent = 'Locked'; codeF.textContent = 'IDL · S02 · ——————'; drawBars($('#barsF'), 'IDL-S02'); }
+      if (s === 'typing') {
+        // the pass "prints" its reference as you type
+        if (d.valid) { const c = W.code(d.value.trim()); codeF.textContent = 'IDL · S02 · ' + c; drawBars($('#barsF'), c); stTxt.textContent = 'Valid'; }
+        else { codeF.textContent = 'IDL · S02 · ——————'; stTxt.textContent = 'Ready'; }
+      }
+      if (s === 'loading') { setPass('loading'); stTxt.textContent = 'Issuing'; lockTxt.textContent = 'Issuing'; }
+      if (s === 'error') {
+        setPass('error'); stTxt.textContent = d.reason === 'invalid' ? 'Check email' : 'Retry';
+        const t = $('#tilt'); t.classList.remove('shake-pass'); void t.offsetWidth; t.classList.add('shake-pass');
+        setTimeout(() => { if (body.dataset.pass === 'error') setPass('active'); }, 900);
+      }
+      if (s === 'success') {
+        const c = W.code(d.email);
+        $('#who').textContent = d.email; $('#codeB').textContent = 'IDL · S02 · ' + c; drawBars($('#barsB'), c);
+        setPass('issued');
+        setTimeout(() => back.focus({ preventScroll: true }), reduced ? 0 : 700);
+      }
+    },
+  });
+  $('#reset').addEventListener('click', () => { ctl.reset(); setPass('locked'); setTimeout(() => ctl.input.focus(), reduced ? 0 : 600); });
+
+  /* ---- mobile: the photo band ends just under the headline (offset*, so the entrance transform is ignored) ---- */
+  const copy = $('.copy'), root = document.documentElement;
+  const fitPhoto = () => root.style.setProperty('--photo-h', (copy.offsetTop + copy.offsetHeight + 28) + 'px');
+  fitPhoto(); new ResizeObserver(fitPhoto).observe($('.layout'));
+
+  /* ---- desktop only: hover motion identical to v2/03 — tilt 11°/9° (×.55 locked), sheen, window parallax ---- */
+  const desktop = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (reduced || !desktop) return;
+  const tilt = $('#tilt'), sheens = document.querySelectorAll('.sheen'), img = $('#winImg'), bgImg = $('#bgImg');
+  const p = W.pointer(), b = { x: 0, y: 0 }, mark = $('#mark');
+  const loop = () => {
+    p.tick(0.08);
+    const k = body.dataset.pass === 'locked' ? 0.55 : 1;
+    tilt.style.setProperty('--ty', (p.x * 11 * k).toFixed(2) + 'deg');
+    tilt.style.setProperty('--tx', (p.y * -9 * k).toFixed(2) + 'deg');
+    sheens.forEach((s) => { s.style.setProperty('--sx', (50 + p.x * 45).toFixed(1) + '%'); s.style.setProperty('--sy', (50 + p.y * 45).toFixed(1) + '%'); s.style.setProperty('--sa', (p.x * 12).toFixed(1) + 'deg'); });
+    img.style.setProperty('--wx', (p.x * -8).toFixed(1) + 'px'); img.style.setProperty('--wy', (p.y * -6).toFixed(1) + 'px');
+    // background: same motion as v3/alt-04 (pass.js) — own .07 smoothing, -14/-9px
+    b.x += (p.tx - b.x) * 0.07; b.y += (p.ty - b.y) * 0.07;
+    bgImg.style.setProperty('--bx', (b.x * -14).toFixed(1) + 'px'); bgImg.style.setProperty('--by', (b.y * -9).toFixed(1) + 'px');
+    // alt-dense: the IDL mark sits between photo and pass — twice the photo's travel, so the layers separate
+    mark.style.setProperty('--gx', (b.x * -28).toFixed(1) + 'px'); mark.style.setProperty('--gy', (b.y * -18).toFixed(1) + 'px');
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
