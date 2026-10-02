@@ -321,15 +321,15 @@ body[data-pass=issued] .consent{opacity:0}
 @media (max-width:1180px){
   .layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
 }
-@media (max-height:820px) and (min-width:861px){
+@media (max-height:820px) and (min-width:600px){
   .window{height:136px}.back .window{height:150px}
   .lanyard{height:30px}
   .p-head{padding-top:28px;padding-bottom:10px}
 }
 /* desktop: full-bleed photo header — the photo runs edge to edge from the top of the pass, and the IDL mark + "Waitlist pass"
    sit on it over a top scrim (#061015). Height = the old header (≈94) + the old panel, so the card keeps its size.
-   Phones keep the plain header: the panel is hidden there (one-screen layout). */
-@media (min-width:861px){
+   Tablets (≥600) get the same full card; phones get the compact one below. */
+@media (min-width:600px){
   .p-head{position:absolute;left:0;right:0;top:0;z-index:5;align-items:flex-start;padding:38px 22px 0}  /* logo top = "Season 02" top */
   .p-head .kind{color:var(--ink-3)}
   .window{height:284px;margin:0}
@@ -346,54 +346,79 @@ body[data-pass=issued] .consent{opacity:0}
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 77'%3E%3Cpath fill='%23C0E700' d='M1181.52 0h137.8l-16.99 50.026h-137.8zm205.78 23h84.7l-9.3 27H1378zm-85.08 27.026h75.62l-9.32 27.373h-75.63zM0 50.026h1164.53l-3.03 8.495H0z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
   .front .window .lock{bottom:24px}
 }
-@media (min-width:861px) and (max-height:820px){
+@media (min-width:600px) and (max-height:820px){
   .window{height:220px}.back .window{height:236px}
   .p-head{padding-top:28px}
 }
-/* ---------- mobile first, one screen at 390×844 (≈660px visible in Safari) ----------
-   photo band on top with the headline over the crowd → why-now copy → compact pass → consent → benefits.
-   The band ends just under the headline (--photo-h, measured in JS). Footer links drop out: idl.pro stays in the top bar. */
+/* ---------- below desktop (≤860): crowd band behind the headline, rows packed from the top at 12px ---------- */
 @media (max-width:860px){
-  .layout{grid-template-columns:1fr;grid-template-rows:none;grid-template-areas:"top" "copy" "sup" "pass" "perks";gap:12px;
+  .layout{grid-template-rows:none;gap:12px;align-content:start;
     padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(16px,env(safe-area-inset-bottom))}
   .bg{position:absolute;inset:0 0 auto;height:var(--photo-h,56svh)}
   /* the dark roof sits behind the top bar, the stage and the crowd fill the band; the crowd's dark silhouettes carry the headline */
   .bg-img,.is-in .bg-img{inset:0;transform:none;background-position:62% 60%}
   .bg-shade{background:linear-gradient(180deg,rgba(6,16,21,.72) 0%,rgba(6,16,21,0) 22%,rgba(6,16,21,0) 55%,rgba(6,16,21,.45) 80%,var(--bg) 100%)}
   .more{display:contents}
-  .copy{align-self:start;padding-top:clamp(40px,6.6svh,112px)}
+  .copy{align-self:start;padding-top:clamp(12px,2.4svh,40px)}
   .eyebrow{margin-bottom:12px}
-  .support{grid-area:sup;margin-top:2px;font-size:14px;line-height:18px}
-  /* benefits flow as one wrapped line of bullets (8px rows, 16px between items) */
-  .perks{grid-area:perks;margin-top:0;max-width:none;display:flex;flex-wrap:wrap;gap:8px 16px}
-  .perks li{gap:8px}
-  .perks .hx{width:26px;height:30px}
   .foot{display:none}
-  .pass-wrap{width:100%;max-width:420px}
-  .lanyard{display:none}
-  /* compact pass: the crowd photo is the page itself now, so the card keeps only what the form needs */
-  .front .window,.teams,.pinfo,.p-foot,.back .window{display:none}
-  .face::before{display:none}  /* no lanyard on mobile, so no punched slot */
-  .p-head{align-items:center;padding:16px 16px 6px}
+}
+/* ---------- tablet (600–860): one centred column, max 480 wide — top bar, headline, copy, the full pass (as desktop),
+   consent, benefits all on the same edges; the crowd band still runs full width behind ---------- */
+@media (min-width:600px) and (max-width:860px){
+  .layout{grid-template-columns:minmax(0,480px);justify-content:center;grid-template-areas:"top" "copy" "sup" "pass" "perks"}
+  .support{grid-area:sup;font-size:16px;line-height:20px}
+  .perks{grid-area:perks;margin-top:4px;max-width:none}
+  .pass-wrap{width:100%;max-width:none}
+}
+/* ---------- phone (<600), one screen at 390×844 (≈660px visible in Safari) ----------
+   the event pass in its compact form (same design as desktop: lanyard + slot, full-bleed GRV photo with the IDL mark and
+   "Waitlist pass" on it, the lime stepped seam, the form, the Access/status row) → consent → benefits. */
+@media (max-width:599px){
+  .layout{grid-template-columns:minmax(0,480px);justify-content:center;grid-template-areas:"top" "copy" "pass" "perks"}  /* same centred 480 column as tablet: wide phones / small windows stay aligned */
+  .support{display:none}  /* one screen with the full pass: the why-now paragraph is desktop/tablet-only */
+  .perks{grid-area:perks;margin-top:0;max-width:none;gap:6px}
+  .perks li{gap:8px}
+  .perks .hx{width:20px;height:23px}
+  .pass-wrap{width:100%;max-width:none}
+  /* lanyard + slot, scaled to the phone */
+  .lanyard{height:24px;width:52px;margin-bottom:-14px}
+  .lanyard::after{width:40px;height:29px;bottom:-8px}
+  .face::before{top:10px;width:64px;height:10px}
+  /* full-bleed photo header with the mark + title on it */
+  .front .window{height:100px;margin:0}
+  .front .window::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(6,16,21,.85) 0%,rgba(6,16,21,.45) 40%,rgba(6,16,21,0) 70%,rgba(6,16,21,.35) 100%)}
+  #winImg{object-position:50% 30%}
+  .front .window .lock{left:16px;bottom:16px}
+  .front .p-head{position:absolute;left:0;right:0;top:0;z-index:5;align-items:flex-start;padding:26px 16px 0}
   .p-head svg{width:60px}
-  .p-head .kind{font-size:0;line-height:0}  /* "Season 02" is already in the eyebrow */
-  .p-head .kind b{margin-top:0}
-  .p-body{padding:6px 16px 10px}
+  .p-head .kind{font-size:11px;line-height:13px;color:var(--ink-3)}
+  .p-head .kind b{margin-top:2px;font-size:18px;line-height:20px}
+  /* the lime stepped seam (idl.pro hero divider) on the photo/body join */
+  .p-body{position:relative;padding:12px 16px 0}
+  .p-body::before{content:"";position:absolute;left:0;right:0;top:0;aspect-ratio:1440/77;z-index:6;pointer-events:none;transform:translateY(-64.97%);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 77'%3E%3Cpath fill='%23C0E700' d='M1181.52 0h137.8l-16.99 50.026h-137.8zm205.78 23h84.7l-9.3 27H1378zm-85.08 27.026h75.62l-9.32 27.373h-75.63zM0 50.026h1164.53l-3.03 8.495H0z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
   /* the placeholder carries the prompt on mobile (as on idl.pro); the label stays for screen readers */
   .wl>.lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .wl-msg{margin-top:6px}
+  .pinfo{margin:6px 16px 12px}
+  .teams,.p-foot,.back .window{display:none}
   /* = idl.pro NHD Black 32/32 */
   .back .t{font-size:32px;line-height:32px;margin:4px 0 8px}
   /* the back must fit the front's height: the headline is the confirmation, so the back drops its header row */
   .back .p-head,.back .p-body>.lbl,.back .note{display:none}
-  .back .p-body{padding-top:16px}
+  .back .p-body{padding-top:28px}
+  .back .p-body::before{display:none}
   .back .actions{padding-top:2px}
-  .consent{margin-top:6px}
+  .consent{margin-top:8px;font-size:12px;line-height:16px}
   /* issued: the confirmation note takes the consent's place under the card */
   body[data-pass=issued] .consent{display:none}
-  body[data-pass=issued] .after-note{display:block}
+  body[data-pass=issued] .after-note{display:block;font-size:12px;line-height:16px}
 }
 @media (max-width:370px){ .code{font-size:11px}.bars{width:110px} }
+/* narrow phones: the Access/status row keeps one line — slimmer label and status cells */
+@media (max-width:380px){ .mrow .ml{width:84px;padding-left:12px}.mst{width:72px}.mrow .mv{padding-left:12px} }
 
 /* touch: no tilt, no pointer light (brief) — handled in JS; reduced motion: fades only */
 @media (prefers-reduced-motion:reduce){
@@ -487,8 +512,8 @@ body[data-pass=locked] .halo .beam{opacity:.7}
   .h1{font-size:clamp(36px,9.2vw,64px);line-height:1}
   /* the full-bleed halo can overrun the narrowest phones by a few px — clip it to the sheet */
   .layout{overflow-x:clip}
-  /* stage behind the pass and the benefits below it, full bleed (rows 4–5: no extra implicit rows) */
-  .halo{grid-row:4/6;grid-column:1;margin:-10px calc(-1 * var(--pr)) calc(-1 * max(16px,env(safe-area-inset-bottom))) calc(-1 * var(--pl))}  /* = the phone layout's bottom padding */
+  /* stage behind the pass and the benefits below it, full bleed (rows 3–4 of top/copy/pass/perks: no extra implicit rows) */
+  .halo{grid-row:3/5;grid-column:1;margin:-10px calc(-1 * var(--pr)) calc(-1 * max(16px,env(safe-area-inset-bottom))) calc(-1 * var(--pl))}  /* = the phone layout's bottom padding */
   .halo .beam{-webkit-mask:linear-gradient(180deg,#000 30%,transparent 70%);mask:linear-gradient(180deg,#000 30%,transparent 70%)}
   .fx .mark{bottom:-2svh;width:150vw}
   .foot{justify-content:flex-start;padding-top:0}
